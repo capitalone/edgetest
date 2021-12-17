@@ -1,0 +1,29 @@
+exclude: ^notebooks/
+repos:
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+      - id: black
+        types: [file, python]
+        language_version: python3.7
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: v5.5.4
+    hooks:
+      - id: isort
+  - repo: https://github.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+      - id: flake8
+        additional_dependencies: [flake8-docstrings]
+        files: ^edgetest/
+        language_version: python3.7
+  - repo: https://github.com/jazzband/pip-tools
+    rev: 5.5.0
+    hooks:
+      - id: pip-compile
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+      - id: trailing-whitespace
+      - id: debug-statements
+      - id: end-of-file-fixer
