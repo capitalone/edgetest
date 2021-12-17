@@ -1,0 +1,7 @@
+edgetest
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   edgetest

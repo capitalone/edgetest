@@ -1,0 +1,61 @@
+edgetest package
+================
+
+Submodules
+----------
+
+
+.. automodule:: edgetest.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.hookspecs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.lib
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.report
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.schema
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+.. automodule:: edgetest.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: edgetest
+   :members:
+   :undoc-members:
+   :show-inheritance:
