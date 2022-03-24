@@ -1,5 +1,6 @@
 # Install and test
 name: Python package
+
 on:
     push:
         branches:

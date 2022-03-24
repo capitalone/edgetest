@@ -83,6 +83,7 @@ def test_func():
 PY_VER = f"python{sys.version_info.major}.{sys.version_info.minor}"
 
 
+@pytest.mark.skipif(sys.platform == "win32", reason="does not run on windows")
 @pytest.mark.integration
 def test_toy_package():
     """Test using edgetest with a toy package."""
@@ -108,9 +109,11 @@ def test_toy_package():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "pandas").is_dir()
-        assert Path(
-            loc, ".edgetest", "pandas", "lib", PY_VER, "site-packages", "pandas"
-        ).is_dir()
+
+        if not sys.platform == "win32":
+            assert Path(
+                loc, ".edgetest", "pandas", "lib", PY_VER, "site-packages", "pandas"
+            ).is_dir()
 
 
 @pytest.mark.integration
@@ -138,15 +141,17 @@ def test_toy_package_dask():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "core").is_dir()
-        assert Path(
-            loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "dask"
-        ).is_dir()
-        assert Path(
-            loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "pandas"
-        ).is_dir()
-        assert Path(
-            loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "click"
-        ).is_dir()
+
+        if not sys.platform == "win32":
+            assert Path(
+                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "dask"
+            ).is_dir()
+            assert Path(
+                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "pandas"
+            ).is_dir()
+            assert Path(
+                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "click"
+            ).is_dir()
 
         config = configparser.ConfigParser()
         config.read("setup.cfg")
