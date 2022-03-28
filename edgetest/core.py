@@ -150,7 +150,8 @@ class TestPackage:
         out, _ = _run_command(self.python_path, "-m", "pip", "list", "--format", "json")
         outjson = json.loads(out)
 
-        return [pkg for pkg in outjson if pkg.get("name", "") in self.upgrade]
+        upgrade_wo_extras = [pkg.split("[")[0] for pkg in self.upgrade]
+        return [pkg for pkg in outjson if pkg.get("name", "") in upgrade_wo_extras]
 
     def run_tests(self, command: str) -> int:
         """Run the tests in the package directory.
