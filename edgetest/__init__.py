@@ -1,7 +1,7 @@
 """Package initialization."""
 
 
-__version__ = "2022.3.1"
+__version__ = "2022.4.0"
 
 __title__ = "edgetest"
 __description__ = "Bleeding edge dependency testing"
