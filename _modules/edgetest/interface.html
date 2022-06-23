@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
         <title>edgetest.interface - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -189,7 +189,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -204,7 +205,7 @@
         </div>
         <article role="main">
           <h1>Source code for edgetest.interface</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Command-line interface."""</span>
+<span></span><span class="sd">&quot;&quot;&quot;Command-line interface.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
@@ -228,7 +229,7 @@
 
 
 <div class="viewcode-block" id="get_plugin_manager"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.interface.get_plugin_manager">[docs]</a><span class="k">def</span> <span class="nf">get_plugin_manager</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">PluginManager</span><span class="p">:</span>
-    <span class="sd">"""Get the plugin manager.</span>
+    <span class="sd">&quot;&quot;&quot;Get the plugin manager.</span>
 
 <span class="sd">    Registers the default ``venv`` plugin.</span>
 
@@ -236,10 +237,10 @@
 <span class="sd">    -------</span>
 <span class="sd">    PluginManager</span>
 <span class="sd">        The plugin manager.</span>
-<span class="sd">    """</span>
-    <span class="n">pm</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">PluginManager</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pm</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">PluginManager</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
     <span class="n">pm</span><span class="o">.</span><span class="n">add_hookspecs</span><span class="p">(</span><span class="n">hookspecs</span><span class="p">)</span>
-    <span class="n">pm</span><span class="o">.</span><span class="n">load_setuptools_entrypoints</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">)</span>
+    <span class="n">pm</span><span class="o">.</span><span class="n">load_setuptools_entrypoints</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
     <span class="n">pm</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">lib</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">pm</span></div>
@@ -247,60 +248,60 @@
 
 <span class="nd">@click</span><span class="o">.</span><span class="n">command</span><span class="p">()</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--config"</span><span class="p">,</span>
-    <span class="s2">"-c"</span><span class="p">,</span>
+    <span class="s2">&quot;--config&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-c&quot;</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">exists</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Path to the test configuration file"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to the test configuration file&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--requirements"</span><span class="p">,</span>
-    <span class="s2">"-r"</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s2">"requirements.txt"</span><span class="p">,</span>
+    <span class="s2">&quot;--requirements&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-r&quot;</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;requirements.txt&quot;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="n">click</span><span class="o">.</span><span class="n">Path</span><span class="p">(),</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Path to a requirements file"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Path to a requirements file&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--environment"</span><span class="p">,</span>
-    <span class="s2">"-e"</span><span class="p">,</span>
+    <span class="s2">&quot;--environment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-e&quot;</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Name of a specific environment to run"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Name of a specific environment to run&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--notest"</span><span class="p">,</span>
+    <span class="s2">&quot;--notest&quot;</span><span class="p">,</span>
     <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Whether or not to run the test command for each environment"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether or not to run the test command for each environment&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--nosetup"</span><span class="p">,</span>
+    <span class="s2">&quot;--nosetup&quot;</span><span class="p">,</span>
     <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Whether or not to only set up the conda environment(s)"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether or not to only set up the conda environment(s)&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--extras"</span><span class="p">,</span>
+    <span class="s2">&quot;--extras&quot;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
     <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"List of extra installations for the local package. Only used if using ``requirements``"</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;List of extra installations for the local package. Only used if using ``requirements``&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--deps"</span><span class="p">,</span>
-    <span class="s2">"-d"</span><span class="p">,</span>
+    <span class="s2">&quot;--deps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;-d&quot;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
     <span class="n">multiple</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Additional `pip` dependencies to install. Only used if using ``requirements``."</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Additional `pip` dependencies to install. Only used if using ``requirements``.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--command"</span><span class="p">,</span>
+    <span class="s2">&quot;--command&quot;</span><span class="p">,</span>
     <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
-    <span class="n">default</span><span class="o">=</span><span class="s2">"pytest"</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"The test command to use in each environment. Only used if using ``requirements``."</span><span class="p">,</span>
+    <span class="n">default</span><span class="o">=</span><span class="s2">&quot;pytest&quot;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The test command to use in each environment. Only used if using ``requirements``.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
-    <span class="s2">"--export"</span><span class="p">,</span>
+    <span class="s2">&quot;--export&quot;</span><span class="p">,</span>
     <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">help</span><span class="o">=</span><span class="s2">"Whether or not to export the updated requirements file. Overwrites input requirements."</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether or not to export the updated requirements file. Overwrites input requirements.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="k">def</span> <span class="nf">cli</span><span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
@@ -313,11 +314,11 @@
     <span class="n">command</span><span class="p">,</span>
     <span class="n">export</span><span class="p">,</span>
 <span class="p">):</span>
-    <span class="sd">"""Create the environments and test.</span>
+    <span class="sd">&quot;&quot;&quot;Create the environments and test.</span>
 
 <span class="sd">    If you do not supply a YAML configuration file, this package will search for a</span>
 <span class="sd">    ``requirements.txt`` file and create a conda environment for each package in that file.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the hooks</span>
     <span class="n">pm</span> <span class="o">=</span> <span class="n">get_plugin_manager</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">config</span><span class="p">:</span>
@@ -337,65 +338,65 @@
     <span class="n">pm</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">addoption</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">docstructure</span><span class="p">)</span>
     <span class="n">validator</span> <span class="o">=</span> <span class="n">EdgetestValidator</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">docstructure</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">conf</span><span class="p">):</span>
-        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">"Unable to validate configuration file."</span><span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Unable to validate configuration file."</span><span class="p">)</span>
+        <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="s2">&quot;Unable to validate configuration file.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unable to validate configuration file.&quot;</span><span class="p">)</span>
     <span class="n">conf</span> <span class="o">=</span> <span class="n">validator</span><span class="o">.</span><span class="n">document</span>
 
     <span class="k">if</span> <span class="n">environment</span><span class="p">:</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span> <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span> <span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">==</span> <span class="n">environment</span><span class="p">]</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">env</span> <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">env</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">environment</span><span class="p">]</span>
 
     <span class="c1"># Run the pre-test hook</span>
     <span class="n">pm</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">pre_run_hook</span><span class="p">(</span><span class="n">conf</span><span class="o">=</span><span class="n">conf</span><span class="p">)</span>
     <span class="n">testers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TestPackage</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]:</span>
+    <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]:</span>
         <span class="n">testers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
             <span class="n">TestPackage</span><span class="p">(</span>
                 <span class="n">hook</span><span class="o">=</span><span class="n">pm</span><span class="o">.</span><span class="n">hook</span><span class="p">,</span>
-                <span class="n">envname</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
-                <span class="n">upgrade</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">"upgrade"</span><span class="p">],</span>
-                <span class="n">package_dir</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">"package_dir"</span><span class="p">],</span>
+                <span class="n">envname</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
+                <span class="n">upgrade</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;upgrade&quot;</span><span class="p">],</span>
+                <span class="n">package_dir</span><span class="o">=</span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;package_dir&quot;</span><span class="p">],</span>
             <span class="p">)</span>
         <span class="p">)</span>
         <span class="c1"># Set up the test environment</span>
         <span class="k">if</span> <span class="n">nosetup</span><span class="p">:</span>
-            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using existing environment for </span><span class="si">{</span><span class="n">env</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using existing environment for </span><span class="si">{</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">setup</span><span class="p">(</span><span class="o">**</span><span class="n">env</span><span class="p">)</span>
         <span class="c1"># Run the tests</span>
         <span class="k">if</span> <span class="n">notest</span><span class="p">:</span>
-            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Skipping tests for </span><span class="si">{</span><span class="n">env</span><span class="p">[</span><span class="s1">'name'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping tests for </span><span class="si">{</span><span class="n">env</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">run_tests</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s2">"command"</span><span class="p">])</span>
+            <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">run_tests</span><span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s2">&quot;command&quot;</span><span class="p">])</span>
 
     <span class="n">report</span> <span class="o">=</span> <span class="n">gen_report</span><span class="p">(</span><span class="n">testers</span><span class="p">)</span>
-    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n\n</span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="si">{</span><span class="n">report</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">export</span> <span class="ow">and</span> <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"setup.cfg"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">:</span>
             <span class="n">parser</span> <span class="o">=</span> <span class="n">upgrade_setup_cfg</span><span class="p">(</span>
                 <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">(),</span>
                 <span class="n">filename</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                 <span class="n">parser</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
-            <span class="k">if</span> <span class="s2">"options"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="s2">"install_requires"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s2">&quot;options&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;install_requires&quot;</span><span class="p">):</span>
                 <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
-                    <span class="s2">"No PEP-517 style requirements in ``setup.cfg`` to update. Updating "</span>
-                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="s2">&quot;No PEP-517 style requirements in ``setup.cfg`` to update. Updating &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
                     <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">,</span>
                     <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">(),</span>
                 <span class="p">)</span>
-                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                     <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">upgraded</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Overwriting the requirements file </span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+            <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overwriting the requirements file </span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
             <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
                 <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">,</span>
                 <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">(),</span>
             <span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
                 <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">upgraded</span><span class="p">)</span>
 
     <span class="c1"># Run the post-test hook</span>

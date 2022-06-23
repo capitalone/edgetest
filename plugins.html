@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Developer instructions" href="developer.html" /><link rel="prev" title="Advanced Usage" href="usage.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
         <title>Extending edgetest through plugins - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -190,7 +190,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -208,10 +209,11 @@
 <h1>Extending edgetest through plugins<a class="headerlink" href="#extending-edgetest-through-plugins" title="Permalink to this headline">#</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">edgetest</span></code> uses <a class="reference external" href="https://pluggy.readthedocs.io/en/latest/">pluggy</a> to implement a simple plugin
 framework that allows for additional functionality. We expose the following hooks:</p>
-<div class="table-wrapper"><table class="docutils align-default">
+<div class="table-wrapper docutils container">
+<table class="docutils align-default">
 <colgroup>
-<col style="width: 55%"/>
-<col style="width: 45%"/>
+<col style="width: 55%" />
+<col style="width: 45%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Hook</p></th>
@@ -254,7 +256,8 @@ framework that allows for additional functionality. We expose the following hook
 </td>
 </tr>
 </tbody>
-</table></div>
+</table>
+</div>
 <p class="rubric">Footnotes</p>
 <dl class="footnote brackets">
 <dt class="label" id="f1"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
@@ -274,28 +277,28 @@ and <code class="docutils literal notranslate"><span class="pre">python_version<
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pluggy</span>
 <span class="kn">from</span> <span class="nn">edgetest.schema</span> <span class="kn">import</span> <span class="n">Schema</span>
 
-<span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">)</span>
+<span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
 <span class="nd">@hookimpl</span>
 <span class="k">def</span> <span class="nf">addoption</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span><span class="p">):</span>
-    <span class="sd">"""Add an environment-level variable for conda installation options.</span>
+    <span class="sd">&quot;&quot;&quot;Add an environment-level variable for conda installation options.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    schema : Schema</span>
 <span class="sd">        The schema class.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">schema</span><span class="o">.</span><span class="n">add_envoption</span><span class="p">(</span>
-        <span class="s2">"conda_install"</span><span class="p">,</span>
+        <span class="s2">&quot;conda_install&quot;</span><span class="p">,</span>
         <span class="p">{</span>
-            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
-            <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
-            <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"listify"</span><span class="p">,</span>
-            <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">"nullable"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
+            <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;listify&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">)</span>
     <span class="n">schema</span><span class="o">.</span><span class="n">add_envoption</span><span class="p">(</span>
-        <span class="s2">"python_version"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">:</span> <span class="s2">"3.7"</span><span class="p">,</span> <span class="s2">"coerce"</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
+        <span class="s2">&quot;python_version&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;3.7&quot;</span><span class="p">,</span> <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">}</span>
     <span class="p">)</span>
 </pre></div>
 </div>
@@ -313,7 +316,7 @@ creation.</p>
 
 <span class="nd">@hookimpl</span>
 <span class="k">def</span> <span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-    <span class="sd">"""Create the conda environment.</span>
+    <span class="sd">&quot;&quot;&quot;Create the conda environment.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    basedir : Path</span>
@@ -326,28 +329,28 @@ creation.</p>
 <span class="sd">    ------</span>
 <span class="sd">    RuntimeError</span>
 <span class="sd">        Error raised if the environment cannot be created.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_run_command</span><span class="p">(</span>
-        <span class="s2">"conda"</span><span class="p">,</span>
-        <span class="s2">"create"</span><span class="p">,</span>
-        <span class="s2">"-p"</span><span class="p">,</span>
+        <span class="s2">&quot;conda&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;create&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
         <span class="nb">str</span><span class="p">(</span><span class="n">basedir</span> <span class="o">/</span> <span class="n">envname</span><span class="p">),</span>
-        <span class="sa">f</span><span class="s2">"python=</span><span class="si">{</span><span class="n">conf</span><span class="p">[</span><span class="s1">'python_version'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-        <span class="s2">"--yes"</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;python=</span><span class="si">{</span><span class="n">conf</span><span class="p">[</span><span class="s1">&#39;python_version&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;--yes&quot;</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Install any conda packages</span>
-    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"conda_install"</span><span class="p">):</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Installing conda packages for </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;conda_install&quot;</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Installing conda packages for </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">_run_command</span><span class="p">(</span>
-            <span class="s2">"conda"</span><span class="p">,</span>
-            <span class="s2">"install"</span><span class="p">,</span>
-            <span class="s2">"-p"</span><span class="p">,</span>
+            <span class="s2">&quot;conda&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;-p&quot;</span><span class="p">,</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">basedir</span> <span class="o">/</span> <span class="n">envname</span><span class="p">),</span>
-            <span class="o">*</span><span class="n">conf</span><span class="p">[</span><span class="s2">"conda_install"</span><span class="p">],</span>
-            <span class="s2">"--yes"</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">conf</span><span class="p">[</span><span class="s2">&quot;conda_install&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;--yes&quot;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Successfully installed conda packages for </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully installed conda packages for </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

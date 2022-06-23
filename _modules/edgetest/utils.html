@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
         <title>edgetest.utils - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -189,7 +189,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -204,7 +205,7 @@
         </div>
         <article role="main">
           <h1>Source code for edgetest.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Utility functions."""</span>
+<span></span><span class="sd">&quot;&quot;&quot;Utility functions.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
@@ -223,7 +224,7 @@
 
 
 <span class="k">def</span> <span class="nf">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-    <span class="sd">"""Run a command using ``subprocess.Popen``.</span>
+    <span class="sd">&quot;&quot;&quot;Run a command using ``subprocess.Popen``.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -241,13 +242,13 @@
 <span class="sd">    ------</span>
 <span class="sd">    RuntimeError</span>
 <span class="sd">        Error raised when the command is not successfully executed.</span>
-<span class="sd">    """</span>
-    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">popen</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">popen</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">popen</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Unable to run the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">&quot;Unable to run the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">popen</span><span class="o">.</span><span class="n">returncode</span>
@@ -255,13 +256,13 @@
 
 <div class="viewcode-block" id="pushd"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.pushd">[docs]</a><span class="nd">@contextmanager</span>
 <span class="k">def</span> <span class="nf">pushd</span><span class="p">(</span><span class="n">new_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-    <span class="sd">"""Create a context manager for running commands in sub-directories.</span>
+    <span class="sd">&quot;&quot;&quot;Create a context manager for running commands in sub-directories.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    new_dir : str</span>
 <span class="sd">        The relative directory to run the command in.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">curr_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">curr_dir</span> <span class="o">/</span> <span class="n">new_dir</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -271,7 +272,7 @@
 
 
 <div class="viewcode-block" id="convert_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.convert_requirements">[docs]</a><span class="k">def</span> <span class="nf">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-    <span class="sd">"""Generate environments for a newline-separate list of package requirements.</span>
+    <span class="sd">&quot;&quot;&quot;Generate environments for a newline-separate list of package requirements.</span>
 
 <span class="sd">    This function will generate one environment per entry with an additional environment</span>
 <span class="sd">    that upgrades all requirements simultaneously.</span>
@@ -287,23 +288,23 @@
 <span class="sd">    -------</span>
 <span class="sd">    Dict</span>
 <span class="sd">        A configuration dictionary.</span>
-<span class="sd">    """</span>
-    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">conf</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">conf</span>
     <span class="n">pkgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">parse_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">)]</span>
     <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">:</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"upgrade"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;upgrade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
     <span class="c1"># Create an environment with all requirements upgraded</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"all-requirements"</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"upgrade"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkgs</span><span class="p">)</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;all-requirements&quot;</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;upgrade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkgs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">conf</span></div>
 
 
 <div class="viewcode-block" id="gen_requirements_config"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.gen_requirements_config">[docs]</a><span class="k">def</span> <span class="nf">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-    <span class="sd">"""Generate a configuration file from package requirements.</span>
+    <span class="sd">&quot;&quot;&quot;Generate a configuration file from package requirements.</span>
 
 <span class="sd">    This function will convert the package installation requirements to a configuration</span>
 <span class="sd">    file with one environment per requirement.</span>
@@ -320,7 +321,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    Dict</span>
 <span class="sd">        The configuration file.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># First, get the requirements</span>
     <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
@@ -328,14 +329,14 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">fname_or_buf</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])):</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="parse_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_cfg">[docs]</a><span class="k">def</span> <span class="nf">parse_cfg</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"setup.cfg"</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-    <span class="sd">"""Generate a configuration from a ``.ini`` style file.</span>
+<div class="viewcode-block" id="parse_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_cfg">[docs]</a><span class="k">def</span> <span class="nf">parse_cfg</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.ini`` style file.</span>
 
 <span class="sd">    This function can operate in two ways. First, it can look for sections that</span>
 <span class="sd">    start with ``edgetest`` and build a configuration. Suppose</span>
@@ -350,7 +351,7 @@
 <span class="sd">    This will result in a configuration that has one testing environment, named</span>
 <span class="sd">    ``pandas``, that upgrades the ``pandas`` package.</span>
 
-<span class="sd">    If you don't have any sections that start with ``edgetest.envs``, we will look for</span>
+<span class="sd">    If you don&#39;t have any sections that start with ``edgetest.envs``, we will look for</span>
 <span class="sd">    the PEP 517-style ``setup.cfg`` install requirements (the ``install_requires`` key</span>
 <span class="sd">    within the ``options`` section). To set global defaults for you environments, use</span>
 <span class="sd">    the ``edgetest`` section:</span>
@@ -361,7 +362,7 @@
 <span class="sd">        extras =</span>
 <span class="sd">            tests</span>
 <span class="sd">        command =</span>
-<span class="sd">            pytest tests -m "not integration"</span>
+<span class="sd">            pytest tests -m &quot;not integration&quot;</span>
 
 <span class="sd">        [edgetest.envs.pandas]</span>
 <span class="sd">        upgrade =</span>
@@ -375,13 +376,13 @@
 <span class="sd">        extras =</span>
 <span class="sd">            tests</span>
 <span class="sd">        command =</span>
-<span class="sd">            pytest tests -m "not integration"</span>
+<span class="sd">            pytest tests -m &quot;not integration&quot;</span>
 <span class="sd">        upgrade =</span>
 <span class="sd">            pandas</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    filename : str, optional (default "setup.cfg")</span>
+<span class="sd">    filename : str, optional (default &quot;setup.cfg&quot;)</span>
 <span class="sd">        The name of the configuration file to read. Defaults to ``setup.cfg``.</span>
 <span class="sd">    requirements : str, optional (default None)</span>
 <span class="sd">        An optional path to the requirements text file. If there are no PEP-517</span>
@@ -392,39 +393,39 @@
 <span class="sd">    -------</span>
 <span class="sd">    Dict</span>
 <span class="sd">        A configuration dictionary for ``edgetest``.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Read in the configuration file</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
     <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="c1"># Parse</span>
-    <span class="n">output</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span>
     <span class="c1"># Get any global options if necessary</span>
-    <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"edgetest"</span><span class="p">])</span> <span class="k">if</span> <span class="s2">"edgetest"</span> <span class="ow">in</span> <span class="n">config</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="s2">&quot;edgetest&quot;</span> <span class="ow">in</span> <span class="n">config</span> <span class="k">else</span> <span class="p">{}</span>
     <span class="c1"># Next, create the sections</span>
     <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"edgetest."</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">section</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;edgetest.&quot;</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="c1"># Look for the special ``envs`` key</span>
-        <span class="n">section_name</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"envs"</span><span class="p">:</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]))</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">section_name</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;envs&quot;</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]))</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">output</span><span class="p">[</span><span class="n">section_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">])</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="s2">"install_requires"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;install_requires&quot;</span><span class="p">):</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span>
-                <span class="n">requirements</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">"options"</span><span class="p">][</span><span class="s2">"install_requires"</span><span class="p">],</span> <span class="n">conf</span><span class="o">=</span><span class="n">output</span>
+                <span class="n">requirements</span><span class="o">=</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">][</span><span class="s2">&quot;install_requires&quot;</span><span class="p">],</span> <span class="n">conf</span><span class="o">=</span><span class="n">output</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">requirements</span><span class="p">:</span>
             <span class="n">req_conf</span> <span class="o">=</span> <span class="n">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Please supply a valid list of environments to create."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please supply a valid list of environments to create.&quot;</span><span class="p">)</span>
     <span class="c1"># Apply global environment options (without overwriting)</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])):</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
@@ -433,7 +434,7 @@
 <div class="viewcode-block" id="upgrade_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_requirements">[docs]</a><span class="k">def</span> <span class="nf">upgrade_requirements</span><span class="p">(</span>
     <span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""Create an upgraded requirements file.</span>
+    <span class="sd">&quot;&quot;&quot;Create an upgraded requirements file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -447,7 +448,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        The string file representing the new requirements file.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the existing file</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -459,7 +460,7 @@
         <span class="c1"># Filename too long for the is_file() function</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">fname_or_buf</span>
     <span class="n">pkgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">pkg</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">parse_requirements</span><span class="p">(</span><span class="n">cfg</span><span class="p">)]</span>
-    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
+    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
 
     <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">upgrades</span><span class="p">:</span>
@@ -467,52 +468,52 @@
         <span class="c1"># Replace the spec</span>
         <span class="n">specs</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">specs</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"&lt;="</span><span class="p">:</span>
-                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"&lt;="</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"&lt;"</span><span class="p">:</span>
-                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"!="</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">"&lt;="</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">]))</span>
-            <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"=="</span><span class="p">:</span>
-                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">"&gt;="</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="s2">"&lt;="</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">])]</span>
-        <span class="n">pkg</span><span class="o">.</span><span class="n">specifier</span> <span class="o">=</span> <span class="n">SpecifierSet</span><span class="p">(</span><span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">:</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">:</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;!=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">]))</span>
+            <span class="k">elif</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;==&quot;</span><span class="p">:</span>
+                <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span> <span class="o">=</span> <span class="p">[(</span><span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="p">(</span><span class="s2">&quot;&lt;=&quot;</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span><span class="p">])]</span>
+        <span class="n">pkg</span><span class="o">.</span><span class="n">specifier</span> <span class="o">=</span> <span class="n">SpecifierSet</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span> <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
 
-    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="upgrade_setup_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_setup_cfg">[docs]</a><span class="k">def</span> <span class="nf">upgrade_setup_cfg</span><span class="p">(</span>
-    <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"setup.cfg"</span>
+    <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;setup.cfg&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigParser</span><span class="p">:</span>
-    <span class="sd">"""Upgrade the ``setup.cfg`` file.</span>
+    <span class="sd">&quot;&quot;&quot;Upgrade the ``setup.cfg`` file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    upgraded_packages : List[Dict[str, str]]</span>
 <span class="sd">        A list of packages upgraded in the testing procedure.</span>
-<span class="sd">    filename : str, optional (default "setup.cfg")</span>
+<span class="sd">    filename : str, optional (default &quot;setup.cfg&quot;)</span>
 <span class="sd">        The name of the configuration file to read. Defaults to ``setup.cfg``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    ConfigParser</span>
 <span class="sd">        The updated configuration file.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">parser</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="p">()</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-    <span class="k">if</span> <span class="s2">"options"</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="s2">"install_requires"</span><span class="p">):</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Updating the requirements in </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;options&quot;</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;install_requires&quot;</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating the requirements in </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
-            <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">parser</span><span class="p">[</span><span class="s2">"options"</span><span class="p">][</span><span class="s2">"install_requires"</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(),</span>
+            <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">parser</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">][</span><span class="s2">&quot;install_requires&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(),</span>
             <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">upgraded_packages</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">parser</span><span class="p">[</span><span class="s2">"options"</span><span class="p">][</span><span class="s2">"install_requires"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">upgraded</span>
+        <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">][</span><span class="s2">&quot;install_requires&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">upgraded</span>
     <span class="c1"># Update the extras, if necessary</span>
-    <span class="k">if</span> <span class="s2">"options.extras_require"</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">extra</span><span class="p">,</span> <span class="n">dependencies</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="s2">"options.extras_require"</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;options.extras_require&quot;</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">extra</span><span class="p">,</span> <span class="n">dependencies</span> <span class="ow">in</span> <span class="n">parser</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="s2">&quot;options.extras_require&quot;</span><span class="p">):</span>
             <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
                 <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">dependencies</span><span class="p">,</span>
                 <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">upgraded_packages</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">parser</span><span class="p">[</span><span class="s2">"options.extras_require"</span><span class="p">][</span><span class="n">extra</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">upgraded</span>
+            <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;options.extras_require&quot;</span><span class="p">][</span><span class="n">extra</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">upgraded</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>
 </pre></div>

@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
         <title>edgetest.lib - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -189,7 +189,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -204,7 +205,7 @@
         </div>
         <article role="main">
           <h1>Source code for edgetest.lib</h1><div class="highlight"><pre>
-<span></span><span class="sd">"""Default virtual environment hook."""</span>
+<span></span><span class="sd">&quot;&quot;&quot;Default virtual environment hook.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
@@ -213,21 +214,21 @@
 
 <span class="kn">import</span> <span class="nn">pluggy</span>
 
-<span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">)</span>
+<span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="path_to_python"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.path_to_python">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">"""Return the path to the python executable."""</span>
-    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"Windows"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span> <span class="o">/</span> <span class="n">envname</span> <span class="o">/</span> <span class="s2">"Scripts"</span> <span class="o">/</span> <span class="s2">"python"</span><span class="p">)</span>
+    <span class="sd">&quot;&quot;&quot;Return the path to the python executable.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span> <span class="o">/</span> <span class="n">envname</span> <span class="o">/</span> <span class="s2">&quot;Scripts&quot;</span> <span class="o">/</span> <span class="s2">&quot;python&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span> <span class="o">/</span> <span class="n">envname</span> <span class="o">/</span> <span class="s2">"bin"</span> <span class="o">/</span> <span class="s2">"python"</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span> <span class="o">/</span> <span class="n">envname</span> <span class="o">/</span> <span class="s2">&quot;bin&quot;</span> <span class="o">/</span> <span class="s2">&quot;python&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="create_environment"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.create_environment">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-    <span class="sd">"""Create the virtual environment for testing.</span>
+    <span class="sd">&quot;&quot;&quot;Create the virtual environment for testing.</span>
 
 <span class="sd">    Creates an environment using ``venv``.</span>
 
@@ -244,12 +245,12 @@
 <span class="sd">    ------</span>
 <span class="sd">    RuntimeError</span>
 <span class="sd">        Error raised if the environment cannot be created.</span>
-<span class="sd">    """</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">builder</span> <span class="o">=</span> <span class="n">EnvBuilder</span><span class="p">(</span><span class="n">with_pip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">env_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </pre></div>
         </article>
       </div>

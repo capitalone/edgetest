@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="edgetest" href="modules.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.04.07"/>
+    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
         <title>edgetest package - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=68f4518137b9aefe99b631505a2064c3c42c9852" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -190,7 +190,8 @@
           </svg>
           <span>Back to top</span>
         </a>
-        <div class="content-icon-container"><div class="theme-toggle-container theme-toggle-content">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -234,6 +235,7 @@
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.status">
 <span class="sig-name descname"><span class="pre">status</span></span><a class="headerlink" href="#edgetest.core.TestPackage.status" title="Permalink to this definition">#</a></dt>
@@ -245,6 +247,7 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.python_path">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">python_path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#edgetest.core.TestPackage.python_path" title="Permalink to this definition">#</a></dt>
@@ -258,9 +261,10 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.run_tests">
-<span class="sig-name descname"><span class="pre">run_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.run_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.run_tests" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">run_tests</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.run_tests"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.run_tests" title="Permalink to this definition">#</a></dt>
 <dd><p>Run the tests in the package directory.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -274,9 +278,10 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.setup" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.setup" title="Permalink to this definition">#</a></dt>
 <dd><p>Set up the testing environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -294,9 +299,10 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.upgraded_packages">
-<span class="sig-name descname"><span class="pre">upgraded_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.upgraded_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.upgraded_packages" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">upgraded_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.upgraded_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.upgraded_packages" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the list of upgraded packages for the test environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -311,7 +317,9 @@ for this environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 </dd></dl>
+
 <span class="target" id="module-edgetest.hookspecs"></span><p>Hook specifications for edgetest.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.addoption">
@@ -320,6 +328,7 @@ for this environment.</p>
 <p>You can add environment-level options through <code class="docutils literal notranslate"><span class="pre">add_envoption</span></code> or global
 configuration options through <code class="docutils literal notranslate"><span class="pre">add_globaloption</span></code>.</p>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.create_environment">
 <span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">create_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#create_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.create_environment" title="Permalink to this definition">#</a></dt>
@@ -339,9 +348,10 @@ only be installed through the environment manager (e.g. Conda).</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.path_to_python">
-<span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">path_to_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#path_to_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.path_to_python" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">path_to_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#path_to_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.path_to_python" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the path to the python executable.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -360,6 +370,7 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.post_run_hook">
 <span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">post_run_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#post_run_hook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.post_run_hook" title="Permalink to this definition">#</a></dt>
@@ -374,6 +385,7 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.pre_run_hook">
 <span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">pre_run_hook</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#pre_run_hook"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.pre_run_hook" title="Permalink to this definition">#</a></dt>
@@ -384,10 +396,11 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <span class="target" id="module-edgetest.interface"></span><p>Command-line interface.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.interface.get_plugin_manager">
-<span class="sig-prename descclassname"><span class="pre">edgetest.interface.</span></span><span class="sig-name descname"><span class="pre">get_plugin_manager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">pluggy._manager.PluginManager</span></span></span><a class="reference internal" href="../_modules/edgetest/interface.html#get_plugin_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.interface.get_plugin_manager" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.interface.</span></span><span class="sig-name descname"><span class="pre">get_plugin_manager</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pluggy._manager.PluginManager</span></span></span><a class="reference internal" href="../_modules/edgetest/interface.html#get_plugin_manager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.interface.get_plugin_manager" title="Permalink to this definition">#</a></dt>
 <dd><p>Get the plugin manager.</p>
 <p>Registers the default <code class="docutils literal notranslate"><span class="pre">venv</span></code> plugin.</p>
 <dl class="field-list simple">
@@ -399,6 +412,7 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <span class="target" id="module-edgetest.lib"></span><p>Default virtual environment hook.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.lib.create_environment">
@@ -418,11 +432,13 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.lib.path_to_python">
-<span class="sig-prename descclassname"><span class="pre">edgetest.lib.</span></span><span class="sig-name descname"><span class="pre">path_to_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/lib.html#path_to_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.lib.path_to_python" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.lib.</span></span><span class="sig-name descname"><span class="pre">path_to_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/lib.html#path_to_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.lib.path_to_python" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the path to the python executable.</p>
 </dd></dl>
+
 <span class="target" id="module-edgetest.logger"></span><p>Logging Module.</p>
 <p>Module which setsup the basic logging infrustrcuture for the application.</p>
 <dl class="py function">
@@ -444,14 +460,18 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <span class="target" id="module-edgetest.report"></span><p>Generate rST reports.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.report.gen_report">
-<span class="sig-prename descclassname"><span class="pre">edgetest.report.</span></span><span class="sig-name descname"><span class="pre">gen_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#edgetest.core.TestPackage" title="edgetest.core.TestPackage"><span class="pre">edgetest.core.TestPackage</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/edgetest/report.html#gen_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.report.gen_report" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.report.</span></span><span class="sig-name descname"><span class="pre">gen_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#edgetest.core.TestPackage" title="edgetest.core.TestPackage"><span class="pre">edgetest.core.TestPackage</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rst'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/edgetest/report.html#gen_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.report.gen_report" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a rST report.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>testers</strong> (<em>list</em>) – A list of <code class="docutils literal notranslate"><span class="pre">TestPackage</span></code> objects.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>testers</strong> (<em>list</em>) – A list of <code class="docutils literal notranslate"><span class="pre">TestPackage</span></code> objects.</p></li>
+<li><p><strong>output_type</strong> (<em>str</em>) – A valid output type of <code class="docutils literal notranslate"><span class="pre">rst</span></code> or <code class="docutils literal notranslate"><span class="pre">github</span></code></p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The report.</p>
@@ -461,6 +481,7 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <span class="target" id="module-edgetest.schema"></span><p>Define the Cerberus schema for the testing configuration.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator">
@@ -471,27 +492,34 @@ is the python executable for the environment.</p>
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.checkers">
 <span class="sig-name descname"><span class="pre">checkers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.checkers" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.coercers">
 <span class="sig-name descname"><span class="pre">coercers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('listify',</span> <span class="pre">'strip')</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.coercers" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.default_setters">
 <span class="sig-name descname"><span class="pre">default_setters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">()</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.default_setters" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.normalization_rules">
 <span class="sig-name descname"><span class="pre">normalization_rules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'coerce':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]},</span> <span class="pre">'default':</span> <span class="pre">{'nullable':</span> <span class="pre">True},</span> <span class="pre">'default_setter':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]},</span> <span class="pre">'purge_unknown':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'rename':</span> <span class="pre">{'type':</span> <span class="pre">'hashable'},</span> <span class="pre">'rename_handler':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]}}</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.normalization_rules" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.rules">
 <span class="sig-name descname"><span class="pre">rules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'allof':</span> <span class="pre">{'logical':</span> <span class="pre">'allof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'allow_unknown':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">{'type':</span> <span class="pre">['dict',</span> <span class="pre">'string'],</span> <span class="pre">'check_with':</span> <span class="pre">'bulk_schema'}]},</span> <span class="pre">'allowed':</span> <span class="pre">{'type':</span> <span class="pre">'container'},</span> <span class="pre">'anyof':</span> <span class="pre">{'logical':</span> <span class="pre">'anyof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'check_with':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]},</span> <span class="pre">'coerce':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]},</span> <span class="pre">'contains':</span> <span class="pre">{'empty':</span> <span class="pre">False},</span> <span class="pre">'default':</span> <span class="pre">{'nullable':</span> <span class="pre">True},</span> <span class="pre">'default_setter':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]},</span> <span class="pre">'dependencies':</span> <span class="pre">{'check_with':</span> <span class="pre">'dependencies',</span> <span class="pre">'type':</span> <span class="pre">('dict',</span> <span class="pre">'hashable',</span> <span class="pre">'list')},</span> <span class="pre">'empty':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'excludes':</span> <span class="pre">{'schema':</span> <span class="pre">{'type':</span> <span class="pre">'hashable'},</span> <span class="pre">'type':</span> <span class="pre">('hashable',</span> <span class="pre">'list')},</span> <span class="pre">'forbidden':</span> <span class="pre">{'type':</span> <span class="pre">'list'},</span> <span class="pre">'items':</span> <span class="pre">{'check_with':</span> <span class="pre">'items',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'keysrules':</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema',</span> <span class="pre">'forbidden':</span> <span class="pre">['rename',</span> <span class="pre">'rename_handler'],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']},</span> <span class="pre">'max':</span> <span class="pre">{'nullable':</span> <span class="pre">False},</span> <span class="pre">'maxlength':</span> <span class="pre">{'type':</span> <span class="pre">'integer'},</span> <span class="pre">'meta':</span> <span class="pre">{},</span> <span class="pre">'min':</span> <span class="pre">{'nullable':</span> <span class="pre">False},</span> <span class="pre">'minlength':</span> <span class="pre">{'type':</span> <span class="pre">'integer'},</span> <span class="pre">'noneof':</span> <span class="pre">{'logical':</span> <span class="pre">'noneof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'nullable':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'oneof':</span> <span class="pre">{'logical':</span> <span class="pre">'oneof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'purge_unknown':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'readonly':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'regex':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'rename':</span> <span class="pre">{'type':</span> <span class="pre">'hashable'},</span> <span class="pre">'rename_handler':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">('listify',</span> <span class="pre">'strip')}]},</span> <span class="pre">'require_all':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'required':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'schema':</span> <span class="pre">{'anyof':</span> <span class="pre">[{'check_with':</span> <span class="pre">'schema'},</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema'}],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']},</span> <span class="pre">'type':</span> <span class="pre">{'check_with':</span> <span class="pre">'type',</span> <span class="pre">'type':</span> <span class="pre">['string',</span> <span class="pre">'list']},</span> <span class="pre">'valuesrules':</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema',</span> <span class="pre">'forbidden':</span> <span class="pre">['rename',</span> <span class="pre">'rename_handler'],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']}}</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.rules" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.EdgetestValidator.validation_rules">
 <span class="sig-name descname"><span class="pre">validation_rules</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'allof':</span> <span class="pre">{'logical':</span> <span class="pre">'allof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'allow_unknown':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">{'type':</span> <span class="pre">['dict',</span> <span class="pre">'string'],</span> <span class="pre">'check_with':</span> <span class="pre">'bulk_schema'}]},</span> <span class="pre">'allowed':</span> <span class="pre">{'type':</span> <span class="pre">'container'},</span> <span class="pre">'anyof':</span> <span class="pre">{'logical':</span> <span class="pre">'anyof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'check_with':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'list',</span> <span class="pre">'schema':</span> <span class="pre">{'oneof':</span> <span class="pre">[{'type':</span> <span class="pre">'callable'},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]}},</span> <span class="pre">{'type':</span> <span class="pre">'string',</span> <span class="pre">'allowed':</span> <span class="pre">()}]},</span> <span class="pre">'contains':</span> <span class="pre">{'empty':</span> <span class="pre">False},</span> <span class="pre">'dependencies':</span> <span class="pre">{'check_with':</span> <span class="pre">'dependencies',</span> <span class="pre">'type':</span> <span class="pre">('dict',</span> <span class="pre">'hashable',</span> <span class="pre">'list')},</span> <span class="pre">'empty':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'excludes':</span> <span class="pre">{'schema':</span> <span class="pre">{'type':</span> <span class="pre">'hashable'},</span> <span class="pre">'type':</span> <span class="pre">('hashable',</span> <span class="pre">'list')},</span> <span class="pre">'forbidden':</span> <span class="pre">{'type':</span> <span class="pre">'list'},</span> <span class="pre">'items':</span> <span class="pre">{'check_with':</span> <span class="pre">'items',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'keysrules':</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema',</span> <span class="pre">'forbidden':</span> <span class="pre">['rename',</span> <span class="pre">'rename_handler'],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']},</span> <span class="pre">'max':</span> <span class="pre">{'nullable':</span> <span class="pre">False},</span> <span class="pre">'maxlength':</span> <span class="pre">{'type':</span> <span class="pre">'integer'},</span> <span class="pre">'meta':</span> <span class="pre">{},</span> <span class="pre">'min':</span> <span class="pre">{'nullable':</span> <span class="pre">False},</span> <span class="pre">'minlength':</span> <span class="pre">{'type':</span> <span class="pre">'integer'},</span> <span class="pre">'noneof':</span> <span class="pre">{'logical':</span> <span class="pre">'noneof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'nullable':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'oneof':</span> <span class="pre">{'logical':</span> <span class="pre">'oneof',</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'readonly':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'regex':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'require_all':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'required':</span> <span class="pre">{'type':</span> <span class="pre">'boolean'},</span> <span class="pre">'schema':</span> <span class="pre">{'anyof':</span> <span class="pre">[{'check_with':</span> <span class="pre">'schema'},</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema'}],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']},</span> <span class="pre">'type':</span> <span class="pre">{'check_with':</span> <span class="pre">'type',</span> <span class="pre">'type':</span> <span class="pre">['string',</span> <span class="pre">'list']},</span> <span class="pre">'valuesrules':</span> <span class="pre">{'check_with':</span> <span class="pre">'bulk_schema',</span> <span class="pre">'forbidden':</span> <span class="pre">['rename',</span> <span class="pre">'rename_handler'],</span> <span class="pre">'type':</span> <span class="pre">['dict',</span> <span class="pre">'string']}}</span></em><a class="headerlink" href="#edgetest.schema.EdgetestValidator.validation_rules" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="edgetest.schema.Schema">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">edgetest.schema.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><a class="reference internal" href="../_modules/edgetest/schema.html#Schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.schema.Schema" title="Permalink to this definition">#</a></dt>
@@ -510,10 +538,11 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Schema</span><span class="p">()</span><span class="o">.</span><span class="n">add_envoption</span><span class="p">(</span><span class="s2">"command"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">:</span> <span class="s2">"pytest"</span><span class="p">})</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Schema</span><span class="p">()</span><span class="o">.</span><span class="n">add_envoption</span><span class="p">(</span><span class="s2">&quot;command&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;pytest&quot;</span><span class="p">})</span>
 </pre></div>
 </div>
 </dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="edgetest.schema.Schema.add_globaloption">
 <span class="sig-name descname"><span class="pre">add_globaloption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">option</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/schema.html#Schema.add_globaloption"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.schema.Schema.add_globaloption" title="Permalink to this definition">#</a></dt>
@@ -527,19 +556,22 @@ is the python executable for the environment.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Schema</span><span class="p">()</span><span class="o">.</span><span class="n">add_globaloption</span><span class="p">(</span><span class="s2">"print_message"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">})</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Schema</span><span class="p">()</span><span class="o">.</span><span class="n">add_globaloption</span><span class="p">(</span><span class="s2">&quot;print_message&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">})</span>
 </pre></div>
 </div>
 </dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.Schema.schema">
 <span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'envs':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'schema':</span> <span class="pre">{'command':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'pytest',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'deps':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'extras':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'name':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'package_dir':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'.',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'upgrade':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'}},</span> <span class="pre">'type':</span> <span class="pre">'dict'},</span> <span class="pre">'type':</span> <span class="pre">'list'}}</span></em><a class="headerlink" href="#edgetest.schema.Schema.schema" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
+
 </dd></dl>
+
 <span class="target" id="module-edgetest.utils"></span><p>Utility functions.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.convert_requirements">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">convert_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#convert_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.convert_requirements" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">convert_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#convert_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.convert_requirements" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate environments for a newline-separate list of package requirements.</p>
 <p>This function will generate one environment per entry with an additional environment
 that upgrades all requirements simultaneously.</p>
@@ -558,9 +590,10 @@ that upgrades all requirements simultaneously.</p>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.gen_requirements_config">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">gen_requirements_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname_or_buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#gen_requirements_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.gen_requirements_config" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">gen_requirements_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname_or_buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#gen_requirements_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.gen_requirements_config" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a configuration file from package requirements.</p>
 <p>This function will convert the package installation requirements to a configuration
 file with one environment per requirement.</p>
@@ -580,9 +613,10 @@ or the string representing the requirements file.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.parse_cfg">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">parse_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'setup.cfg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#parse_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.parse_cfg" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">parse_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'setup.cfg'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#parse_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.parse_cfg" title="Permalink to this definition">#</a></dt>
 <dd><p>Generate a configuration from a <code class="docutils literal notranslate"><span class="pre">.ini</span></code> style file.</p>
 <p>This function can operate in two ways. First, it can look for sections that
 start with <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> and build a configuration. Suppose
@@ -602,7 +636,7 @@ the <code class="docutils literal notranslate"><span class="pre">edgetest</span>
 <span class="na">extras</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">tests</span><span class="w"></span>
 <span class="na">command</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">    </span><span class="na">pytest tests -m "not integration"</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest tests -m &quot;not integration&quot;</span><span class="w"></span>
 
 <span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
@@ -614,7 +648,7 @@ the <code class="docutils literal notranslate"><span class="pre">edgetest</span>
 <span class="na">extras</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">tests</span><span class="w"></span>
 <span class="na">command</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">    </span><span class="na">pytest tests -m "not integration"</span><span class="w"></span>
+<span class="w">    </span><span class="na">pytest tests -m &quot;not integration&quot;</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
 </pre></div>
@@ -622,7 +656,7 @@ the <code class="docutils literal notranslate"><span class="pre">edgetest</span>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default "setup.cfg"</em><em>)</em>) – The name of the configuration file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default &quot;setup.cfg&quot;</em><em>)</em>) – The name of the configuration file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p></li>
 <li><p><strong>requirements</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default None</em><em>)</em>) – An optional path to the requirements text file. If there are no PEP-517
 style dependencies or coded environments in the edgetest configuration, this
 function will look for dependencies in the requirements file.</p></li>
@@ -636,6 +670,7 @@ function will look for dependencies in the requirements file.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.pushd">
 <span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">pushd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/utils.html#pushd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.pushd" title="Permalink to this definition">#</a></dt>
@@ -646,9 +681,10 @@ function will look for dependencies in the requirements file.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.upgrade_requirements">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">upgrade_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname_or_buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgraded_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#upgrade_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.upgrade_requirements" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">upgrade_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname_or_buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgraded_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#upgrade_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.upgrade_requirements" title="Permalink to this definition">#</a></dt>
 <dd><p>Create an upgraded requirements file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -666,15 +702,16 @@ or the string representing the requirements file.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.upgrade_setup_cfg">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">upgrade_setup_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upgraded_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'setup.cfg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">configparser.ConfigParser</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#upgrade_setup_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.upgrade_setup_cfg" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">upgrade_setup_cfg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upgraded_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'setup.cfg'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">configparser.ConfigParser</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#upgrade_setup_cfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.upgrade_setup_cfg" title="Permalink to this definition">#</a></dt>
 <dd><p>Upgrade the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>upgraded_packages</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – A list of packages upgraded in the testing procedure.</p></li>
-<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default "setup.cfg"</em><em>)</em>) – The name of the configuration file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default &quot;setup.cfg&quot;</em><em>)</em>) – The name of the configuration file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -685,6 +722,7 @@ or the string representing the requirements file.</p></li>
 </dd>
 </dl>
 </dd></dl>
+
 </section>
 <section id="module-edgetest">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-edgetest" title="Permalink to this headline">#</a></h2>
