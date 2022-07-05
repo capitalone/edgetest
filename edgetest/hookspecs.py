@@ -71,6 +71,24 @@ def create_environment(basedir: str, envname: str, conf: Dict):
     """
 
 
+@hookspec(firstresult=True)
+def run_update(python_path: str, upgrade: List):
+    """Update packages from upgrade list.
+
+    Parameters
+    ----------
+    python_path : str
+        The path to the python executable.
+    upgrade : list
+        The list of packages to upgrade
+
+    Raises
+    ------
+    RuntimeError
+        Error raised if the packages cannot be updated.
+    """
+
+
 @hookspec
 def post_run_hook(testers: List, conf: Dict):
     """Post testing hook.

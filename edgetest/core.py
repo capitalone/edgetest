@@ -123,14 +123,7 @@ class TestPackage:
         LOG.info(
             f"Upgrading the following packages in {self.envname}: {', '.join(self.upgrade)}"
         )
-        _run_command(
-            self.python_path,
-            "-m",
-            "pip",
-            "install",
-            *self.upgrade,
-            "--upgrade",
-        )
+        self.hook.run_update(python_path=self.python_path, upgrade=self.upgrade)
         LOG.info(f"Successfully upgraded packages in {self.envname}")
 
     def upgraded_packages(self) -> List[Dict[str, str]]:

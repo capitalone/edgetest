@@ -2,10 +2,12 @@
 
 import platform
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 from venv import EnvBuilder
 
 import pluggy
+
+from .utils import _run_command
 
 hookimpl = pluggy.HookimplMarker("edgetest")
 
@@ -44,3 +46,32 @@ def create_environment(basedir: str, envname: str, conf: Dict):
         builder.create(env_dir=Path(basedir, envname))
     except Exception:
         raise RuntimeError(f"Unable to create {envname} in {basedir}")
+
+
+@hookimpl(trylast=True)
+def run_update(python_path: str, upgrade: List):
+    """Update packages from upgrade list.
+
+    Parameters
+    ----------
+    python_path : str
+        The path to the python executable.
+    upgrade : list
+        The list of packages to upgrade
+
+    Raises
+    ------
+    RuntimeError
+        Error raised if the packages cannot be updated.
+    """
+    try:
+        _run_command(
+            python_path,
+            "-m",
+            "pip",
+            "install",
+            *upgrade,
+            "--upgrade",
+        )
+    except Exception:
+        raise RuntimeError(f"Unable to update: {upgrade}")
