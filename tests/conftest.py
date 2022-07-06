@@ -30,7 +30,7 @@ class FakeHook:
         pass
 
     @hookimpl
-    def run_update(self, python_path: str, upgrade: List):
+    def run_update(self, basedir: str, envname: str, upgrade: List):
         """Update packages from upgrade list."""
         pass
 

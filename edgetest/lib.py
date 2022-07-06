@@ -49,13 +49,15 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_update(python_path: str, upgrade: List):
+def run_update(basedir: str, envname: str, upgrade: List):
     """Update packages from upgrade list.
 
     Parameters
     ----------
-    python_path : str
-        The path to the python executable.
+    basedir : str
+        The base directory location for the environment.
+    envname : str
+        The name of the virtual environment.
     upgrade : list
         The list of packages to upgrade
 
@@ -64,6 +66,7 @@ def run_update(python_path: str, upgrade: List):
     RuntimeError
         Error raised if the packages cannot be updated.
     """
+    python_path = path_to_python(basedir, envname)
     try:
         _run_command(
             python_path,
@@ -74,4 +77,4 @@ def run_update(python_path: str, upgrade: List):
             "--upgrade",
         )
     except Exception:
-        raise RuntimeError(f"Unable to update: {upgrade}")
+        raise RuntimeError(f"Unable to pip upgrade: {upgrade}")

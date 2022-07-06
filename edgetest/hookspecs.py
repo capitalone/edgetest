@@ -72,13 +72,15 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookspec(firstresult=True)
-def run_update(python_path: str, upgrade: List):
+def run_update(basedir: str, envname: str, upgrade: List):
     """Update packages from upgrade list.
 
     Parameters
     ----------
-    python_path : str
-        The path to the python executable.
+    basedir : str
+        The base directory location for the environment.
+    envname : str
+        The name of the virtual environment.
     upgrade : list
         The list of packages to upgrade
 
