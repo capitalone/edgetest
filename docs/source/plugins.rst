@@ -21,6 +21,11 @@ framework that allows for additional functionality. We expose the following hook
 +---------------------------------------------------------+----------------------------------------------+
 | :py:meth:`edgetest.hookspecs.create_environment` [#f1]_ | This hook creates the virtual environment.   |
 +---------------------------------------------------------+----------------------------------------------+
+| :py:meth:`edgetest.hookspecs.run_update` [#f1]_         | | This hook runs the environment update.     |
+|                                                         | | As an example, you could implement updates |
+|                                                         | | via `pip`, `conda`, or some other package  |
+|                                                         | | manager.                                   |
++---------------------------------------------------------+----------------------------------------------+
 | :py:meth:`edgetest.hookspecs.post_run_hook`             | | This hook executes code after the testing  |
 |                                                         | | has completed. Commonly used for creating  |
 |                                                         | | notifications.                             |
