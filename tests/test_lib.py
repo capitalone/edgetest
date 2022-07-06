@@ -9,10 +9,14 @@ from edgetest.lib import create_environment, path_to_python, run_update
 @patch("edgetest.lib.platform", autospec=True)
 def test_path_to_python(mock_platform):
     mock_platform.system.return_value = "Windows"
-    assert path_to_python("test", "test") == "test/test/Scripts/python"
+    assert path_to_python("test", "test") == str(
+        Path("test") / "test" / "Scripts" / "python"
+    )
 
     mock_platform.system.return_value = "Unix"
-    assert path_to_python("test", "test") == "test/test/bin/python"
+    assert path_to_python("test", "test") == str(
+        Path("test") / "test" / "bin" / "python"
+    )
 
     mock_platform.system.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):
