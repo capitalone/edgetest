@@ -121,6 +121,18 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
             universal_newlines=True,
         ),
         call(
+            (
+                f"{str(py_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "myupgrade",
+                "--upgrade",
+            ),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
             (f"{str(py_loc)}", "-m", "pip", "list", "--format", "json"),
             stdout=-1,
             universal_newlines=True,
@@ -185,11 +197,35 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         ),
         call(
             (
+                f"{str(py_myupgrade_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "myupgrade",
+                "--upgrade",
+            ),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
                 f"{str(py_allreq_loc)}",
                 "-m",
                 "pip",
                 "install",
                 ".",
+            ),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
+                f"{str(py_allreq_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "myupgrade",
+                "--upgrade",
             ),
             stdout=-1,
             universal_newlines=True,
@@ -358,6 +394,18 @@ def test_cli_notest(mock_popen, mock_builder):
     assert mock_popen.call_args_list == [
         call(
             (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
+                f"{str(py_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "myupgrade",
+                "--upgrade",
+            ),
             stdout=-1,
             universal_newlines=True,
         ),
