@@ -123,13 +123,8 @@ class TestPackage:
         LOG.info(
             f"Upgrading the following packages in {self.envname}: {', '.join(self.upgrade)}"
         )
-        _run_command(
-            self.python_path,
-            "-m",
-            "pip",
-            "install",
-            *self.upgrade,
-            "--upgrade",
+        self.hook.run_update(
+            basedir=self._basedir, envname=self.envname, upgrade=self.upgrade
         )
         LOG.info(f"Successfully upgraded packages in {self.envname}")
 

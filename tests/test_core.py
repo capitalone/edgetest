@@ -38,18 +38,6 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
             stdout=-1,
             universal_newlines=True,
         ),
-        call(
-            (
-                f"{str(py_loc)}",
-                "-m",
-                "pip",
-                "install",
-                "myupgrade",
-                "--upgrade",
-            ),
-            stdout=-1,
-            universal_newlines=True,
-        ),
     ]
 
 
@@ -101,11 +89,6 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
             stdout=-1,
             universal_newlines=True,
         ),
-        call(
-            (f"{py_loc}", "-m", "pip", "install", "myupgrade", "--upgrade"),
-            stdout=-1,
-            universal_newlines=True,
-        ),
     ]
 
 
@@ -149,11 +132,6 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
         ),
         call(
             (f"{py_loc}", "-m", "pip", "install", "."),
-            stdout=-1,
-            universal_newlines=True,
-        ),
-        call(
-            (f"{py_loc}", "-m", "pip", "install", "myupgrade", "--upgrade"),
             stdout=-1,
             universal_newlines=True,
         ),

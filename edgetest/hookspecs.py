@@ -71,6 +71,26 @@ def create_environment(basedir: str, envname: str, conf: Dict):
     """
 
 
+@hookspec(firstresult=True)
+def run_update(basedir: str, envname: str, upgrade: List):
+    """Update packages from upgrade list.
+
+    Parameters
+    ----------
+    basedir : str
+        The base directory location for the environment.
+    envname : str
+        The name of the virtual environment.
+    upgrade : list
+        The list of packages to upgrade
+
+    Raises
+    ------
+    RuntimeError
+        Error raised if the packages cannot be updated.
+    """
+
+
 @hookspec
 def post_run_hook(testers: List, conf: Dict):
     """Post testing hook.
