@@ -49,7 +49,7 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_update(basedir: str, envname: str, upgrade: List):
+def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
     """Update packages from upgrade list.
 
     Parameters
@@ -60,6 +60,8 @@ def run_update(basedir: str, envname: str, upgrade: List):
         The name of the virtual environment.
     upgrade : list
         The list of packages to upgrade
+    conf : dict
+        Ignored.
 
     Raises
     ------

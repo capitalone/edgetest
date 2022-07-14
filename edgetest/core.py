@@ -124,7 +124,10 @@ class TestPackage:
             f"Upgrading the following packages in {self.envname}: {', '.join(self.upgrade)}"
         )
         self.hook.run_update(
-            basedir=self._basedir, envname=self.envname, upgrade=self.upgrade
+            basedir=self._basedir,
+            envname=self.envname,
+            upgrade=self.upgrade,
+            conf=options,
         )
         LOG.info(f"Successfully upgraded packages in {self.envname}")
 
