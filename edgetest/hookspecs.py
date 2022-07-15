@@ -71,6 +71,30 @@ def create_environment(basedir: str, envname: str, conf: Dict):
     """
 
 
+@hookspec(firstresult=True)
+def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
+    """Update packages from upgrade list.
+
+    Parameters
+    ----------
+    basedir : str
+        The base directory location for the environment.
+    envname : str
+        The name of the virtual environment.
+    upgrade : list
+        The list of packages to upgrade
+    conf : dict
+        The configuration dictionary for the environment. This is useful if you
+        want to add configuration arguments for additional dependencies that can
+        only be installed through the environment manager (e.g. Conda).
+
+    Raises
+    ------
+    RuntimeError
+        Error raised if the packages cannot be updated.
+    """
+
+
 @hookspec
 def post_run_hook(testers: List, conf: Dict):
     """Post testing hook.

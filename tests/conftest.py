@@ -2,7 +2,7 @@
 
 import platform
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import pluggy
 import pytest
@@ -27,6 +27,11 @@ class FakeHook:
     @hookimpl
     def create_environment(self, basedir: str, envname: str, conf: Dict):
         """Create the virtual environment for testing."""
+        pass
+
+    @hookimpl
+    def run_update(self, basedir: str, envname: str, upgrade: List):
+        """Update packages from upgrade list."""
         pass
 
 
