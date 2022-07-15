@@ -72,7 +72,7 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookspec(firstresult=True)
-def run_update(basedir: str, envname: str, upgrade: List):
+def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
     """Update packages from upgrade list.
 
     Parameters
@@ -83,6 +83,10 @@ def run_update(basedir: str, envname: str, upgrade: List):
         The name of the virtual environment.
     upgrade : list
         The list of packages to upgrade
+    conf : dict
+        The configuration dictionary for the environment. This is useful if you
+        want to add configuration arguments for additional dependencies that can
+        only be installed through the environment manager (e.g. Conda).
 
     Raises
     ------

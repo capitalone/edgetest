@@ -37,11 +37,11 @@ def test_create_environment(mock_env_builder):
 @patch("edgetest.lib._run_command", autospec=True)
 def test_run_update(mock_run):
     python_path = path_to_python("test", "test")
-    run_update("test", "test", ["1", "2"])
+    run_update("test", "test", ["1", "2"], {"test": "test"})
     mock_run.assert_called_with(
         python_path, "-m", "pip", "install", "1", "2", "--upgrade"
     )
 
     mock_run.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):
-        run_update("test", "test", ["1", "2"])
+        run_update("test", "test", ["1", "2"], {"test": "test"})
