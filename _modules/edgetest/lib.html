@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
         <title>edgetest.lib - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
@@ -209,10 +209,12 @@
 
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">venv</span> <span class="kn">import</span> <span class="n">EnvBuilder</span>
 
 <span class="kn">import</span> <span class="nn">pluggy</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_run_command</span>
 
 <span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
@@ -251,6 +253,40 @@
         <span class="n">builder</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">env_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_update"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.run_update">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update packages from upgrade list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    basedir : str</span>
+<span class="sd">        The base directory location for the environment.</span>
+<span class="sd">    envname : str</span>
+<span class="sd">        The name of the virtual environment.</span>
+<span class="sd">    upgrade : list</span>
+<span class="sd">        The list of packages to upgrade</span>
+<span class="sd">    conf : dict</span>
+<span class="sd">        Ignored.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        Error raised if the packages cannot be updated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">python_path</span> <span class="o">=</span> <span class="n">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">_run_command</span><span class="p">(</span>
+            <span class="n">python_path</span><span class="p">,</span>
+            <span class="s2">&quot;-m&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+            <span class="o">*</span><span class="n">upgrade</span><span class="p">,</span>
+            <span class="s2">&quot;--upgrade&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip upgrade: </span><span class="si">{</span><span class="n">upgrade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </pre></div>
         </article>
       </div>
@@ -288,6 +324,7 @@
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>

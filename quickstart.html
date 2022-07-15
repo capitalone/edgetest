@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced Usage" href="usage.html" /><link rel="prev" title="Welcome to edgetest’s documentation!" href="index.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
         <title>Quick Start - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
@@ -206,9 +206,9 @@
         </div>
         <article role="main">
           <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">#</a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h1>
 <section id="install">
-<h2>Install<a class="headerlink" href="#install" title="Permalink to this headline">#</a></h2>
+<h2>Install<a class="headerlink" href="#install" title="Permalink to this heading">#</a></h2>
 <p>Installation from PyPI:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install edgetest
 </pre></div>
@@ -219,9 +219,9 @@
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h2>
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">edgetest</span></code> allows multi-package, bleeding edge dependency testing. Suppose you have a local package,
-<code class="docutils literal notranslate"><span class="pre">mypackage</span></code>, with the following <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file <a class="footnote-reference brackets" href="#f1" id="id1">1</a>:</p>
+<code class="docutils literal notranslate"><span class="pre">mypackage</span></code>, with the following <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pandas&gt;=0.25.1,&lt;=1.0.0
 ...
 </pre></div>
@@ -268,14 +268,13 @@ environments to Github.</p>
 </pre></div>
 </div>
 <p class="rubric">Footnotes</p>
-<dl class="footnote brackets">
-<dt class="label" id="f1"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>If you are not using a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, you can specify the filename with <code class="docutils literal notranslate"><span class="pre">-r</span></code>:</p>
+<aside class="footnote brackets" id="f1" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>If you are not using a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, you can specify the filename with <code class="docutils literal notranslate"><span class="pre">-r</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -r path/to/file.txt
 </pre></div>
 </div>
-</dd>
-</dl>
+</aside>
 </section>
 </section>
 
@@ -353,6 +352,7 @@ environments to Github.</p>
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script src="_static/clipboard.min.js"></script>

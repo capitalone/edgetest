@@ -1,10 +1,10 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
         <title>edgetest.hookspecs - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
@@ -278,6 +278,30 @@
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
 
+<div class="viewcode-block" id="run_update"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.run_update">[docs]</a><span class="nd">@hookspec</span><span class="p">(</span><span class="n">firstresult</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Update packages from upgrade list.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    basedir : str</span>
+<span class="sd">        The base directory location for the environment.</span>
+<span class="sd">    envname : str</span>
+<span class="sd">        The name of the virtual environment.</span>
+<span class="sd">    upgrade : list</span>
+<span class="sd">        The list of packages to upgrade</span>
+<span class="sd">    conf : dict</span>
+<span class="sd">        The configuration dictionary for the environment. This is useful if you</span>
+<span class="sd">        want to add configuration arguments for additional dependencies that can</span>
+<span class="sd">        only be installed through the environment manager (e.g. Conda).</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    RuntimeError</span>
+<span class="sd">        Error raised if the packages cannot be updated.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
 <div class="viewcode-block" id="post_run_hook"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.post_run_hook">[docs]</a><span class="nd">@hookspec</span>
 <span class="k">def</span> <span class="nf">post_run_hook</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Post testing hook.</span>
@@ -328,6 +352,7 @@
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
     <script src="../../_static/jquery.js"></script>
     <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>

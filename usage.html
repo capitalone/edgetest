@@ -1,11 +1,11 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Extending edgetest through plugins" href="plugins.html" /><link rel="prev" title="Quick Start" href="quickstart.html" />
 
-    <meta name="generator" content="sphinx-4.5.0, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
         <title>Advanced Usage - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
@@ -206,9 +206,9 @@
         </div>
         <article role="main">
           <section id="advanced-usage">
-<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">#</a></h1>
+<h1>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this heading">#</a></h1>
 <section id="configuration-file">
-<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this headline">#</a></h2>
+<h2>Configuration file<a class="headerlink" href="#configuration-file" title="Permalink to this heading">#</a></h2>
 <p>Suppose you want to test upgrades for a subset of your dependencies. Instead of letting <code class="docutils literal notranslate"><span class="pre">edgetest</span></code>
 parse your requirements file, you can create a configuration file:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
@@ -229,7 +229,7 @@ parse your requirements file, you can create a configuration file:</p>
 </ol>
 </section>
 <section id="setup-cfg-configuration">
-<h2><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> Configuration<a class="headerlink" href="#setup-cfg-configuration" title="Permalink to this headline">#</a></h2>
+<h2><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> Configuration<a class="headerlink" href="#setup-cfg-configuration" title="Permalink to this heading">#</a></h2>
 <p>You can also specify your testing environment through <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
@@ -253,7 +253,7 @@ your requirements might look like this:</p>
 </div>
 </section>
 <section id="installing-extras">
-<h2>Installing extras<a class="headerlink" href="#installing-extras" title="Permalink to this headline">#</a></h2>
+<h2>Installing extras<a class="headerlink" href="#installing-extras" title="Permalink to this heading">#</a></h2>
 <p>To install extras with your local package in the virtual environment(s), modify your configuration or CLI
 call as follows:</p>
 <div class="sphinx-tabs docutils container">
@@ -273,7 +273,7 @@ call as follows:</p>
 </div></div>
 </section>
 <section id="modifying-the-test-command">
-<h2>Modifying the test command<a class="headerlink" href="#modifying-the-test-command" title="Permalink to this headline">#</a></h2>
+<h2>Modifying the test command<a class="headerlink" href="#modifying-the-test-command" title="Permalink to this heading">#</a></h2>
 <p>To customize your test command, modify the configuration or CLI call as follows:</p>
 <div class="sphinx-tabs docutils container">
 <div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Configuration file</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">command</span></code> key to your environment:</p>
@@ -296,7 +296,7 @@ call as follows:</p>
 </div></div>
 </section>
 <section id="additional-dependencies">
-<h2>Additional dependencies<a class="headerlink" href="#additional-dependencies" title="Permalink to this headline">#</a></h2>
+<h2>Additional dependencies<a class="headerlink" href="#additional-dependencies" title="Permalink to this heading">#</a></h2>
 <p>Suppose your testing requires an additional library that is not included in your <code class="docutils literal notranslate"><span class="pre">extras</span></code>. You
 can specify additional dependencies to be installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
 <p>To specify additional <code class="docutils literal notranslate"><span class="pre">pip</span></code> dependencies, modify as follows:</p>
@@ -328,7 +328,7 @@ can specify additional dependencies to be installed via <code class="docutils li
 </div>
 </section>
 <section id="default-arguments">
-<h2>Default arguments<a class="headerlink" href="#default-arguments" title="Permalink to this headline">#</a></h2>
+<h2>Default arguments<a class="headerlink" href="#default-arguments" title="Permalink to this heading">#</a></h2>
 <p>If you have default arguments you want to pass to each environment in your configuration,
 you can specify those under the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> section of your configuration:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
@@ -370,7 +370,7 @@ scikit-learn&gt;=0.23.0,&lt;=0.24.2
 </div>
 </section>
 <section id="multiple-packages">
-<h2>Multiple packages<a class="headerlink" href="#multiple-packages" title="Permalink to this headline">#</a></h2>
+<h2>Multiple packages<a class="headerlink" href="#multiple-packages" title="Permalink to this heading">#</a></h2>
 <p>Suppose you have multiple local packages you want to test. You can include the <code class="docutils literal notranslate"><span class="pre">package_dir</span></code>
 in your testing project directory:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
@@ -403,14 +403,14 @@ in your testing project directory:</p>
 </div>
 </section>
 <section id="running-a-single-environment">
-<h2>Running a single environment<a class="headerlink" href="#running-a-single-environment" title="Permalink to this headline">#</a></h2>
+<h2>Running a single environment<a class="headerlink" href="#running-a-single-environment" title="Permalink to this heading">#</a></h2>
 <p>To run <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> for a single environment, supply <code class="docutils literal notranslate"><span class="pre">--environment</span></code> or <code class="docutils literal notranslate"><span class="pre">-e</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -e pandas
 </pre></div>
 </div>
 </section>
 <section id="exporting-an-upgraded-requirements-file">
-<h2>Exporting an upgraded requirements file<a class="headerlink" href="#exporting-an-upgraded-requirements-file" title="Permalink to this headline">#</a></h2>
+<h2>Exporting an upgraded requirements file<a class="headerlink" href="#exporting-an-upgraded-requirements-file" title="Permalink to this heading">#</a></h2>
 <p>You can use the <code class="docutils literal notranslate"><span class="pre">--export</span></code> flag to overwrite your input requirements file with the
 upgraded version as well. This feature will update the <code class="docutils literal notranslate"><span class="pre">--requirements</span></code> argument
 file (default <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>) with the upgraded packages from your <strong>last</strong>
@@ -452,16 +452,12 @@ be updated.</p>
 </div></div>
 </section>
 <section id="using-plugins">
-<h2>Using plugins<a class="headerlink" href="#using-plugins" title="Permalink to this headline">#</a></h2>
+<h2>Using plugins<a class="headerlink" href="#using-plugins" title="Permalink to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">edgetest</span></code> is built on a plugin framework that allows for extensibility and modularity
 (see details <a class="reference internal" href="plugins.html"><span class="doc">here</span></a>). Below we have listed the plugins that are built
 and maintained by the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> developer team:</p>
 <div class="table-wrapper docutils container">
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 52%" />
-<col style="width: 48%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Plugin</p></th>
 <th class="head"><p>Description</p></th>
@@ -577,6 +573,7 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script src="_static/clipboard.min.js"></script>
