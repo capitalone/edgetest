@@ -16,6 +16,8 @@ pyparsing==3.0.9
     # via packaging
 tabulate==0.8.10
     # via edgetest (setup.cfg)
+tomlkit==0.11.4
+    # via edgetest (setup.cfg)
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
