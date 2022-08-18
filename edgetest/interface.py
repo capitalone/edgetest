@@ -5,6 +5,7 @@ from typing import List
 
 import click
 import pluggy
+from tomlkit import dumps
 
 from . import hookspecs, lib
 from .core import TestPackage
@@ -14,6 +15,7 @@ from .schema import EdgetestValidator, Schema
 from .utils import (
     gen_requirements_config,
     parse_cfg,
+    upgrade_pyproject_toml,
     upgrade_requirements,
     upgrade_setup_cfg,
 )
@@ -175,6 +177,24 @@ def cli(
             if "options" not in parser or not parser.get("options", "install_requires"):
                 click.echo(
                     "No PEP-517 style requirements in ``setup.cfg`` to update. Updating "
+                    f"{requirements}"
+                )
+                upgraded = upgrade_requirements(
+                    fname_or_buf=requirements,
+                    upgraded_packages=testers[-1].upgraded_packages(),
+                )
+                with open(requirements, "w") as outfile:
+                    outfile.write(upgraded)
+        elif config is not None and Path(config).name == "pyproject.toml":
+            parser = upgrade_pyproject_toml(
+                upgraded_packages=testers[-1].upgraded_packages(),
+                filename=config,
+            )
+            with open(config, "w") as outfile:
+                outfile.write(dumps(parser))
+            if "options" not in parser or not parser.get("options", "install_requires"):
+                click.echo(
+                    "No dependencies in ``pyproject.toml`` to update. Updating "
                     f"{requirements}"
                 )
                 upgraded = upgrade_requirements(
