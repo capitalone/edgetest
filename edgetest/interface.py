@@ -15,6 +15,7 @@ from .schema import EdgetestValidator, Schema
 from .utils import (
     gen_requirements_config,
     parse_cfg,
+    parse_toml,
     upgrade_pyproject_toml,
     upgrade_requirements,
     upgrade_setup_cfg,
@@ -116,8 +117,10 @@ def cli(
     """
     # Get the hooks
     pm = get_plugin_manager()
-    if config:
+    if config and Path(config).suffix == ".cfg":
         conf = parse_cfg(filename=config, requirements=requirements)
+    elif config and Path(config).suffix == ".toml":
+        conf = parse_toml(filename=config, requirements=requirements)
     else:
         # Find the path to the local directory using the requirements file
         conf = gen_requirements_config(
@@ -127,7 +130,6 @@ def cli(
             command=command,
             package_dir=str(Path(requirements).parent),
         )
-
     # Validate the configuration file
     docstructure = Schema()
     pm.hook.addoption(schema=docstructure)
@@ -192,7 +194,7 @@ def cli(
             )
             with open(config, "w") as outfile:
                 outfile.write(dumps(parser))
-            if "options" not in parser or not parser.get("options", "install_requires"):
+            if "project" not in parser or not parser.get("project").get("dependencies"):
                 click.echo(
                     "No dependencies in ``pyproject.toml`` to update. Updating "
                     f"{requirements}"

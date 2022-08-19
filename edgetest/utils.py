@@ -6,11 +6,12 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 
 from packaging.specifiers import SpecifierSet
 from pkg_resources import parse_requirements
 from tomlkit import TOMLDocument, load
+from tomlkit.items import Array, String
 
 from .logger import get_logger
 
@@ -63,6 +64,15 @@ def pushd(new_dir: str):
         yield
     finally:
         os.chdir(curr_dir)
+
+
+def _convert_toml_array_to_string(item: Union[Array, String]) -> str:
+    if isinstance(item, Array):
+        return "\n".join(item)
+    elif isinstance(item, String):
+        return str(item)
+    else:
+        raise ValueError
 
 
 def convert_requirements(requirements: str, conf: Optional[Dict] = None) -> Dict:
@@ -230,7 +240,7 @@ def parse_toml(
 ) -> Dict:
     """Generate a configuration from a ``.toml`` style file.
 
-    This function can operate in two ways. First, it can look for tables that
+    This function can operate in two ways. First, it will look for tables that
     start with ``edgetest`` and build a configuration. Suppose
     you have ``pyproject.toml`` as follows:
 
@@ -295,19 +305,26 @@ def parse_toml(
     # Get any global options if necessary
     temp_config = deepcopy(config)
     if "edgetest" in config:
-        _ = dict(
-            temp_config["edgetest"].pop("envs", None)
+        _ = temp_config["edgetest"].pop(
+            "envs", None
         )  # remove envs from the temp config
+        for i in temp_config["edgetest"]:
+            temp_config["edgetest"][i] = _convert_toml_array_to_string(
+                temp_config["edgetest"][i]
+            )
         options = temp_config["edgetest"]
     else:
         options = {}
-
-    print(options)
-    print(config)
-
     # Check envs exists
-    if config.get("edgetest").get("envs"):
-        for section in dict(config["edgetest"]["envs"]):
+    if "edgetest" in config and config.get("edgetest").get("envs"):
+        for section in config["edgetest"]["envs"]:
+            for item in config["edgetest"]["envs"][section]:
+                # If an Array then decompose to a string format
+                config["edgetest"]["envs"][section][
+                    item
+                ] = _convert_toml_array_to_string(
+                    config["edgetest"]["envs"][section][item]
+                )
             output["envs"].append(dict(config["edgetest"]["envs"][section]))
             output["envs"][-1]["name"] = section
     else:
