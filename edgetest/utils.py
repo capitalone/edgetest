@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, Tuple, Union
 from packaging.specifiers import SpecifierSet
 from pkg_resources import parse_requirements
 from tomlkit import TOMLDocument, load
-from tomlkit.items import Array, String
+from tomlkit.items import Array, String, Table
 
 from .logger import get_logger
 
@@ -302,12 +302,14 @@ def parse_toml(
     config = load(open(filename))
     # Parse
     output: Dict = {"envs": []}
-    # Get any global options if necessary
+    # Get any global options if necessary. First scan through and pop out any Tables
     temp_config = deepcopy(config)
     if "edgetest" in config:
-        _ = temp_config["edgetest"].pop(
-            "envs", None
-        )  # remove envs from the temp config
+        for j in config["edgetest"].items():
+            if isinstance(config["edgetest"][j[0]], Table):
+                _ = temp_config["edgetest"].pop(
+                    j[0], None
+                )  # remove Tables from the temp config
         for i in temp_config["edgetest"]:
             temp_config["edgetest"][i] = _convert_toml_array_to_string(
                 temp_config["edgetest"][i]
@@ -315,19 +317,25 @@ def parse_toml(
         options = temp_config["edgetest"]
     else:
         options = {}
-    # Check envs exists
-    if "edgetest" in config and config.get("edgetest").get("envs"):
-        for section in config["edgetest"]["envs"]:
-            for item in config["edgetest"]["envs"][section]:
-                # If an Array then decompose to a string format
-                config["edgetest"]["envs"][section][
-                    item
-                ] = _convert_toml_array_to_string(
-                    config["edgetest"]["envs"][section][item]
-                )
-            output["envs"].append(dict(config["edgetest"]["envs"][section]))
-            output["envs"][-1]["name"] = section
-    else:
+
+    # Check envs exists and any other Tables
+    if "edgetest" in config:
+        for section in config["edgetest"]:
+            if section == "envs":
+                for env in config["edgetest"]["envs"]:
+                    for item in config["edgetest"]["envs"][env]:
+                        # If an Array then decompose to a string format
+                        config["edgetest"]["envs"][env][
+                            item
+                        ] = _convert_toml_array_to_string(
+                            config["edgetest"]["envs"][env][item]
+                        )
+                    output["envs"].append(dict(config["edgetest"]["envs"][env]))
+                    output["envs"][-1]["name"] = env
+            elif isinstance(config["edgetest"][section], Table):
+                output[section] = dict(config["edgetest"][section])
+
+    if len(output["envs"]) == 0:
         if config.get("project").get("dependencies"):
             output = convert_requirements(
                 requirements="\n".join(config["project"]["dependencies"]), conf=output

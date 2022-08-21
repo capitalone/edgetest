@@ -382,9 +382,9 @@ def test_parse_custom_toml(tmpdir):
         "envs": [
             {
                 "name": "myenv",
-                "upgrade": "\nmyupgrade",
-                "extras": "\ntests",
-                "command": "\npytest tests -m 'not integration'",
+                "upgrade": "myupgrade",
+                "extras": "tests",
+                "command": "pytest tests -m 'not integration'",
             }
         ],
     }
