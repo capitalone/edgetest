@@ -6,12 +6,13 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from packaging.specifiers import SpecifierSet
 from pkg_resources import parse_requirements
 from tomlkit import TOMLDocument, load
-from tomlkit.items import Array, String, Table
+from tomlkit.container import Container
+from tomlkit.items import Array, Item, String, Table
 
 from .logger import get_logger
 
@@ -66,7 +67,7 @@ def pushd(new_dir: str):
         os.chdir(curr_dir)
 
 
-def _convert_toml_array_to_string(item: Union[Array, String]) -> str:
+def _convert_toml_array_to_string(item: Union[Item, Any]) -> str:
     if isinstance(item, Array):
         return "\n".join(item)
     elif isinstance(item, String):
@@ -298,21 +299,22 @@ def parse_toml(
     Dict
         A configuration dictionary for ``edgetest``.
     """
+    options: Union[Item, Container, dict]
     # Read in the configuration file
-    config = load(open(filename))
+    config: TOMLDocument = load(open(filename))
     # Parse
     output: Dict = {"envs": []}
     # Get any global options if necessary. First scan through and pop out any Tables
     temp_config = deepcopy(config)
     if "edgetest" in config:
-        for j in config["edgetest"].items():
-            if isinstance(config["edgetest"][j[0]], Table):
-                _ = temp_config["edgetest"].pop(
+        for j in config["edgetest"].items():  # type: ignore
+            if isinstance(config["edgetest"][j[0]], Table):  # type: ignore
+                _ = temp_config["edgetest"].pop(  # type: ignore
                     j[0], None
                 )  # remove Tables from the temp config
             else:
-                temp_config["edgetest"][j[0]] = _convert_toml_array_to_string(
-                    temp_config["edgetest"][j[0]]
+                temp_config["edgetest"][j[0]] = _convert_toml_array_to_string(  # type: ignore
+                    temp_config["edgetest"][j[0]]  # type: ignore
                 )
         options = temp_config["edgetest"]
     else:
@@ -320,25 +322,25 @@ def parse_toml(
 
     # Check envs exists and any other Tables
     if "edgetest" in config:
-        for section in config["edgetest"]:
+        for section in config["edgetest"]:  # type: ignore
             if section == "envs":
-                for env in config["edgetest"]["envs"]:
-                    for item in config["edgetest"]["envs"][env]:
+                for env in config["edgetest"]["envs"]:  # type: ignore
+                    for item in config["edgetest"]["envs"][env]:  # type: ignore
                         # If an Array then decompose to a string format
-                        config["edgetest"]["envs"][env][
+                        config["edgetest"]["envs"][env][  # type: ignore
                             item
                         ] = _convert_toml_array_to_string(
-                            config["edgetest"]["envs"][env][item]
+                            config["edgetest"]["envs"][env][item]  # type: ignore
                         )
-                    output["envs"].append(dict(config["edgetest"]["envs"][env]))
+                    output["envs"].append(dict(config["edgetest"]["envs"][env]))  # type: ignore
                     output["envs"][-1]["name"] = env
-            elif isinstance(config["edgetest"][section], Table):
-                output[section] = dict(config["edgetest"][section])
+            elif isinstance(config["edgetest"][section], Table):  # type: ignore
+                output[section] = dict(config["edgetest"][section])  # type: ignore
 
     if len(output["envs"]) == 0:
-        if config.get("project").get("dependencies"):
+        if config.get("project").get("dependencies"):  # type: ignore
             output = convert_requirements(
-                requirements="\n".join(config["project"]["dependencies"]), conf=output
+                requirements="\n".join(config["project"]["dependencies"]), conf=output  # type: ignore
             )
         elif requirements:
             req_conf = gen_requirements_config(fname_or_buf=requirements)
@@ -349,7 +351,7 @@ def parse_toml(
     # Apply global environment options (without overwriting)
     for idx in range(len(output["envs"])):
         output["envs"][idx] = dict(
-            list(options.items()) + list(output["envs"][idx].items())
+            list(options.items()) + list(output["envs"][idx].items())  # type: ignore
         )
 
     return output
@@ -459,21 +461,21 @@ def upgrade_pyproject_toml(
     TOMLDocument
         The updated TOMLDocument.
     """
-    parser = load(open(filename))
-    if "project" in parser and parser.get("project").get("dependencies"):
+    parser: TOMLDocument = load(open(filename))
+    if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
         LOG.info(f"Updating the requirements in {filename}")
         upgraded = upgrade_requirements(
-            fname_or_buf="\n".join(parser["project"]["dependencies"]),
+            fname_or_buf="\n".join(parser["project"]["dependencies"]),  # type: ignore
             upgraded_packages=upgraded_packages,
         )
-        parser["project"]["dependencies"] = upgraded
+        parser["project"]["dependencies"] = upgraded  # type: ignore
     # Update the extras, if necessary
-    if parser.get("project").get("optional-dependencies"):
-        for extra, dependencies in parser["project"]["optional-dependencies"].items():
+    if parser.get("project").get("optional-dependencies"):  # type: ignore
+        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
             upgraded = upgrade_requirements(
                 fname_or_buf="\n".join(dependencies),
                 upgraded_packages=upgraded_packages,
             )
-            parser["project"]["optional-dependencies"][extra] = upgraded
+            parser["project"]["optional-dependencies"][extra] = upgraded  # type: ignore
 
     return parser
