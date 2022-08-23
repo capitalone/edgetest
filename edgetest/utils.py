@@ -340,7 +340,7 @@ def parse_toml(
     if len(output["envs"]) == 0:
         if config.get("project").get("dependencies"):  # type: ignore
             output = convert_requirements(
-                requirements="\n".join(config["project"]["dependencies"]), conf=output  # type: ignore
+                requirements="\n".join(config["project"]["dependencies"]), conf=output  # type: ignore # noqa: E501
             )
         elif requirements:
             req_conf = gen_requirements_config(fname_or_buf=requirements)
@@ -471,7 +471,7 @@ def upgrade_pyproject_toml(
         parser["project"]["dependencies"] = upgraded  # type: ignore
     # Update the extras, if necessary
     if parser.get("project").get("optional-dependencies"):  # type: ignore
-        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
+        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore # noqa: E501
             upgraded = upgrade_requirements(
                 fname_or_buf="\n".join(dependencies),
                 upgraded_packages=upgraded_packages,
