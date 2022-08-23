@@ -310,10 +310,10 @@ def parse_toml(
                 _ = temp_config["edgetest"].pop(
                     j[0], None
                 )  # remove Tables from the temp config
-        for i in temp_config["edgetest"]:
-            temp_config["edgetest"][i] = _convert_toml_array_to_string(
-                temp_config["edgetest"][i]
-            )
+            else:
+                temp_config["edgetest"][j[0]] = _convert_toml_array_to_string(
+                    temp_config["edgetest"][j[0]]
+                )
         options = temp_config["edgetest"]
     else:
         options = {}

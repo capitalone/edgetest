@@ -3,8 +3,17 @@
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
+from tomlkit import array, string
+
 from edgetest.schema import BASE_SCHEMA, EdgetestValidator, Schema
-from edgetest.utils import gen_requirements_config, parse_cfg, parse_toml
+from edgetest.utils import (
+    _convert_toml_array_to_string,
+    gen_requirements_config,
+    parse_cfg,
+    parse_toml,
+    upgrade_pyproject_toml,
+    upgrade_setup_cfg,
+)
 
 REQS = """
 mydep1>=0.1.0,<=0.2.0
@@ -113,6 +122,30 @@ mycustom = "mykey"
 
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
+"""
+
+
+CFG_REQS_UPGRADE = """
+[options]
+install_requires =
+    pandas<=1.0.0,>=1.0.0
+    numpy<=1.0.0,>=1.0.0
+
+[options.extras_require]
+tests =
+    pytest<=1.0.0,>=1.0.0
+"""
+
+TOML_REQS_UPGRADE = """
+[project]
+dependencies = [
+    "pandas<=1.0.0,>=1.0.0",
+    "numpy<=1.0.0,>=1.0.0",
+]
+[project.optional-dependencies]
+tests = [
+    "pytest<=1.0.0,>=1.0.0",
+]
 """
 
 
@@ -397,3 +430,54 @@ def test_parse_custom_toml(tmpdir):
     validator = EdgetestValidator(schema=schema.schema)
 
     assert validator.validate(toml)
+
+
+def test_convert_toml_array_to_string():
+    test_array = array("['a','b','c', 'd']")
+    test_string = string("abcd")
+
+    assert _convert_toml_array_to_string(test_array) == "a\nb\nc\nd"
+    assert _convert_toml_array_to_string(test_string) == "abcd"
+
+
+def test_upgrade_setup_cfg(tmpdir):
+    location = tmpdir.mkdir("mylocation")
+    conf_loc = Path(str(location), "setup.cfg")
+    with open(conf_loc, "w") as outfile:
+        outfile.write(CFG_REQS_UPGRADE)
+
+    upgrade_cfg = upgrade_setup_cfg(
+        upgraded_packages=[
+            {"name": "pandas", "version": "2.0.0"},
+            {"name": "numpy", "version": "3.0.0"},
+            {"name": "pytest", "version": "4.0.0"},
+        ],
+        filename=conf_loc,
+    )
+
+    assert (
+        upgrade_cfg["options"]["install_requires"]
+        == "\npandas<=2.0.0,>=1.0.0\nnumpy<=3.0.0,>=1.0.0"
+    )
+    assert upgrade_cfg["options.extras_require"]["tests"] == "\npytest<=4.0.0,>=1.0.0"
+
+
+def test_upgrade_pyproject_toml(tmpdir):
+    location = tmpdir.mkdir("mylocation")
+    conf_loc = Path(str(location), "pyproject.toml")
+    with open(conf_loc, "w") as outfile:
+        outfile.write(TOML_REQS_UPGRADE)
+
+    assert upgrade_pyproject_toml(
+        upgraded_packages=[
+            {"name": "pandas", "version": "2.0.0"},
+            {"name": "numpy", "version": "3.0.0"},
+            {"name": "pytest", "version": "4.0.0"},
+        ],
+        filename=conf_loc,
+    ) == {
+        "project": {
+            "dependencies": "pandas<=2.0.0,>=1.0.0\nnumpy<=3.0.0,>=1.0.0",
+            "optional-dependencies": {"tests": "pytest<=4.0.0,>=1.0.0"},
+        }
+    }
