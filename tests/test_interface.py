@@ -156,7 +156,7 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
 
 
 @patch("edgetest.lib.EnvBuilder", autospec=True)
-@patch("edgetest.core.Popen", autospect=True)
+@patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
 def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
     """Test running tests based on the requirements file."""
@@ -270,7 +270,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
 
 
 @patch("edgetest.lib.EnvBuilder", autospec=True)
-@patch("edgetest.core.Popen", autospect=True)
+@patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
 def test_cli_setup_reqs_update(mock_popen, mock_cpopen, mock_builder):
     """Test running tests and updating requirements in a ``setup.cfg`` file."""
@@ -296,7 +296,7 @@ def test_cli_setup_reqs_update(mock_popen, mock_cpopen, mock_builder):
 
 
 @patch("edgetest.lib.EnvBuilder", autospec=True)
-@patch("edgetest.core.Popen", autospect=True)
+@patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
 def test_cli_setup_extras_update(mock_popen, mock_cpopen, mock_builder):
     """Test running tests and updating extra installation requirements in a ``setup.cfg`` file."""
@@ -323,7 +323,7 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen, mock_builder):
     assert out == SETUP_CFG_EXTRAS_UPGRADE
 
 
-@patch("edgetest.core.Popen", autospect=True)
+@patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
 def test_cli_nosetup(mock_popen, mock_cpopen):
     """Test creating a basic environment."""
