@@ -390,6 +390,29 @@ To run ``edgetest`` for a single environment, supply ``--environment`` or ``-e``
     $ edgetest -e pandas
 
 
+Exporting an upgraded config file
+----------------------------------
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        This will overwrite your current ``setup.cfg`` file with the updated requirements.
+
+            .. code-block:: console
+
+                $ edgetest -c /path/to/setup.cfg --export
+
+
+    .. tab:: .toml
+
+        This will overwrite your current ``pyproject.toml`` file with the updated requirements.
+
+            .. code-block:: console
+
+                $ edgetest -c path/to/pyproject.toml --export
+
+
 Exporting an upgraded requirements file
 ---------------------------------------
 
@@ -407,25 +430,17 @@ For instance, ``snowflake-connector-python[pandas]>=2.2.8,<2.3.9`` might be repl
 
 .. tabs::
 
-    .. tab:: Configuration file
+    .. tab:: Configuration file (cfg/toml)
 
         Include the correct ``--requirements`` filepath and use ``--export``:
 
         .. code-block:: console
 
             $ edgetest \
-                -c path/to/config.yaml \
+                -c path/to/edgetest.cfg \
                 --requirements requirements.txt \
                 --export
 
-        .. important::
-
-            This will overwrite your current ``setup.cfg`` file with the updated requirements
-            if you are using PEP-517.
-
-            .. code-block:: console
-
-                $ edgetest -c path/to/setup.cfg --export
 
     .. tab:: Requirements parsing
 
