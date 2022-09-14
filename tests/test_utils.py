@@ -477,7 +477,7 @@ def test_upgrade_pyproject_toml(tmpdir):
         filename=conf_loc,
     ) == {
         "project": {
-            "dependencies": "pandas<=2.0.0,>=1.0.0\nnumpy<=3.0.0,>=1.0.0",
-            "optional-dependencies": {"tests": "pytest<=4.0.0,>=1.0.0"},
+            "dependencies": ["pandas<=2.0.0,>=1.0.0", "numpy<=3.0.0,>=1.0.0"],
+            "optional-dependencies": {"tests": ["pytest<=4.0.0,>=1.0.0"]},
         }
     }
