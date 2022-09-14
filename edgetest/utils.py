@@ -468,7 +468,7 @@ def upgrade_pyproject_toml(
             fname_or_buf="\n".join(parser["project"]["dependencies"]),  # type: ignore
             upgraded_packages=upgraded_packages,
         )
-        parser["project"]["dependencies"] = upgraded  # type: ignore
+        parser["project"]["dependencies"] = upgraded.split("\n")  # type: ignore
     # Update the extras, if necessary
     if parser.get("project").get("optional-dependencies"):  # type: ignore
         for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore # noqa: E501
@@ -476,6 +476,6 @@ def upgrade_pyproject_toml(
                 fname_or_buf="\n".join(dependencies),
                 upgraded_packages=upgraded_packages,
             )
-            parser["project"]["optional-dependencies"][extra] = upgraded  # type: ignore
+            parser["project"]["optional-dependencies"][extra] = upgraded.split("\n")  # type: ignore
 
     return parser

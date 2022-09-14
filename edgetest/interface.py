@@ -112,7 +112,7 @@ def cli(
 ):
     """Create the environments and test.
 
-    If you do not supply a YAML configuration file, this package will search for a
+    If you do not supply a configuration file, this package will search for a
     ``requirements.txt`` file and create a conda environment for each package in that file.
     """
     # Get the hooks
