@@ -5,6 +5,7 @@ from typing import List
 
 import click
 import pluggy
+from tomlkit import dumps
 
 from . import hookspecs, lib
 from .core import TestPackage
@@ -14,6 +15,8 @@ from .schema import EdgetestValidator, Schema
 from .utils import (
     gen_requirements_config,
     parse_cfg,
+    parse_toml,
+    upgrade_pyproject_toml,
     upgrade_requirements,
     upgrade_setup_cfg,
 )
@@ -109,13 +112,15 @@ def cli(
 ):
     """Create the environments and test.
 
-    If you do not supply a YAML configuration file, this package will search for a
+    If you do not supply a configuration file, this package will search for a
     ``requirements.txt`` file and create a conda environment for each package in that file.
     """
     # Get the hooks
     pm = get_plugin_manager()
-    if config:
+    if config and Path(config).suffix == ".cfg":
         conf = parse_cfg(filename=config, requirements=requirements)
+    elif config and Path(config).suffix == ".toml":
+        conf = parse_toml(filename=config, requirements=requirements)
     else:
         # Find the path to the local directory using the requirements file
         conf = gen_requirements_config(
@@ -125,7 +130,6 @@ def cli(
             command=command,
             package_dir=str(Path(requirements).parent),
         )
-
     # Validate the configuration file
     docstructure = Schema()
     pm.hook.addoption(schema=docstructure)
@@ -175,6 +179,24 @@ def cli(
             if "options" not in parser or not parser.get("options", "install_requires"):
                 click.echo(
                     "No PEP-517 style requirements in ``setup.cfg`` to update. Updating "
+                    f"{requirements}"
+                )
+                upgraded = upgrade_requirements(
+                    fname_or_buf=requirements,
+                    upgraded_packages=testers[-1].upgraded_packages(),
+                )
+                with open(requirements, "w") as outfile:
+                    outfile.write(upgraded)
+        elif config is not None and Path(config).name == "pyproject.toml":
+            parser = upgrade_pyproject_toml(
+                upgraded_packages=testers[-1].upgraded_packages(),
+                filename=config,
+            )
+            with open(config, "w") as outfile:
+                outfile.write(dumps(parser))
+            if "project" not in parser or not parser.get("project").get("dependencies"):
+                click.echo(
+                    "No dependencies in ``pyproject.toml`` to update. Updating "
                     f"{requirements}"
                 )
                 upgraded = upgrade_requirements(
