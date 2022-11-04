@@ -477,3 +477,9 @@ and maintained by the ``edgetest`` developer team:
 | `edgetest-pip-tools <https://github.com/capitalone/edgetest-pip-tools>`_ | | Refreshes a locked requirements file based on the updated        |
 |                                                                          | | dependency pins.                                                 |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------+
+
+.. note::
+
+    If you need edgetest to run a different Python version than what is in your current environment you can use
+    `edgetest-conda <https://capitalone.github.io/edgetest-conda/quickstart.html#usage>`_ to do so with the
+    ``python_version`` configuration.

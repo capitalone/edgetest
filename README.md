@@ -4,6 +4,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![PyPI version](https://badge.fury.io/py/edgetest.svg)](https://badge.fury.io/py/edgetest)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/edgetest/badges/version.svg)](https://anaconda.org/conda-forge/edgetest)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/edgetest)
 
 [Full Documentation](https://capitalone.github.io/edgetest/)
 
