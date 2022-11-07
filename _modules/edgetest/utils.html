@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
         <title>edgetest.utils - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -213,10 +213,13 @@
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">packaging.specifiers</span> <span class="kn">import</span> <span class="n">SpecifierSet</span>
 <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="kn">import</span> <span class="n">parse_requirements</span>
+<span class="kn">from</span> <span class="nn">tomlkit</span> <span class="kn">import</span> <span class="n">TOMLDocument</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">tomlkit.container</span> <span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span> <span class="nn">tomlkit.items</span> <span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Table</span>
 
 <span class="kn">from</span> <span class="nn">.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
 
@@ -269,6 +272,15 @@
         <span class="k">yield</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">curr_dir</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_convert_toml_array_to_string</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Item</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Array</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">String</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span>
 
 
 <div class="viewcode-block" id="convert_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.convert_requirements">[docs]</a><span class="k">def</span> <span class="nf">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
@@ -431,6 +443,127 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
+<div class="viewcode-block" id="parse_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_toml">[docs]</a><span class="k">def</span> <span class="nf">parse_toml</span><span class="p">(</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.toml`` style file.</span>
+
+<span class="sd">    This function can operate in two ways. First, it will look for tables that</span>
+<span class="sd">    start with ``edgetest`` and build a configuration. Suppose</span>
+<span class="sd">    you have ``pyproject.toml`` as follows:</span>
+
+<span class="sd">    .. code-block:: toml</span>
+
+<span class="sd">        [edgetest.envs.pandas]</span>
+<span class="sd">        upgrade = [</span>
+<span class="sd">            &quot;pandas&quot;</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    This will result in a configuration that has one testing environment, named</span>
+<span class="sd">    ``pandas``, that upgrades the ``pandas`` package.</span>
+
+<span class="sd">    If you don&#39;t have any tables that start with ``edgetest.envs``, we will look for</span>
+<span class="sd">    the installation requirements (the ``dependencies`` key within the ``project`` section).</span>
+<span class="sd">    To set global defaults for you environments, use the ``edgetest`` table:</span>
+
+<span class="sd">    .. code-block:: toml</span>
+
+<span class="sd">        [edgetest]</span>
+<span class="sd">        extras = [</span>
+<span class="sd">            &quot;tests&quot;</span>
+<span class="sd">        ]</span>
+<span class="sd">        command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+
+<span class="sd">        [edgetest.envs.pandas]</span>
+<span class="sd">        upgrade = [</span>
+<span class="sd">            &quot;pandas&quot;</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    For this single environment file, the above configuration is equivalent to</span>
+
+<span class="sd">    .. code-block:: toml</span>
+
+<span class="sd">        [edgetest.envs.pandas]</span>
+<span class="sd">        extras = [</span>
+<span class="sd">            &quot;tests&quot;</span>
+<span class="sd">        ]</span>
+<span class="sd">        command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="sd">        upgrade = [</span>
+<span class="sd">            &quot;pandas&quot;</span>
+<span class="sd">        ]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filename : str, optional (default &quot;pyproject.toml&quot;)</span>
+<span class="sd">        The name of the toml file to read. Defaults to ``pyproject.toml``.</span>
+<span class="sd">    requirements : str, optional (default None)</span>
+<span class="sd">        An optional path to the requirements text file. If there are no TOML</span>
+<span class="sd">        style dependencies or coded environments in the edgetest configuration, this</span>
+<span class="sd">        function will look for dependencies in the requirements file.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Dict</span>
+<span class="sd">        A configuration dictionary for ``edgetest``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">options</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Item</span><span class="p">,</span> <span class="n">Container</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
+    <span class="c1"># Read in the configuration file</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">TOMLDocument</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="c1"># Parse</span>
+    <span class="n">output</span><span class="p">:</span> <span class="n">Dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="c1"># Get any global options if necessary. First scan through and pop out any Tables</span>
+    <span class="n">temp_config</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;edgetest&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">Table</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">temp_config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span>
+                <span class="p">)</span>  <span class="c1"># remove Tables from the temp config</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">temp_config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">_convert_toml_array_to_string</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">temp_config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>  <span class="c1"># type: ignore</span>
+                <span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">temp_config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Check envs exists and any other Tables</span>
+    <span class="k">if</span> <span class="s2">&quot;edgetest&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+            <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s2">&quot;envs&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+                    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">env</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+                        <span class="c1"># If an Array then decompose to a string format</span>
+                        <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">env</span><span class="p">][</span>  <span class="c1"># type: ignore</span>
+                            <span class="n">item</span>
+                        <span class="p">]</span> <span class="o">=</span> <span class="n">_convert_toml_array_to_string</span><span class="p">(</span>
+                            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">env</span><span class="p">][</span><span class="n">item</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+                        <span class="p">)</span>
+                    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">env</span><span class="p">]))</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">section</span><span class="p">],</span> <span class="n">Table</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+                <span class="n">output</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">section</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span>
+                <span class="n">requirements</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]),</span> <span class="n">conf</span><span class="o">=</span><span class="n">output</span>  <span class="c1"># type: ignore # noqa: E501</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">requirements</span><span class="p">:</span>
+            <span class="n">req_conf</span> <span class="o">=</span> <span class="n">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please supply a valid list of environments to create.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Apply global environment options (without overwriting)</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output</span></div>
+
+
 <div class="viewcode-block" id="upgrade_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_requirements">[docs]</a><span class="k">def</span> <span class="nf">upgrade_requirements</span><span class="p">(</span>
     <span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -516,6 +649,43 @@
             <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;options.extras_require&quot;</span><span class="p">][</span><span class="n">extra</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">upgraded</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>
+
+
+<div class="viewcode-block" id="upgrade_pyproject_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_pyproject_toml">[docs]</a><span class="k">def</span> <span class="nf">upgrade_pyproject_toml</span><span class="p">(</span>
+    <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TOMLDocument</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Upgrade the ``pyproject.toml`` file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    upgraded_packages : List[Dict[str, str]]</span>
+<span class="sd">        A list of packages upgraded in the testing procedure.</span>
+<span class="sd">    filename : str, optional (default &quot;pyproject.toml&quot;)</span>
+<span class="sd">        The name of the configuration file to read. Defaults to ``pyproject.toml``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    TOMLDocument</span>
+<span class="sd">        The updated TOMLDocument.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">parser</span><span class="p">:</span> <span class="n">TOMLDocument</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span>
+    <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating the requirements in </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
+            <span class="n">fname_or_buf</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
+            <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">upgraded_packages</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">upgraded</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="c1"># Update the extras, if necessary</span>
+    <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optional-dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">for</span> <span class="n">extra</span><span class="p">,</span> <span class="n">dependencies</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;optional-dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># type: ignore # noqa: E501</span>
+            <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
+                <span class="n">fname_or_buf</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dependencies</span><span class="p">),</span>
+                <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">upgraded_packages</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;optional-dependencies&quot;</span><span class="p">][</span><span class="n">extra</span><span class="p">]</span> <span class="o">=</span> <span class="n">upgraded</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">return</span> <span class="n">parser</span></div>
 </pre></div>
         </article>
       </div>
@@ -555,6 +725,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>

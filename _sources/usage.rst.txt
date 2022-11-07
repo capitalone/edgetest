@@ -26,35 +26,81 @@ This command will
 3. Upgrade ``pandas``, and
 4. Run the ``pytest`` in the environment.
 
-``setup.cfg`` Configuration
----------------------------
-
-You can also specify your testing environment through ``setup.cfg``:
-
-.. code-block:: ini
-
-    [edgetest.envs.pandas]
-    upgrade =
-        pandas
-
-If you're using a `PEP-517 style installation configuration <https://setuptools.readthedocs.io/en/latest/userguide/declarative_config.html>`_,
-your requirements might look like this:
-
-.. code-block:: ini
-
-    [options]
-    install_requires =
-        pandas
-
-To point to ``setup.cfg``, supply the location of the file as your ``--config``:
-
-.. code-block:: console
-
-    $ edgetest -c path/to/setup.cfg
 
 .. important::
 
-    Using ``setup.cfg`` will allow you to upgrade optional installations.
+    This configuration file can be a standalone file which is distinct from the ``setup.cfg`` or ``pyproject.toml``
+    configurations. Just note it must have a ``edgetest.envs`` otherwise it expects a PEP 517-style ``setup.cfg``
+
+
+
+``setup.cfg`` and ``pyproject.toml`` Configuration
+--------------------------------------------------
+
+You can also specify your testing environment through ``setup.cfg`` or ``pyproject.toml``:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        .. code-block:: ini
+
+            [edgetest.envs.pandas]
+            upgrade =
+                pandas
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            upgrade = [
+                "pandas"
+            ]
+
+If you're using a `PEP-517 <https://setuptools.pypa.io/en/latest/userguide/declarative_config.html>`_
+or `PEP-621 <https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html>`_ style installation configuration
+your requirements might look like this:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        .. code-block:: ini
+
+            [options]
+            install_requires =
+                pandas
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [project]
+            dependencies = [
+                "pandas",
+            ]
+
+To point to ``setup.cfg`` or ``pyproject.toml``, supply the location of the file as your ``--config``:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        .. code-block:: console
+
+            $ edgetest -c path/to/setup.cfg
+
+    .. tab:: .toml
+
+        .. code-block:: console
+
+            $ edgetest -c path/to/pyproject.toml
+
+.. important::
+
+    Using ``setup.cfg`` or ``pyproject.toml`` will allow you to upgrade optional installations.
+
 
 Installing extras
 -----------------
@@ -64,7 +110,7 @@ call as follows:
 
 .. tabs::
 
-    .. tab:: Configuration file
+    .. tab:: .cfg
 
         Add an ``extras`` list to your environment:
 
@@ -76,6 +122,16 @@ call as follows:
             extras =
                 tests
 
+    .. tab:: .toml
+
+        Add an ``extras`` list to your environment:
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            upgrade = ["myupgrade"]
+            extras = ["tests"]
+
     .. tab:: Requirements parsing
 
         Add ``--extras`` to the CLI call:
@@ -86,6 +142,7 @@ call as follows:
 
         The above command will install ``.[tests, complete]``.
 
+
 Modifying the test command
 --------------------------
 
@@ -93,7 +150,7 @@ To customize your test command, modify the configuration or CLI call as follows:
 
 .. tabs::
 
-    .. tab:: Configuration file
+    .. tab:: .cfg
 
         Add a ``command`` key to your environment:
 
@@ -107,6 +164,17 @@ To customize your test command, modify the configuration or CLI call as follows:
             command =
                 pytest tests -m 'not integration'
 
+    .. tab:: .toml
+
+        Add a ``command`` key to your environment:
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            upgrade = ["myupgrade"]
+            extras = ["tests"]
+            command = "pytest tests -m 'not integration'"
+
     .. tab:: Requirements parsing
 
         Add ``--command`` to your CLI call:
@@ -118,6 +186,7 @@ To customize your test command, modify the configuration or CLI call as follows:
                 --extras complete \
                 --command 'pytest tests -m "not integration"'
 
+
 Additional dependencies
 -----------------------
 
@@ -128,7 +197,7 @@ To specify additional ``pip`` dependencies, modify as follows:
 
 .. tabs::
 
-    .. tab:: Configuration file
+    .. tab:: .cfg
 
         Add a ``deps`` list:
 
@@ -143,6 +212,18 @@ To specify additional ``pip`` dependencies, modify as follows:
                 pytest tests -m "not integration"
             deps =
                 scikit-learn
+
+    .. tab:: .toml
+
+        Add a ``deps`` list:
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            upgrade = ["myupgrade"]
+            extras = ["tests"]
+            command = "pytest tests -m 'not integration'"
+            deps = ["scikit-learn"]
 
     .. tab:: Requirements parsing
 
@@ -162,56 +243,80 @@ In both cases, ``scikit-learn`` will be installed with the following command:
 
     $ .edgetest/pandas/bin/python -m pip install scikit-learn
 
+
 Default arguments
 -----------------
 
 If you have default arguments you want to pass to each environment in your configuration,
 you can specify those under the ``edgetest`` section of your configuration:
 
-.. code-block:: ini
+.. tabs::
 
-    [edgetest]
-    extras =
-        tests
-    command =
-        pytest tests -m 'not integration'
+    .. tab:: .cfg
 
-    [edgetest.envs.pandas]
-    upgrade =
-        pandas
+        .. code-block:: ini
 
-    [edgetest.envs.numpy]
-    upgrade =
-        numpy
+            [edgetest]
+            extras =
+                tests
+            command =
+                pytest tests -m 'not integration'
 
-.. important::
+            [edgetest.envs.pandas]
+            upgrade =
+                pandas
 
-    You can combine your configuration file with ``requirements.txt``. If you have the following
-    configuration file:
+            [edgetest.envs.numpy]
+            upgrade =
+                numpy
 
-    .. code-block:: ini
+        .. important::
 
-        [edgetest]
-        extras =
-            tests
-        command =
-            pytest tests -m 'not integration'
+            You can combine your configuration file with ``requirements.txt``. If you have the following
+            configuration file:
 
-    and the following requirements file:
+            .. code-block:: ini
 
-    .. code-block:: text
+                [options]
+                install_requires =
 
-        pandas>=0.25.1,<=1.0.0
-        scikit-learn>=0.23.0,<=0.24.2
+                [edgetest]
+                extras =
+                    tests
+                command =
+                    pytest tests -m 'not integration'
+
+            and the following requirements file:
+
+            .. code-block:: text
+
+                pandas>=0.25.1,<=1.0.0
+                scikit-learn>=0.23.0,<=0.24.2
 
 
-    the following CLI call
+            the following CLI call
 
-    .. code-block:: console
+            .. code-block:: console
 
-        $ edgetest -c edgetest.cfg -r requirements.txt
+                $ edgetest -c edgetest.cfg -r requirements.txt
 
-    will apply the default arguments to each environment.
+            will apply the default arguments to each environment.
+
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [edgetest]
+            extras = ["tests"]
+            command = "pytest tests -m 'not integration'"
+
+            [edgetest.envs.pandas]
+            upgrade = ["pandas"]
+
+            [edgetest.envs.numpy]
+            upgrade = ["numpy"]
+
 
 Multiple packages
 -----------------
@@ -219,23 +324,45 @@ Multiple packages
 Suppose you have multiple local packages you want to test. You can include the ``package_dir``
 in your testing project directory:
 
-.. code-block:: ini
+.. tabs::
 
-    [edgetest.envs.pandas]
-    package_dir = ../mypackage
-    upgrade =
-        pandas
+    .. tab:: .cfg
 
-    [edgetest.envs.numpy]
-    package_dir = ../myotherpackage
-    upgrade =
-        numpy
+        .. code-block:: ini
 
-After running
+            [edgetest.envs.pandas]
+            package_dir = ../mypackage
+            upgrade =
+                pandas
 
-.. code-block:: console
+            [edgetest.envs.numpy]
+            package_dir = ../myotherpackage
+            upgrade =
+                numpy
 
-    $ edgetest -c path/to/edgetest.cfg
+        After running
+
+        .. code-block:: console
+
+            $ edgetest -c path/to/edgetest.cfg
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            package_dir = "../mypackage"
+            upgrade = ["pandas"]
+
+            [edgetest.envs.numpy]
+            package_dir = "../myotherpackage"
+            upgrade = ["numpy"]
+
+        After running
+
+        .. code-block:: console
+
+            $ edgetest -c path/to/edgetest.toml
 
 your end output should look something like this:
 
@@ -252,6 +379,7 @@ your end output should look something like this:
 
     Testing multiple local packages is only supported with the configuration file syntax.
 
+
 Running a single environment
 ----------------------------
 
@@ -260,6 +388,30 @@ To run ``edgetest`` for a single environment, supply ``--environment`` or ``-e``
 .. code-block:: console
 
     $ edgetest -e pandas
+
+
+Exporting an upgraded config file
+----------------------------------
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        This will overwrite your current ``setup.cfg`` file with the updated requirements.
+
+            .. code-block:: console
+
+                $ edgetest -c /path/to/setup.cfg --export
+
+
+    .. tab:: .toml
+
+        This will overwrite your current ``pyproject.toml`` file with the updated requirements.
+
+            .. code-block:: console
+
+                $ edgetest -c path/to/pyproject.toml --export
+
 
 Exporting an upgraded requirements file
 ---------------------------------------
@@ -278,25 +430,17 @@ For instance, ``snowflake-connector-python[pandas]>=2.2.8,<2.3.9`` might be repl
 
 .. tabs::
 
-    .. tab:: Configuration file
+    .. tab:: Configuration file (cfg/toml)
 
         Include the correct ``--requirements`` filepath and use ``--export``:
 
         .. code-block:: console
 
             $ edgetest \
-                -c path/to/config.yaml \
+                -c path/to/edgetest.cfg \
                 --requirements requirements.txt \
                 --export
 
-        .. important::
-
-            This will overwrite your current ``setup.cfg`` file with the updated requirements
-            if you are using PEP-517.
-
-            .. code-block:: console
-
-                $ edgetest -c path/to/setup.cfg --export
 
     .. tab:: Requirements parsing
 
@@ -333,3 +477,9 @@ and maintained by the ``edgetest`` developer team:
 | `edgetest-pip-tools <https://github.com/capitalone/edgetest-pip-tools>`_ | | Refreshes a locked requirements file based on the updated        |
 |                                                                          | | dependency pins.                                                 |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------+
+
+.. note::
+
+    If you need edgetest to run a different Python version than what is in your current environment you can use
+    `edgetest-conda <https://capitalone.github.io/edgetest-conda/quickstart.html#usage>`_ to do so with the
+    ``python_version`` configuration.

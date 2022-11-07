@@ -16,6 +16,17 @@ Installation from conda-forge:
 
     $ conda install -c conda-forge edgetest
 
+
+Project support type
+--------------------
+
+``edgetest`` works with the following types of projects:
+
+- ``pyproject.toml``
+- ``setup.cfg``
+- and ``requirements.txt``
+
+
 Usage
 -----
 

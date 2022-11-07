@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
         <title>edgetest.interface - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -212,6 +212,7 @@
 
 <span class="kn">import</span> <span class="nn">click</span>
 <span class="kn">import</span> <span class="nn">pluggy</span>
+<span class="kn">from</span> <span class="nn">tomlkit</span> <span class="kn">import</span> <span class="n">dumps</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">hookspecs</span><span class="p">,</span> <span class="n">lib</span>
 <span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="n">TestPackage</span>
@@ -221,6 +222,8 @@
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">gen_requirements_config</span><span class="p">,</span>
     <span class="n">parse_cfg</span><span class="p">,</span>
+    <span class="n">parse_toml</span><span class="p">,</span>
+    <span class="n">upgrade_pyproject_toml</span><span class="p">,</span>
     <span class="n">upgrade_requirements</span><span class="p">,</span>
     <span class="n">upgrade_setup_cfg</span><span class="p">,</span>
 <span class="p">)</span>
@@ -316,13 +319,15 @@
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Create the environments and test.</span>
 
-<span class="sd">    If you do not supply a YAML configuration file, this package will search for a</span>
+<span class="sd">    If you do not supply a configuration file, this package will search for a</span>
 <span class="sd">    ``requirements.txt`` file and create a conda environment for each package in that file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the hooks</span>
     <span class="n">pm</span> <span class="o">=</span> <span class="n">get_plugin_manager</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">config</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.cfg&quot;</span><span class="p">:</span>
         <span class="n">conf</span> <span class="o">=</span> <span class="n">parse_cfg</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">config</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s2">&quot;.toml&quot;</span><span class="p">:</span>
+        <span class="n">conf</span> <span class="o">=</span> <span class="n">parse_toml</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">requirements</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="c1"># Find the path to the local directory using the requirements file</span>
         <span class="n">conf</span> <span class="o">=</span> <span class="n">gen_requirements_config</span><span class="p">(</span>
@@ -332,7 +337,6 @@
             <span class="n">command</span><span class="o">=</span><span class="n">command</span><span class="p">,</span>
             <span class="n">package_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">requirements</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span>
         <span class="p">)</span>
-
     <span class="c1"># Validate the configuration file</span>
     <span class="n">docstructure</span> <span class="o">=</span> <span class="n">Schema</span><span class="p">()</span>
     <span class="n">pm</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">addoption</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">docstructure</span><span class="p">)</span>
@@ -382,6 +386,24 @@
             <span class="k">if</span> <span class="s2">&quot;options&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;install_requires&quot;</span><span class="p">):</span>
                 <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
                     <span class="s2">&quot;No PEP-517 style requirements in ``setup.cfg`` to update. Updating &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
+                    <span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">,</span>
+                    <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">(),</span>
+                <span class="p">)</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">upgraded</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">config</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">Path</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;pyproject.toml&quot;</span><span class="p">:</span>
+            <span class="n">parser</span> <span class="o">=</span> <span class="n">upgrade_pyproject_toml</span><span class="p">(</span>
+                <span class="n">upgraded_packages</span><span class="o">=</span><span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">(),</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dumps</span><span class="p">(</span><span class="n">parser</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>
+                <span class="n">click</span><span class="o">.</span><span class="n">echo</span><span class="p">(</span>
+                    <span class="s2">&quot;No dependencies in ``pyproject.toml`` to update. Updating &quot;</span>
                     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">requirements</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="p">)</span>
                 <span class="n">upgraded</span> <span class="o">=</span> <span class="n">upgrade_requirements</span><span class="p">(</span>
@@ -440,6 +462,7 @@
     <script src="../../_static/underscore.js"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/scripts/furo.js"></script>
     <script src="../../_static/clipboard.min.js"></script>
     <script src="../../_static/copybutton.js"></script>

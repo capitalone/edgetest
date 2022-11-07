@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Quick Start" href="quickstart.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
         <title>Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -191,7 +191,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -212,18 +213,20 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#project-support-type">Project support type</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#usage">Usage</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Advanced Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#configuration-file">Configuration file</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#setup-cfg-configuration"><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#setup-cfg-and-pyproject-toml-configuration"><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#installing-extras">Installing extras</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#modifying-the-test-command">Modifying the test command</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#additional-dependencies">Additional dependencies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#default-arguments">Default arguments</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#multiple-packages">Multiple packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#running-a-single-environment">Running a single environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#exporting-an-upgraded-config-file">Exporting an upgraded config file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#exporting-an-upgraded-requirements-file">Exporting an upgraded requirements file</a></li>
 <li class="toctree-l2"><a class="reference internal" href="usage.html#using-plugins">Using plugins</a></li>
 </ul>
@@ -250,7 +253,32 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">edgetest</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/edgetest.html">edgetest package</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/edgetest.html#module-edgetest.core">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/edgetest.html#module-edgetest.core">Submodules</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.core.TestPackage"><code class="docutils literal notranslate"><span class="pre">TestPackage</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.addoption"><code class="docutils literal notranslate"><span class="pre">addoption()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.create_environment"><code class="docutils literal notranslate"><span class="pre">create_environment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.post_run_hook"><code class="docutils literal notranslate"><span class="pre">post_run_hook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.pre_run_hook"><code class="docutils literal notranslate"><span class="pre">pre_run_hook()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.interface.get_plugin_manager"><code class="docutils literal notranslate"><span class="pre">get_plugin_manager()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.lib.create_environment"><code class="docutils literal notranslate"><span class="pre">create_environment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.lib.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.lib.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.logger.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.report.gen_report"><code class="docutils literal notranslate"><span class="pre">gen_report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.schema.EdgetestValidator"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.schema.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.convert_requirements"><code class="docutils literal notranslate"><span class="pre">convert_requirements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.gen_requirements_config"><code class="docutils literal notranslate"><span class="pre">gen_requirements_config()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.parse_cfg"><code class="docutils literal notranslate"><span class="pre">parse_cfg()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.parse_toml"><code class="docutils literal notranslate"><span class="pre">parse_toml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.pushd"><code class="docutils literal notranslate"><span class="pre">pushd()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.upgrade_pyproject_toml"><code class="docutils literal notranslate"><span class="pre">upgrade_pyproject_toml()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.upgrade_requirements"><code class="docutils literal notranslate"><span class="pre">upgrade_requirements()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/edgetest.html#edgetest.utils.upgrade_setup_cfg"><code class="docutils literal notranslate"><span class="pre">upgrade_setup_cfg()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="api/edgetest.html#module-edgetest">Module contents</a></li>
 </ul>
 </li>
@@ -281,7 +309,7 @@
                 </div>
                 <div class="title">Quick Start</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           
         </div>
@@ -310,7 +338,7 @@
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -334,6 +362,7 @@
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>

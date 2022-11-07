@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="edgetest" href="modules.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
         <title>edgetest package - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -191,7 +191,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -712,12 +713,91 @@ function will look for dependencies in the requirements file.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="edgetest.utils.parse_toml">
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">parse_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pyproject.toml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#parse_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.parse_toml" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate a configuration from a <code class="docutils literal notranslate"><span class="pre">.toml</span></code> style file.</p>
+<p>This function can operate in two ways. First, it will look for tables that
+start with <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> and build a configuration. Suppose
+you have <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> as follows:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>This will result in a configuration that has one testing environment, named
+<code class="docutils literal notranslate"><span class="pre">pandas</span></code>, that upgrades the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package.</p>
+<p>If you don’t have any tables that start with <code class="docutils literal notranslate"><span class="pre">edgetest.envs</span></code>, we will look for
+the installation requirements (the <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> key within the <code class="docutils literal notranslate"><span class="pre">project</span></code> section).
+To set global defaults for you environments, use the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> table:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;tests&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span><span class="w"></span>
+
+<span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>For this single environment file, the above configuration is equivalent to</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;tests&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default &quot;pyproject.toml&quot;</em><em>)</em>) – The name of the toml file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+<li><p><strong>requirements</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default None</em><em>)</em>) – An optional path to the requirements text file. If there are no TOML
+style dependencies or coded environments in the edgetest configuration, this
+function will look for dependencies in the requirements file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A configuration dictionary for <code class="docutils literal notranslate"><span class="pre">edgetest</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.pushd">
 <span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">pushd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/utils.html#pushd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.pushd" title="Permalink to this definition">#</a></dt>
 <dd><p>Create a context manager for running commands in sub-directories.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>new_dir</strong> (<em>str</em>) – The relative directory to run the command in.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="edgetest.utils.upgrade_pyproject_toml">
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">upgrade_pyproject_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">upgraded_packages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pyproject.toml'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TOMLDocument</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#upgrade_pyproject_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.upgrade_pyproject_toml" title="Permalink to this definition">#</a></dt>
+<dd><p>Upgrade the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>upgraded_packages</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – A list of packages upgraded in the testing procedure.</p></li>
+<li><p><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default &quot;pyproject.toml&quot;</em><em>)</em>) – The name of the configuration file to read. Defaults to <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated TOMLDocument.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>TOMLDocument</p>
 </dd>
 </dl>
 </dd></dl>
@@ -777,7 +857,7 @@ or the string representing the requirements file.</p></li>
         <div class="related-pages">
           
           <a class="prev-page" href="modules.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -813,14 +893,60 @@ or the string representing the requirements file.</p></li>
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">edgetest package</a><ul>
-<li><a class="reference internal" href="#module-edgetest.core">Submodules</a></li>
+<li><a class="reference internal" href="#module-edgetest.core">Submodules</a><ul>
+<li><a class="reference internal" href="#edgetest.core.TestPackage"><code class="docutils literal notranslate"><span class="pre">TestPackage</span></code></a><ul>
+<li><a class="reference internal" href="#edgetest.core.TestPackage._basedir"><code class="docutils literal notranslate"><span class="pre">TestPackage._basedir</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.status"><code class="docutils literal notranslate"><span class="pre">TestPackage.status</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.python_path"><code class="docutils literal notranslate"><span class="pre">TestPackage.python_path</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.run_tests"><code class="docutils literal notranslate"><span class="pre">TestPackage.run_tests()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.setup"><code class="docutils literal notranslate"><span class="pre">TestPackage.setup()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.upgraded_packages"><code class="docutils literal notranslate"><span class="pre">TestPackage.upgraded_packages()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edgetest.hookspecs.addoption"><code class="docutils literal notranslate"><span class="pre">addoption()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.create_environment"><code class="docutils literal notranslate"><span class="pre">create_environment()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.post_run_hook"><code class="docutils literal notranslate"><span class="pre">post_run_hook()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.pre_run_hook"><code class="docutils literal notranslate"><span class="pre">pre_run_hook()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.interface.get_plugin_manager"><code class="docutils literal notranslate"><span class="pre">get_plugin_manager()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.lib.create_environment"><code class="docutils literal notranslate"><span class="pre">create_environment()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.lib.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.lib.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.logger.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.report.gen_report"><code class="docutils literal notranslate"><span class="pre">gen_report()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator</span></code></a><ul>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.checkers"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.checkers</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.coercers"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.coercers</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.default_setters"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.default_setters</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.normalization_rules"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.normalization_rules</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.rules"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.rules</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.EdgetestValidator.validation_rules"><code class="docutils literal notranslate"><span class="pre">EdgetestValidator.validation_rules</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edgetest.schema.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a><ul>
+<li><a class="reference internal" href="#edgetest.schema.Schema.add_envoption"><code class="docutils literal notranslate"><span class="pre">Schema.add_envoption()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.Schema.add_globaloption"><code class="docutils literal notranslate"><span class="pre">Schema.add_globaloption()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.schema.Schema.schema"><code class="docutils literal notranslate"><span class="pre">Schema.schema</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#edgetest.utils.convert_requirements"><code class="docutils literal notranslate"><span class="pre">convert_requirements()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.gen_requirements_config"><code class="docutils literal notranslate"><span class="pre">gen_requirements_config()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.parse_cfg"><code class="docutils literal notranslate"><span class="pre">parse_cfg()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.parse_toml"><code class="docutils literal notranslate"><span class="pre">parse_toml()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.pushd"><code class="docutils literal notranslate"><span class="pre">pushd()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.upgrade_pyproject_toml"><code class="docutils literal notranslate"><span class="pre">upgrade_pyproject_toml()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.upgrade_requirements"><code class="docutils literal notranslate"><span class="pre">upgrade_requirements()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.upgrade_setup_cfg"><code class="docutils literal notranslate"><span class="pre">upgrade_setup_cfg()</span></code></a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-edgetest">Module contents</a></li>
 </ul>
 </li>
@@ -838,6 +964,7 @@ or the string representing the requirements file.</p></li>
     <script src="../_static/underscore.js"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/scripts/furo.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>

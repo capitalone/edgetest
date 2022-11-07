@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Extending edgetest through plugins" href="plugins.html" /><link rel="prev" title="Quick Start" href="quickstart.html" />
 
-    <meta name="generator" content="sphinx-5.0.2, furo 2022.06.21"/>
+    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
         <title>Advanced Usage - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -191,7 +191,8 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="theme-toggle-container theme-toggle-content">
+          
+<div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
@@ -227,29 +228,56 @@ parse your requirements file, you can create a configuration file:</p>
 <li><p>Upgrade <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, and</p></li>
 <li><p>Run the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> in the environment.</p></li>
 </ol>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This configuration file can be a standalone file which is distinct from the <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>
+configurations. Just note it must have a <code class="docutils literal notranslate"><span class="pre">edgetest.envs</span></code> otherwise it expects a PEP 517-style <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code></p>
+</div>
 </section>
-<section id="setup-cfg-configuration">
-<h2><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> Configuration<a class="headerlink" href="#setup-cfg-configuration" title="Permalink to this heading">#</a></h2>
-<p>You can also specify your testing environment through <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<section id="setup-cfg-and-pyproject-toml-configuration">
+<h2><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> Configuration<a class="headerlink" href="#setup-cfg-and-pyproject-toml-configuration" title="Permalink to this heading">#</a></h2>
+<p>You can also specify your testing environment through <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
 </pre></div>
 </div>
-<p>If you’re using a <a class="reference external" href="https://setuptools.readthedocs.io/en/latest/userguide/declarative_config.html">PEP-517 style installation configuration</a>,
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div></div>
+<p>If you’re using a <a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/declarative_config.html">PEP-517</a>
+or <a class="reference external" href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html">PEP-621</a> style installation configuration
 your requirements might look like this:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[options]</span><span class="w"></span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[options]</span><span class="w"></span>
 <span class="na">install_requires</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
 </pre></div>
 </div>
-<p>To point to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code>, supply the location of the file as your <code class="docutils literal notranslate"><span class="pre">--config</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/setup.cfg
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span><span class="w"></span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">]</span><span class="w"></span>
 </pre></div>
 </div>
+</div></div>
+<p>To point to <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, supply the location of the file as your <code class="docutils literal notranslate"><span class="pre">--config</span></code>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/setup.cfg
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/pyproject.toml
+</pre></div>
+</div>
+</div></div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Using <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> will allow you to upgrade optional installations.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> will allow you to upgrade optional installations.</p>
 </div>
 </section>
 <section id="installing-extras">
@@ -257,7 +285,7 @@ your requirements might look like this:</p>
 <p>To install extras with your local package in the virtual environment(s), modify your configuration or CLI
 call as follows:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">Configuration file</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><p>Add an <code class="docutils literal notranslate"><span class="pre">extras</span></code> list to your environment:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">.toml</button><button aria-controls="panel-3-3-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-2" name="3-2" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>Add an <code class="docutils literal notranslate"><span class="pre">extras</span></code> list to your environment:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
@@ -265,7 +293,13 @@ call as follows:</p>
 <span class="w">    </span><span class="na">tests</span><span class="w"></span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--extras</span></code> to the CLI call:</p>
+</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Add an <code class="docutils literal notranslate"><span class="pre">extras</span></code> list to your environment:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--extras</span></code> to the CLI call:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest --extras tests --extras <span class="nb">complete</span>
 </pre></div>
 </div>
@@ -276,7 +310,7 @@ call as follows:</p>
 <h2>Modifying the test command<a class="headerlink" href="#modifying-the-test-command" title="Permalink to this heading">#</a></h2>
 <p>To customize your test command, modify the configuration or CLI call as follows:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">Configuration file</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">command</span></code> key to your environment:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-4-4-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-4-4-0" name="4-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-4-4-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-1" name="4-1" role="tab" tabindex="-1">.toml</button><button aria-controls="panel-4-4-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-4-4-2" name="4-2" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-4-4-0" class="sphinx-tabs-panel" id="panel-4-4-0" name="4-0" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">command</span></code> key to your environment:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
@@ -286,7 +320,14 @@ call as follows:</p>
 <span class="w">    </span><span class="na">pytest tests -m &#39;not integration&#39;</span><span class="w"></span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--command</span></code> to your CLI call:</p>
+</div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">command</span></code> key to your environment:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--command</span></code> to your CLI call:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest <span class="se">\</span>
     --extras tests <span class="se">\</span>
     --extras <span class="nb">complete</span> <span class="se">\</span>
@@ -301,7 +342,7 @@ call as follows:</p>
 can specify additional dependencies to be installed via <code class="docutils literal notranslate"><span class="pre">pip</span></code>.</p>
 <p>To specify additional <code class="docutils literal notranslate"><span class="pre">pip</span></code> dependencies, modify as follows:</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">Configuration file</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> list:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-5-5-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-5-5-0" name="5-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-5-5-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-1" name="5-1" role="tab" tabindex="-1">.toml</button><button aria-controls="panel-5-5-2" aria-selected="false" class="sphinx-tabs-tab" id="tab-5-5-2" name="5-2" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-5-5-0" class="sphinx-tabs-panel" id="panel-5-5-0" name="5-0" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> list:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
@@ -313,7 +354,15 @@ can specify additional dependencies to be installed via <code class="docutils li
 <span class="w">    </span><span class="na">scikit-learn</span><span class="w"></span>
 </pre></div>
 </div>
-</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> argument to your CLI call; this argument accepts multiple values.</p>
+</div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> list:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span><span class="w"></span>
+<span class="n">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;scikit-learn&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> argument to your CLI call; this argument accepts multiple values.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest <span class="se">\</span>
     --extras tests <span class="se">\</span>
     --extras <span class="nb">complete</span> <span class="se">\</span>
@@ -331,7 +380,8 @@ can specify additional dependencies to be installed via <code class="docutils li
 <h2>Default arguments<a class="headerlink" href="#default-arguments" title="Permalink to this heading">#</a></h2>
 <p>If you have default arguments you want to pass to each environment in your configuration,
 you can specify those under the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> section of your configuration:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-6-6-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-6-6-0" name="6-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-6-6-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-6-6-1" name="6-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-6-6-0" class="sphinx-tabs-panel" id="panel-6-6-0" name="6-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
 <span class="na">extras</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">tests</span><span class="w"></span>
 <span class="na">command</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
@@ -350,7 +400,10 @@ you can specify those under the <code class="docutils literal notranslate"><span
 <p class="admonition-title">Important</p>
 <p>You can combine your configuration file with <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code>. If you have the following
 configuration file:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[options]</span><span class="w"></span>
+<span class="na">install_requires</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
+
+<span class="k">[edgetest]</span><span class="w"></span>
 <span class="na">extras</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">tests</span><span class="w"></span>
 <span class="na">command</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
@@ -368,12 +421,25 @@ scikit-learn&gt;=0.23.0,&lt;=0.24.2
 </div>
 <p>will apply the default arguments to each environment.</p>
 </div>
+</div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span><span class="w"></span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span><span class="w"></span>
+
+<span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;pandas&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="k">[edgetest.envs.numpy]</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+</div></div>
 </section>
 <section id="multiple-packages">
 <h2>Multiple packages<a class="headerlink" href="#multiple-packages" title="Permalink to this heading">#</a></h2>
 <p>Suppose you have multiple local packages you want to test. You can include the <code class="docutils literal notranslate"><span class="pre">package_dir</span></code>
 in your testing project directory:</p>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-7-7-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-7-7-0" name="7-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-7-7-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-7-7-1" name="7-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-7-7-0" class="sphinx-tabs-panel" id="panel-7-7-0" name="7-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
 <span class="na">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">../mypackage</span><span class="w"></span>
 <span class="na">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
 <span class="w">    </span><span class="na">pandas</span><span class="w"></span>
@@ -388,6 +454,20 @@ in your testing project directory:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/edgetest.cfg
 </pre></div>
 </div>
+</div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span><span class="w"></span>
+<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../mypackage&quot;</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;pandas&quot;</span><span class="p">]</span><span class="w"></span>
+
+<span class="k">[edgetest.envs.numpy]</span><span class="w"></span>
+<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../myotherpackage&quot;</span><span class="w"></span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>After running</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/edgetest.toml
+</pre></div>
+</div>
+</div></div>
 <p>your end output should look something like this:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>============= =============== =================== =================
  Environment   Passing tests   Upgraded packages   Package version
@@ -409,6 +489,23 @@ in your testing project directory:</p>
 </pre></div>
 </div>
 </section>
+<section id="exporting-an-upgraded-config-file">
+<h2>Exporting an upgraded config file<a class="headerlink" href="#exporting-an-upgraded-config-file" title="Permalink to this heading">#</a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-8-8-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-8-8-0" name="8-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-8-8-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-8-8-1" name="8-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-8-8-0" class="sphinx-tabs-panel" id="panel-8-8-0" name="8-0" role="tabpanel" tabindex="0"><p>This will overwrite your current <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file with the updated requirements.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c /path/to/setup.cfg --export
+</pre></div>
+</div>
+</div></blockquote>
+</div><div aria-labelledby="tab-8-8-1" class="sphinx-tabs-panel" hidden="true" id="panel-8-8-1" name="8-1" role="tabpanel" tabindex="0"><p>This will overwrite your current <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file with the updated requirements.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/pyproject.toml --export
+</pre></div>
+</div>
+</div></blockquote>
+</div></div>
+</section>
 <section id="exporting-an-upgraded-requirements-file">
 <h2>Exporting an upgraded requirements file<a class="headerlink" href="#exporting-an-upgraded-requirements-file" title="Permalink to this heading">#</a></h2>
 <p>You can use the <code class="docutils literal notranslate"><span class="pre">--export</span></code> flag to overwrite your input requirements file with the
@@ -423,22 +520,14 @@ test environment if the tests pass. In the requirements file,</p>
 <p>For instance, <code class="docutils literal notranslate"><span class="pre">snowflake-connector-python[pandas]&gt;=2.2.8,&lt;2.3.9</span></code> might be replaced with
 <code class="docutils literal notranslate"><span class="pre">snowflake-connector-python[pandas]!=2.3.9,&lt;=2.4.3,&gt;=2.2.8</span></code>. To use this functionality,</p>
 <div class="sphinx-tabs docutils container">
-<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-3-3-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-3-3-0" name="3-0" role="tab" tabindex="0">Configuration file</button><button aria-controls="panel-3-3-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-3-3-1" name="3-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-3-3-0" class="sphinx-tabs-panel" id="panel-3-3-0" name="3-0" role="tabpanel" tabindex="0"><p>Include the correct <code class="docutils literal notranslate"><span class="pre">--requirements</span></code> filepath and use <code class="docutils literal notranslate"><span class="pre">--export</span></code>:</p>
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-9-9-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-9-9-0" name="9-0" role="tab" tabindex="0">Configuration file (cfg/toml)</button><button aria-controls="panel-9-9-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-9-9-1" name="9-1" role="tab" tabindex="-1">Requirements parsing</button></div><div aria-labelledby="tab-9-9-0" class="sphinx-tabs-panel" id="panel-9-9-0" name="9-0" role="tabpanel" tabindex="0"><p>Include the correct <code class="docutils literal notranslate"><span class="pre">--requirements</span></code> filepath and use <code class="docutils literal notranslate"><span class="pre">--export</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest <span class="se">\</span>
-    -c path/to/config.yaml <span class="se">\</span>
+    -c path/to/edgetest.cfg <span class="se">\</span>
     --requirements requirements.txt <span class="se">\</span>
     --export
 </pre></div>
 </div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>This will overwrite your current <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> file with the updated requirements
-if you are using PEP-517.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -c path/to/setup.cfg --export
-</pre></div>
-</div>
-</div>
-</div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>For a standard requirements file, the last environment will be <code class="docutils literal notranslate"><span class="pre">all-requirements</span></code>.
+</div><div aria-labelledby="tab-9-9-1" class="sphinx-tabs-panel" hidden="true" id="panel-9-9-1" name="9-1" role="tabpanel" tabindex="0"><p>For a standard requirements file, the last environment will be <code class="docutils literal notranslate"><span class="pre">all-requirements</span></code>.
 So, if your tests pass with all requirements upgraded, the requirements file will
 be updated.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest <span class="se">\</span>
@@ -488,6 +577,12 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
 </tbody>
 </table>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you need edgetest to run a different Python version than what is in your current environment you can use
+<a class="reference external" href="https://capitalone.github.io/edgetest-conda/quickstart.html#usage">edgetest-conda</a> to do so with the
+<code class="docutils literal notranslate"><span class="pre">python_version</span></code> configuration.</p>
+</div>
 </section>
 </section>
 
@@ -503,10 +598,10 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
                 </div>
                 <div class="title">Extending edgetest through plugins</div>
               </div>
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
           <a class="prev-page" href="quickstart.html">
-              <svg><use href="#svg-arrow-right"></use></svg>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
@@ -542,7 +637,7 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
       <div class="toc-sticky toc-scroll">
         <div class="toc-title-container">
           <span class="toc-title">
-            Contents
+            On this page
           </span>
         </div>
         <div class="toc-tree-container">
@@ -550,13 +645,14 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
             <ul>
 <li><a class="reference internal" href="#">Advanced Usage</a><ul>
 <li><a class="reference internal" href="#configuration-file">Configuration file</a></li>
-<li><a class="reference internal" href="#setup-cfg-configuration"><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> Configuration</a></li>
+<li><a class="reference internal" href="#setup-cfg-and-pyproject-toml-configuration"><code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> and <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> Configuration</a></li>
 <li><a class="reference internal" href="#installing-extras">Installing extras</a></li>
 <li><a class="reference internal" href="#modifying-the-test-command">Modifying the test command</a></li>
 <li><a class="reference internal" href="#additional-dependencies">Additional dependencies</a></li>
 <li><a class="reference internal" href="#default-arguments">Default arguments</a></li>
 <li><a class="reference internal" href="#multiple-packages">Multiple packages</a></li>
 <li><a class="reference internal" href="#running-a-single-environment">Running a single environment</a></li>
+<li><a class="reference internal" href="#exporting-an-upgraded-config-file">Exporting an upgraded config file</a></li>
 <li><a class="reference internal" href="#exporting-an-upgraded-requirements-file">Exporting an upgraded requirements file</a></li>
 <li><a class="reference internal" href="#using-plugins">Using plugins</a></li>
 </ul>
@@ -575,6 +671,7 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
     <script src="_static/underscore.js"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
