@@ -6,10 +6,13 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from packaging.specifiers import SpecifierSet
 from pkg_resources import parse_requirements
+from tomlkit import TOMLDocument, load
+from tomlkit.container import Container
+from tomlkit.items import Array, Item, String, Table
 
 from .logger import get_logger
 
@@ -62,6 +65,15 @@ def pushd(new_dir: str):
         yield
     finally:
         os.chdir(curr_dir)
+
+
+def _convert_toml_array_to_string(item: Union[Item, Any]) -> str:
+    if isinstance(item, Array):
+        return "\n".join(item)
+    elif isinstance(item, String):
+        return str(item)
+    else:
+        raise ValueError
 
 
 def convert_requirements(requirements: str, conf: Optional[Dict] = None) -> Dict:
@@ -224,6 +236,127 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
     return output
 
 
+def parse_toml(
+    filename: str = "pyproject.toml", requirements: Optional[str] = None
+) -> Dict:
+    """Generate a configuration from a ``.toml`` style file.
+
+    This function can operate in two ways. First, it will look for tables that
+    start with ``edgetest`` and build a configuration. Suppose
+    you have ``pyproject.toml`` as follows:
+
+    .. code-block:: toml
+
+        [edgetest.envs.pandas]
+        upgrade = [
+            "pandas"
+        ]
+
+    This will result in a configuration that has one testing environment, named
+    ``pandas``, that upgrades the ``pandas`` package.
+
+    If you don't have any tables that start with ``edgetest.envs``, we will look for
+    the installation requirements (the ``dependencies`` key within the ``project`` section).
+    To set global defaults for you environments, use the ``edgetest`` table:
+
+    .. code-block:: toml
+
+        [edgetest]
+        extras = [
+            "tests"
+        ]
+        command = "pytest tests -m 'not integration'"
+
+        [edgetest.envs.pandas]
+        upgrade = [
+            "pandas"
+        ]
+
+    For this single environment file, the above configuration is equivalent to
+
+    .. code-block:: toml
+
+        [edgetest.envs.pandas]
+        extras = [
+            "tests"
+        ]
+        command = "pytest tests -m 'not integration'"
+        upgrade = [
+            "pandas"
+        ]
+
+    Parameters
+    ----------
+    filename : str, optional (default "pyproject.toml")
+        The name of the toml file to read. Defaults to ``pyproject.toml``.
+    requirements : str, optional (default None)
+        An optional path to the requirements text file. If there are no TOML
+        style dependencies or coded environments in the edgetest configuration, this
+        function will look for dependencies in the requirements file.
+
+    Returns
+    -------
+    Dict
+        A configuration dictionary for ``edgetest``.
+    """
+    options: Union[Item, Container, dict]
+    # Read in the configuration file
+    config: TOMLDocument = load(open(filename))
+    # Parse
+    output: Dict = {"envs": []}
+    # Get any global options if necessary. First scan through and pop out any Tables
+    temp_config = deepcopy(config)
+    if "edgetest" in config:
+        for j in config["edgetest"].items():  # type: ignore
+            if isinstance(config["edgetest"][j[0]], Table):  # type: ignore
+                _ = temp_config["edgetest"].pop(  # type: ignore
+                    j[0], None
+                )  # remove Tables from the temp config
+            else:
+                temp_config["edgetest"][j[0]] = _convert_toml_array_to_string(  # type: ignore
+                    temp_config["edgetest"][j[0]]  # type: ignore
+                )
+        options = temp_config["edgetest"]
+    else:
+        options = {}
+
+    # Check envs exists and any other Tables
+    if "edgetest" in config:
+        for section in config["edgetest"]:  # type: ignore
+            if section == "envs":
+                for env in config["edgetest"]["envs"]:  # type: ignore
+                    for item in config["edgetest"]["envs"][env]:  # type: ignore
+                        # If an Array then decompose to a string format
+                        config["edgetest"]["envs"][env][  # type: ignore
+                            item
+                        ] = _convert_toml_array_to_string(
+                            config["edgetest"]["envs"][env][item]  # type: ignore
+                        )
+                    output["envs"].append(dict(config["edgetest"]["envs"][env]))  # type: ignore
+                    output["envs"][-1]["name"] = env
+            elif isinstance(config["edgetest"][section], Table):  # type: ignore
+                output[section] = dict(config["edgetest"][section])  # type: ignore
+
+    if len(output["envs"]) == 0:
+        if config.get("project").get("dependencies"):  # type: ignore
+            output = convert_requirements(
+                requirements="\n".join(config["project"]["dependencies"]), conf=output  # type: ignore # noqa: E501
+            )
+        elif requirements:
+            req_conf = gen_requirements_config(fname_or_buf=requirements)
+            output["envs"] = req_conf["envs"]
+        else:
+            raise ValueError("Please supply a valid list of environments to create.")
+
+    # Apply global environment options (without overwriting)
+    for idx in range(len(output["envs"])):
+        output["envs"][idx] = dict(
+            list(options.items()) + list(output["envs"][idx].items())  # type: ignore
+        )
+
+    return output
+
+
 def upgrade_requirements(
     fname_or_buf: str, upgraded_packages: List[Dict[str, str]]
 ) -> str:
@@ -307,5 +440,42 @@ def upgrade_setup_cfg(
                 upgraded_packages=upgraded_packages,
             )
             parser["options.extras_require"][extra] = "\n" + upgraded
+
+    return parser
+
+
+def upgrade_pyproject_toml(
+    upgraded_packages: List[Dict[str, str]], filename: str = "pyproject.toml"
+) -> TOMLDocument:
+    """Upgrade the ``pyproject.toml`` file.
+
+    Parameters
+    ----------
+    upgraded_packages : List[Dict[str, str]]
+        A list of packages upgraded in the testing procedure.
+    filename : str, optional (default "pyproject.toml")
+        The name of the configuration file to read. Defaults to ``pyproject.toml``.
+
+    Returns
+    -------
+    TOMLDocument
+        The updated TOMLDocument.
+    """
+    parser: TOMLDocument = load(open(filename))
+    if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
+        LOG.info(f"Updating the requirements in {filename}")
+        upgraded = upgrade_requirements(
+            fname_or_buf="\n".join(parser["project"]["dependencies"]),  # type: ignore
+            upgraded_packages=upgraded_packages,
+        )
+        parser["project"]["dependencies"] = upgraded.split("\n")  # type: ignore
+    # Update the extras, if necessary
+    if parser.get("project").get("optional-dependencies"):  # type: ignore
+        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore # noqa: E501
+            upgraded = upgrade_requirements(
+                fname_or_buf="\n".join(dependencies),
+                upgraded_packages=upgraded_packages,
+            )
+            parser["project"]["optional-dependencies"][extra] = upgraded.split("\n")  # type: ignore
 
     return parser

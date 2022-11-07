@@ -4,10 +4,11 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 [![PyPI version](https://badge.fury.io/py/edgetest.svg)](https://badge.fury.io/py/edgetest)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/edgetest/badges/version.svg)](https://anaconda.org/conda-forge/edgetest)
+![PyPI - Downloads](https://img.shields.io/pypi/dm/edgetest)
 
 [Full Documentation](https://capitalone.github.io/edgetest/)
 
-`edgetest` is a `tox`-inspired python library that will loop through your project's dependencies, and check if your 
+`edgetest` is a `tox`-inspired python library that will loop through your project's dependencies, and check if your
 project is compatible with the latest version of each dependency. It does this by:
 
 * creating a virtual environment,
@@ -17,6 +18,14 @@ project is compatible with the latest version of each dependency. It does this b
 
 For example, if you depend on ``pandas>=0.25.1,<=1.0.0``, ``edgetest`` will test your project against the most current
 pandas version (say ``1.3.4``), so you know if you can safely update your dependency to ``pandas>=0.25.1,<=1.3.4`` or not.
+
+
+`edgetest` works with the following types of projects:
+
+- `pyproject.toml`
+- `setup.cfg`
+- and `requirements.txt`
+
 
 Table Of Contents
 -----------------
@@ -47,7 +56,8 @@ $ conda install -c conda-forge edgetest
 Getting Started
 ---------------
 
-``edgetest`` allows multi-package, bleeding edge dependency testing. Suppose you have a package, ``mypackage``, with the following ``requirements.txt``:
+``edgetest`` allows multi-package, bleeding edge dependency testing. Suppose you have a package, ``mypackage``, with
+the following ``requirements.txt``:
 
 ```
 pandas>=0.25.1,<=1.0.0
@@ -118,4 +128,3 @@ Roadmap
 -------
 
 Roadmap details can be found [here](https://capitalone.github.io/edgetest/roadmap.html).
-
