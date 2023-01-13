@@ -8,7 +8,7 @@ cerberus==1.3.4
     # via edgetest (setup.cfg)
 click==8.1.3
     # via edgetest (setup.cfg)
-packaging==22.0
+packaging==23.0
     # via edgetest (setup.cfg)
 pluggy==1.0.0
     # via edgetest (setup.cfg)
