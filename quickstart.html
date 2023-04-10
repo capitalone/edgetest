@@ -5,10 +5,10 @@
     <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced Usage" href="usage.html" /><link rel="prev" title="Welcome to edgetest’s documentation!" href="index.html" />
 
-    <meta name="generator" content="sphinx-5.3.0, furo 2022.09.29"/>
+    <!-- Generated with Sphinx 6.1.3 and Furo 2023.03.27 -->
         <title>Quick Start - Bleeding edge dependency testing documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=d81277517bee4d6b0349d71bb2661d4890b5617c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=fad236701ea90a88636c2a8c73b44ae642ed2a53" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
     <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
@@ -151,7 +151,7 @@
   <span class="sidebar-brand-text">Bleeding edge dependency testing  documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
-  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
   <input type="hidden" name="area" value="default">
 </form>
@@ -211,11 +211,11 @@
 <section id="install">
 <h2>Install<a class="headerlink" href="#install" title="Permalink to this heading">#</a></h2>
 <p>Installation from PyPI:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python -m pip install edgetest
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>edgetest
 </pre></div>
 </div>
 <p>Installation from conda-forge:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>conda install -c conda-forge edgetest
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>edgetest
 </pre></div>
 </div>
 </section>
@@ -244,17 +244,17 @@
 <ol class="arabic">
 <li><p>Create a virtual environment in the <code class="docutils literal notranslate"><span class="pre">.edgetest</span></code> folder,</p></li>
 <li><p>Install the local <code class="docutils literal notranslate"><span class="pre">mypackage</span></code> with the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python -m pip install .
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>.
 </pre></div>
 </div>
 </li>
 <li><p>Upgrade <code class="docutils literal notranslate"><span class="pre">pandas</span></code> using the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python -m pip install pandas --upgrade
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pandas<span class="w"> </span>--upgrade
 </pre></div>
 </div>
 </li>
 <li><p>Run a generic test command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python -m pytest
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>.edgetest/pandas/bin/python<span class="w"> </span>-m<span class="w"> </span>pytest
 </pre></div>
 </div>
 </li>
@@ -282,7 +282,7 @@ environments to Github.</p>
 <aside class="footnote brackets" id="f1" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>If you are not using a <code class="docutils literal notranslate"><span class="pre">requirements.txt</span></code> file, you can specify the filename with <code class="docutils literal notranslate"><span class="pre">-r</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest -r path/to/file.txt
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>edgetest<span class="w"> </span>-r<span class="w"> </span>path/to/file.txt
 </pre></div>
 </div>
 </aside>
@@ -327,9 +327,7 @@ environments to Github.</p>
             
           </div>
           <div class="right-details">
-            <div class="icons">
-              
-            </div>
+            
           </div>
         </div>
         
@@ -363,9 +361,6 @@ environments to Github.</p>
     </aside>
   </div>
 </div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/scripts/furo.js"></script>
