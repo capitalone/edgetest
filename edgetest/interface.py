@@ -135,7 +135,7 @@ def cli(
     pm.hook.addoption(schema=docstructure)
     validator = EdgetestValidator(schema=docstructure.schema)
     if not validator.validate(conf):
-        click.echo("Unable to validate configuration file.")
+        click.echo(f"Unable to validate configuration file. Error: {validator.errors}")
         raise ValueError("Unable to validate configuration file.")
     conf = validator.document
 
