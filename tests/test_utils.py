@@ -488,4 +488,6 @@ def test_isin_case_dashhyphen_ins():
     vals = ["pandas", "python-dateutil"]
 
     assert _isin_case_dashhyphen_ins("Pandas", vals)
+    assert not _isin_case_dashhyphen_ins("Panda$", vals)
     assert _isin_case_dashhyphen_ins("Python_Dateutil", vals)
+    assert not _isin_case_dashhyphen_ins("Python_Dateut1l", vals)
