@@ -31,14 +31,14 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["click<=8.0.0,>=7.1", "dask[dataframe]<=2022.1.0"]
+dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Dask[dataframe]<=2022.1.0"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
 
 [edgetest.envs.core]
 extras = ["tests"]
-upgrade = ["click", "dask[dataframe]"]
+upgrade = ["scikit-learn", "dask[dataframe]"]
 """
 
 
@@ -89,6 +89,7 @@ def test_toy_package():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "pandas").is_dir()
+        assert "pandas" in result.stdout
 
         if not sys.platform == "win32":
             assert Path(
@@ -130,15 +131,17 @@ def test_toy_package_dask():
                 loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "pandas"
             ).is_dir()
             assert Path(
-                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "click"
+                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "sklearn"
             ).is_dir()
 
         config = load(open("pyproject.toml"))
 
-        assert "click" in config["project"]["dependencies"][0]
-        assert "dask" in config["project"]["dependencies"][1]
+        assert "Scikit_Learn" in config["project"]["dependencies"][0]
+        assert "Dask" in config["project"]["dependencies"][1]
         assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["core"]["upgrade"] == [
-            "click",
+            "scikit-learn",
             "dask[dataframe]",
         ]
+        assert "dask" in result.stdout
+        assert "scikit-learn" in result.stdout

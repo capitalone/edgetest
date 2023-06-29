@@ -46,7 +46,7 @@ zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    click<=8.0.0,>=7.1
+    scikit-learn>=1.0,<=1.2.0
     dask[dataframe]<=2022.1.0
 
 [options.extras_require]
@@ -57,8 +57,8 @@ tests =
 extras =
     tests
 upgrade =
-    click
-    dask[dataframe]
+    Scikit_Learn
+    Dask[DataFrame]
 """
 
 
@@ -109,6 +109,7 @@ def test_toy_package():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "pandas").is_dir()
+        assert "pandas" in result.stdout
 
         if not sys.platform == "win32":
             assert Path(
@@ -150,13 +151,15 @@ def test_toy_package_dask():
                 loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "pandas"
             ).is_dir()
             assert Path(
-                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "click"
+                loc, ".edgetest", "core", "lib", PY_VER, "site-packages", "sklearn"
             ).is_dir()
 
         config = configparser.ConfigParser()
         config.read("setup.cfg")
 
-        assert "click" in config["options"]["install_requires"]
+        assert "scikit-learn" in config["options"]["install_requires"]
         assert "dask[dataframe]" in config["options"]["install_requires"]
         assert config["edgetest.envs.core"]["extras"] == "\ntests"
-        assert config["edgetest.envs.core"]["upgrade"] == "\nclick\ndask[dataframe]"
+        assert config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nDask[DataFrame]"
+        assert "dask" in result.stdout
+        assert "scikit-learn" in result.stdout
