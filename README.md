@@ -41,7 +41,7 @@ Table Of Contents
 Install
 -------
 
-Create a ``conda`` environment with Python 3.7+ and install from PyPI:
+Create a ``conda`` environment with Python 3.8+ and install from PyPI:
 
 ```console
 $ python -m pip install edgetest
