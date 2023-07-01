@@ -216,7 +216,7 @@
 <span class="kn">from</span> <span class="nn">pluggy._hooks</span> <span class="kn">import</span> <span class="n">_HookRelay</span>
 
 <span class="kn">from</span> <span class="nn">.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_run_command</span><span class="p">,</span> <span class="n">pushd</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">,</span> <span class="n">_run_command</span><span class="p">,</span> <span class="n">pushd</span>
 
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -356,7 +356,11 @@
         <span class="n">outjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 
         <span class="n">upgrade_wo_extras</span> <span class="o">=</span> <span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">pkg</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">outjson</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">upgrade_wo_extras</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">pkg</span>
+            <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">outjson</span>
+            <span class="k">if</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">upgrade_wo_extras</span><span class="p">)</span>
+        <span class="p">]</span></div>
 
 <div class="viewcode-block" id="TestPackage.run_tests"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.core.TestPackage.run_tests">[docs]</a>    <span class="k">def</span> <span class="nf">run_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the tests in the package directory.</span>
