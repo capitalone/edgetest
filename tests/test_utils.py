@@ -13,6 +13,7 @@ from edgetest.utils import (
     parse_toml,
     upgrade_pyproject_toml,
     upgrade_setup_cfg,
+    _isin_case_dashhyphen_ins,
 )
 
 REQS = """
@@ -481,3 +482,15 @@ def test_upgrade_pyproject_toml(tmpdir):
             "optional-dependencies": {"tests": ["pytest<=4.0.0,>=1.0.0"]},
         }
     }
+
+
+def test_isin_case_dashhyphen_ins():
+    vals = ["pandas", "python-dateutil"]
+
+    assert _isin_case_dashhyphen_ins("pandas", vals)
+    assert _isin_case_dashhyphen_ins("Pandas", vals)
+    assert not _isin_case_dashhyphen_ins("Panda$", vals)
+    assert _isin_case_dashhyphen_ins("python-dateutil", vals)
+    assert _isin_case_dashhyphen_ins("Python_Dateutil", vals)
+    assert not _isin_case_dashhyphen_ins("Python_Dateut1l", vals)
+    assert not _isin_case_dashhyphen_ins("pandaspython-dateutil", vals)

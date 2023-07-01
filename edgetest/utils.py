@@ -479,3 +479,24 @@ def upgrade_pyproject_toml(
             parser["project"]["optional-dependencies"][extra] = upgraded.split("\n")  # type: ignore
 
     return parser
+
+
+def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
+    """Run isin check that is case and dash/hyphen insensitive.
+
+    Paramaters
+    ----------
+    a : str
+        String value to check for membership against ``vals``.
+    vals : list of str
+        List of strings to check ``a`` against.
+
+    Returns
+    -------
+    bool
+        Return ``True`` if ``a`` in vals, otherwise ``False``.
+    """
+    for b in vals:
+        if a.replace("_", "-").lower() == b.replace("_", "-").lower():
+            return True
+    return False

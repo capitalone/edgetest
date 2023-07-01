@@ -9,7 +9,7 @@ from typing import Dict, List, Optional
 from pluggy._hooks import _HookRelay
 
 from .logger import get_logger
-from .utils import _run_command, pushd
+from .utils import _isin_case_dashhyphen_ins, _run_command, pushd
 
 LOG = get_logger(__name__)
 
@@ -149,7 +149,11 @@ class TestPackage:
         outjson = json.loads(out)
 
         upgrade_wo_extras = [pkg.split("[")[0] for pkg in self.upgrade]
-        return [pkg for pkg in outjson if pkg.get("name", "") in upgrade_wo_extras]
+        return [
+            pkg
+            for pkg in outjson
+            if _isin_case_dashhyphen_ins(pkg.get("name", ""), upgrade_wo_extras)
+        ]
 
     def run_tests(self, command: str) -> int:
         """Run the tests in the package directory.
