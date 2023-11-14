@@ -19,6 +19,14 @@ BASE_SCHEMA = {
                     },
                     "coerce": "listify",
                     "required": True,
+                    "excludes": "lower",
+                },
+                "lower": {
+                    "type": "list",
+                    "schema": {"type": "string"},
+                    "coerce": "listify",
+                    "required": True,
+                    "excludes": "upgrade"
                 },
                 "extras": {
                     "type": "list",
