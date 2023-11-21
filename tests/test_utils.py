@@ -27,6 +27,12 @@ upgrade =
     myupgrade
 command =
     pytest tests -m 'not integration'
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
+command =
+    pytest tests -m 'not integration'
 """
 
 CFG_REQS = """
@@ -59,6 +65,12 @@ upgrade =
     myupgrade
 command =
     pytest tests
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
+command =
+    pytest tests
 """
 
 CFG_CUSTOM = """
@@ -74,6 +86,10 @@ mycustom = mykey
 [edgetest.envs.myenv]
 upgrade =
     myupgrade
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
 """
 
 
@@ -184,6 +200,11 @@ def test_parse_cfg(tmpdir):
                 "name": "myenv",
                 "upgrade": "\nmyupgrade",
                 "command": "\npytest tests -m 'not integration'",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
+                "command": "\npytest tests -m 'not integration'",
             }
         ]
     }
@@ -207,6 +228,12 @@ def test_parse_cfg_default(tmpdir):
             {
                 "name": "myenv",
                 "upgrade": "\nmyupgrade",
+                "extras": "\ntests",
+                "command": "\npytest tests",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
                 "extras": "\ntests",
                 "command": "\npytest tests",
             }
@@ -285,6 +312,12 @@ def test_parse_custom_cfg(tmpdir):
             {
                 "name": "myenv",
                 "upgrade": "\nmyupgrade",
+                "extras": "\ntests",
+                "command": "\npytest tests -m 'not integration'",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
                 "extras": "\ntests",
                 "command": "\npytest tests -m 'not integration'",
             }
