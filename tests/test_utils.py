@@ -99,6 +99,10 @@ upgrade = [
     "myupgrade"
 ]
 command = "pytest tests -m 'not integration'"
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
+command = "pytest tests -m 'not integration'"
 """
 
 
@@ -127,6 +131,10 @@ command = "pytest tests -m 'not integration'"
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
 command = "pytest tests"
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
+command = "pytest tests"
 """
 
 TOML_CUSTOM = """
@@ -139,6 +147,9 @@ mycustom = "mykey"
 
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
 """
 
 
@@ -349,6 +360,11 @@ def test_parse_toml(tmpdir):
                 "name": "myenv",
                 "upgrade": "myupgrade",
                 "command": "pytest tests -m 'not integration'",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
+                "command": "pytest tests -m 'not integration'",
             }
         ]
     }
@@ -372,6 +388,12 @@ def test_parse_toml_default(tmpdir):
             {
                 "name": "myenv",
                 "upgrade": "myupgrade",
+                "extras": "tests",
+                "command": "pytest tests",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
                 "extras": "tests",
                 "command": "pytest tests",
             }
@@ -450,6 +472,12 @@ def test_parse_custom_toml(tmpdir):
             {
                 "name": "myenv",
                 "upgrade": "myupgrade",
+                "extras": "tests",
+                "command": "pytest tests -m 'not integration'",
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
                 "extras": "tests",
                 "command": "pytest tests -m 'not integration'",
             }
