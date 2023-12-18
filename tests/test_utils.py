@@ -8,12 +8,13 @@ from tomlkit import array, string
 from edgetest.schema import BASE_SCHEMA, EdgetestValidator, Schema
 from edgetest.utils import (
     _convert_toml_array_to_string,
+    _isin_case_dashhyphen_ins,
     gen_requirements_config,
+    get_lower,
     parse_cfg,
     parse_toml,
     upgrade_pyproject_toml,
     upgrade_setup_cfg,
-    _isin_case_dashhyphen_ins,
 )
 
 REQS = """
@@ -176,6 +177,16 @@ tests = [
 ]
 """
 
+REQS_NORMAL = """
+pandas>=1.0.0,<=2.0
+numpy<=0.24,>=0.01
+"""
+
+
+def test_get_lower():
+    """Test getting lower bound from reqs."""
+    assert get_lower(REQS_NORMAL) == {"pandas": "1.0.0", "numpy": "0.01"}
+
 
 @patch("edgetest.utils.Path")
 def test_parse_reqs(mock_pathlib):
@@ -216,7 +227,7 @@ def test_parse_cfg(tmpdir):
                 "name": "myenv_lower",
                 "lower": "\nmylower",
                 "command": "\npytest tests -m 'not integration'",
-            }
+            },
         ]
     }
 
@@ -247,7 +258,7 @@ def test_parse_cfg_default(tmpdir):
                 "lower": "\nmylower",
                 "extras": "\ntests",
                 "command": "\npytest tests",
-            }
+            },
         ]
     }
 
@@ -331,7 +342,7 @@ def test_parse_custom_cfg(tmpdir):
                 "lower": "\nmylower",
                 "extras": "\ntests",
                 "command": "\npytest tests -m 'not integration'",
-            }
+            },
         ],
     }
 
@@ -365,7 +376,7 @@ def test_parse_toml(tmpdir):
                 "name": "myenv_lower",
                 "lower": "mylower",
                 "command": "pytest tests -m 'not integration'",
-            }
+            },
         ]
     }
 
@@ -396,7 +407,7 @@ def test_parse_toml_default(tmpdir):
                 "lower": "mylower",
                 "extras": "tests",
                 "command": "pytest tests",
-            }
+            },
         ]
     }
 
@@ -480,7 +491,7 @@ def test_parse_custom_toml(tmpdir):
                 "lower": "mylower",
                 "extras": "tests",
                 "command": "pytest tests -m 'not integration'",
-            }
+            },
         ],
     }
 

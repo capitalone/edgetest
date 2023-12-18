@@ -39,6 +39,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
             universal_newlines=True,
         ),
     ]
+    assert tester.setup_status
 
 
 @patch.object(Path, "cwd")
@@ -56,8 +57,8 @@ def test_basic_setup_error(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert tester._basedir == Path(str(location)) / ".edgetest"
 
-    with pytest.raises(RuntimeError):
-        tester.setup()
+    tester.setup()
+    assert not tester.setup_status
 
 
 @patch.object(Path, "cwd")
@@ -90,6 +91,8 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
             universal_newlines=True,
         ),
     ]
+
+    assert tester.setup_status
 
 
 @patch.object(Path, "cwd")
@@ -137,6 +140,8 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
         ),
     ]
 
+    assert tester.setup_status
+
 
 @patch.object(Path, "cwd")
 @patch("edgetest.core.Popen", autospec=True)
@@ -157,8 +162,13 @@ def test_run_tests(mock_popen, mock_path, tmpdir, plugin_manager):
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
-    out = tester.run_tests(command="pytest tests -m 'not integration'")
+    # If environment not setup successfully, then there should be an error
+    with pytest.raises(RuntimeError):
+        tester.run_tests(command="pytest tests -m 'not integration'")
 
+    # Manually specify that environment was setup successfully
+    tester.setup_status = True
+    out = tester.run_tests(command="pytest tests -m 'not integration'")
     assert out == 0
     assert mock_popen.call_args_list == [
         call(
