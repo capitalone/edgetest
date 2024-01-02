@@ -225,7 +225,9 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
                     for pkg_name, lower_bound in get_lower(
                         config.get("options", "install_requires")
                     ).items()
-                    if _isin_case_dashhyphen_ins(pkg_name, output["envs"][-1]["lower"].split("\n"))
+                    if _isin_case_dashhyphen_ins(
+                        pkg_name, output["envs"][-1]["lower"].split("\n")
+                    )
                     and lower_bound is not None
                     # TODO: Emit warning or raise error if lower_bound is None but package is in lower
                     # TODO: Parse through extras as well to get lower bounds
@@ -552,8 +554,7 @@ def get_lower(requirements: str) -> Dict:
         Configuration dictionary.
     """
     return {
-        pkg.project_name + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(
-            pkg.specs
-        ).get(">=")
+        pkg.project_name
+        + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(pkg.specs).get(">=")
         for pkg in parse_requirements(requirements)
     }

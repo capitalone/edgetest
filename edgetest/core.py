@@ -215,7 +215,7 @@ class TestPackage:
         ]
 
     def lowered_packages(self) -> List[Dict[str, str]]:
-        """Get list of lowered packages for the test environment
+        """Get list of lowered packages for the test environment.
 
         Returns
         -------

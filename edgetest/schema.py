@@ -26,7 +26,7 @@ BASE_SCHEMA = {
                     "schema": {"type": "string"},
                     "coerce": "listify",
                     "required": True,
-                    "excludes": "upgrade"
+                    "excludes": "upgrade",
                 },
                 "extras": {
                     "type": "list",

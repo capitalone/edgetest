@@ -231,8 +231,13 @@ def test_toy_package_dask():
         assert "scikit-learn" in config["options"]["install_requires"]
         assert "dask[dataframe]" in config["options"]["install_requires"]
         assert config["edgetest.envs.core"]["extras"] == "\ntests"
-        assert config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nDask[DataFrame]"
+        assert (
+            config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nDask[DataFrame]"
+        )
         assert config["edgetest.envs.lower_env"]["extras"] == "\ntests"
-        assert config["edgetest.envs.lower_env"]["lower"] == "\nscikit_Learn\nDask[DataFrame]"
+        assert (
+            config["edgetest.envs.lower_env"]["lower"]
+            == "\nscikit_Learn\nDask[DataFrame]"
+        )
         assert "dask" in result.stdout
         assert "scikit-learn" in result.stdout
