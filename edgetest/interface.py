@@ -158,7 +158,7 @@ def cli(
         # Set up the test environment
         if nosetup:
             click.echo(f"Using existing environment for {env['name']}...")
-            testers[-1].setup_status = True
+            testers[-1].setup(skip=True, **env)
         else:
             testers[-1].setup(**env)
         # Run the tests

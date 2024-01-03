@@ -79,6 +79,7 @@ class TestPackage:
         self,
         extras: Optional[List[str]] = None,
         deps: Optional[List[str]] = None,
+        skip: bool = False,
         **options,
     ) -> None:
         """Set up the testing environment.
@@ -89,6 +90,9 @@ class TestPackage:
             The list of extra installations to include.
         deps : list, optional (default None)
             A list of additional dependencies to install via ``pip``
+        skip : bool, optional (default False)
+            Whether to skip setup as a pre-made environment has already been
+            created.
         **options
             Additional options for ``self.hook.create_environment``.
 
@@ -101,6 +105,9 @@ class TestPackage:
         RuntimeError
             This error will be raised if any part of the set up process fails.
         """
+        if skip:
+            self.setup_status = True
+            return
         # Create the conda environment
         try:
             LOG.info(f"Creating the following environment: {self.envname}...")
