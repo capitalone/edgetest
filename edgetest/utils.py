@@ -230,7 +230,7 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
                     )
                     and lower_bound is not None
                     # TODO: Emit warning or raise error if lower_bound is None but package is in lower
-                    # TODO: Parse through extras as well to get lower bounds
+                    # TODO: Parse through extra requirements as well to get lower bounds
                 )
         else:
             output[section_name[1]] = dict(config[section])
@@ -366,6 +366,7 @@ def parse_toml(
                             )
                             and lower_bound is not None
                             # TODO: Emit warning or raise error if lower_bound is None but package is in lower
+                            # TODO: Parse through extra requirements as well to get lower bounds
                         )
             elif isinstance(config["edgetest"][section], Table):  # type: ignore
                 output[section] = dict(config["edgetest"][section])  # type: ignore
