@@ -185,7 +185,7 @@ class TestPackage:
         else:
             # Install lower bounds of package(s)
             LOG.info(
-                f"Installing lower bounds of packages in {self.envname}: {', '.join(self.lower)}"
+                f"Installing lower bounds of packages in {self.envname}: {', '.join(self.lower)}"  # type:ignore
             )
             try:
                 self.hook.run_install_lower(

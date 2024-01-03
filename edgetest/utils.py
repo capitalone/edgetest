@@ -354,12 +354,12 @@ def parse_toml(
                     if (
                         "lower" in output["envs"][-1]
                         and "project" in config
-                        and "dependencies" in config["project"]
+                        and "dependencies" in config["project"]  # type: ignore
                     ):
                         output["envs"][-1]["lower"] = "\n".join(
                             f"{pkg_name}=={lower_bound}"
                             for pkg_name, lower_bound in get_lower(
-                                dict(config["project"])["dependencies"]
+                                dict(config["project"])["dependencies"]  # type: ignore
                             ).items()
                             if _isin_case_dashhyphen_ins(
                                 pkg_name, output["envs"][-1]["lower"].split("\n")
@@ -374,7 +374,7 @@ def parse_toml(
     if len(output["envs"]) == 0:
         if config.get("project").get("dependencies"):  # type: ignore
             output = convert_requirements(
-                requirements="\n".join(config["project"]["dependencies"]),
+                requirements="\n".join(config["project"]["dependencies"]),  # type: ignore
                 conf=output,  # type: ignore # noqa: E501
             )
         elif requirements:
