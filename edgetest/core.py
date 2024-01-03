@@ -102,11 +102,18 @@ class TestPackage:
             This error will be raised if any part of the set up process fails.
         """
         # Create the conda environment
-        LOG.info(f"Creating the following environment: {self.envname}...")
-        self.hook.create_environment(
-            basedir=self._basedir, envname=self.envname, conf=options
-        )
-        LOG.info(f"Successfully created {self.envname}")
+        try:
+            LOG.info(f"Creating the following environment: {self.envname}...")
+            self.hook.create_environment(
+                basedir=self._basedir, envname=self.envname, conf=options
+            )
+            LOG.info(f"Successfully created {self.envname}")
+        except RuntimeError:
+            LOG.exception(
+                "Could not create the following environment: %s", self.envname
+            )
+            self.setup_status = False
+            return
 
         # Install the local package
         with pushd(self.package_dir):
@@ -127,7 +134,10 @@ class TestPackage:
                         *[itm for lst in split for itm in lst],
                     )
                 except RuntimeError:
-                    LOG.exception("Unable to upgrade packages in %s", self.envname)
+                    LOG.exception(
+                        "Unable to install specified additional dependencies in %s",
+                        self.envname,
+                    )
                     self.setup_status = False
                     return
                 LOG.info(
