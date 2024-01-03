@@ -229,7 +229,7 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
                         pkg_name, output["envs"][-1]["lower"].split("\n")
                     )
                     and lower_bound is not None
-                    # TODO: Emit warning or raise error if lower_bound is None but package is in lower
+                    # TODO: Emit warning if lower_bound is None but package is in lower
                     # TODO: Parse through extra requirements as well to get lower bounds
                 )
         else:
@@ -365,7 +365,7 @@ def parse_toml(
                                 pkg_name, output["envs"][-1]["lower"].split("\n")
                             )
                             and lower_bound is not None
-                            # TODO: Emit warning or raise error if lower_bound is None but package is in lower
+                            # TODO: Emit warning if lower_bound is None but package is in lower
                             # TODO: Parse through extra requirements as well to get lower bounds
                         )
             elif isinstance(config["edgetest"][section], Table):  # type: ignore
@@ -555,7 +555,8 @@ def get_lower(requirements: str) -> Dict:
         Configuration dictionary.
     """
     return {
-        pkg.project_name
-        + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(pkg.specs).get(">=")
+        pkg.project_name + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(
+            pkg.specs
+        ).get(">=")
         for pkg in parse_requirements(requirements)
     }

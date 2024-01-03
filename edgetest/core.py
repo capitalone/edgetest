@@ -129,7 +129,9 @@ class TestPackage:
                 pkg += f"[{', '.join(extras)}]"
             if deps:
                 LOG.info(
-                    f"Installing specified additional dependencies into {self.envname}: {', '.join(deps)}"
+                    "Installing specified additional dependencies into %s: %s",
+                    self.envname,
+                    ", ".join(deps),
                 )
                 split = [shlex.split(dep) for dep in deps]
                 try:
@@ -185,7 +187,9 @@ class TestPackage:
         else:
             # Install lower bounds of package(s)
             LOG.info(
-                f"Installing lower bounds of packages in {self.envname}: {', '.join(self.lower)}"  # type:ignore
+                "Installing lower bounds of packages in %s: %s",
+                {self.envname},
+                ", ".join(self.lower),  # type:ignore
             )
             try:
                 self.hook.run_install_lower(
