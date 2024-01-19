@@ -361,7 +361,7 @@ def parse_toml(
                     ):
                         lower_with_bounds = ""
                         for pkg_name, lower_bound in get_lower(
-                            dict(config["project"])["dependencies"]
+                            dict(config["project"])["dependencies"]  # type: ignore
                         ).items():
                             # TODO: Parse through extra requirements as well to get lower bounds
                             if lower_bound is None:
