@@ -10,7 +10,7 @@ from edgetest.utils import (
     _convert_toml_array_to_string,
     _isin_case_dashhyphen_ins,
     gen_requirements_config,
-    get_lower,
+    get_lower_bounds,
     parse_cfg,
     parse_toml,
     upgrade_pyproject_toml,
@@ -183,10 +183,12 @@ numpy<=0.24,>=0.01
 """
 
 
-def test_get_lower():
+def test_get_lower_bounds():
     """Test getting lower bound from reqs."""
-    assert get_lower(REQS_NORMAL) == {"pandas": "1.0.0", "numpy": "0.01"}
-
+    assert get_lower_bounds(REQS_NORMAL, "pandas\nnumpy\n") == "pandas==1.0.0\nnumpy==0.01\n"
+    assert get_lower_bounds(REQS_NORMAL, "pandas") == "pandas==1.0.0\n"
+    assert get_lower_bounds(REQS_NORMAL, "") == ""
+    assert get_lower_bounds(REQS, "mydep2") == ""
 
 @patch("edgetest.utils.Path")
 def test_parse_reqs(mock_pathlib):

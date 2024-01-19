@@ -220,21 +220,10 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
                 and "options" in config
                 and "install_requires" in config["options"]
             ):
-                lower_with_bounds = ""
-                for pkg_name, lower_bound in get_lower(
-                    config.get("options", "install_requires")
-                ).items():
-                    # TODO: Parse through extra requirements as well to get lower bounds
-                    if lower_bound is None:
-                        LOG.warning(
-                            "Requested %s lower bound, but did not find in install requirements.",
-                            pkg_name,
-                        )
-                    elif _isin_case_dashhyphen_ins(
-                        pkg_name, output["envs"][-1]["lower"].split("\n")
-                    ):
-                        lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
-                output["envs"][-1]["lower"] = lower_with_bounds
+                output["envs"][-1]["lower"] = get_lower_bounds(
+                    config.get("options", "install_requires"),
+                    output["envs"][-1]["lower"],
+                )
         else:
             output[section_name[1]] = dict(config[section])
     if len(output["envs"]) == 0:
@@ -359,21 +348,10 @@ def parse_toml(
                         and "project" in config
                         and "dependencies" in config["project"]  # type: ignore
                     ):
-                        lower_with_bounds = ""
-                        for pkg_name, lower_bound in get_lower(
-                            dict(config["project"])["dependencies"]  # type: ignore
-                        ).items():
-                            # TODO: Parse through extra requirements as well to get lower bounds
-                            if lower_bound is None:
-                                LOG.warning(
-                                    "Requested %s lower bound, but did not find in install requirements.",
-                                    pkg_name,
-                                )
-                            elif _isin_case_dashhyphen_ins(
-                                pkg_name, output["envs"][-1]["lower"].split("\n")
-                            ):
-                                lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
-                        output["envs"][-1]["lower"] = lower_with_bounds
+                        output["envs"][-1]["lower"] = get_lower_bounds(
+                            dict(config["project"])["dependencies"],  # type: ignore
+                            output["envs"][-1]["lower"],
+                        )
             elif isinstance(config["edgetest"][section], Table):  # type: ignore
                 output[section] = dict(config["edgetest"][section])  # type: ignore
 
@@ -543,26 +521,40 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return False
 
 
-def get_lower(requirements: str) -> Dict:
-    """Get lower bounds for each requirement.
+def get_lower_bounds(requirements: str, lower: str) -> str:
+    """Get lower bounds of requested packages from installation requirements.
 
-    Optionally, modify ``conf`` to hold the results of the lower pins
+    Parses through the project ``requirements`` and the newline-delimited
+    packages requested in ``lower`` to find the lower bounds.
 
     Parameters
     ----------
     requirements : str
-        Requirements string.
-    conf : Optional[Dict], optional
-        Existing config, by default None
+        Project setup requirements.
+    lower : str
+        Newline-delimited packages requested
 
     Returns
     -------
-    Dict
-        Configuration dictionary.
+    str
+        The packages along with the lower bound, e.g. ``"pandas==1.5.1\nnumpy==1.22.1"``.
     """
-    return {
+    all_lower_bounds = {
         pkg.project_name + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(
             pkg.specs
         ).get(">=")
         for pkg in parse_requirements(requirements)
     }
+
+    lower_with_bounds = ""
+    for pkg_name, lower_bound in all_lower_bounds.items():
+        # TODO: Parse through extra requirements as well to get lower bounds
+        if lower_bound is None:
+            LOG.warning(
+                "Requested %s lower bound, but did not find in install requirements.",
+                pkg_name,
+            )
+        elif _isin_case_dashhyphen_ins(pkg_name, lower.split("\n")):
+            lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
+
+    return lower_with_bounds
