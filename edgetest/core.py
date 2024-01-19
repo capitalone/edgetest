@@ -26,7 +26,8 @@ class TestPackage:
     upgrade : list
         The list of packages to upgrade
     lower : list
-        The list of packages to install lower bounds.
+        The list of packages to install lower bounds alongside the lower bound value.
+        E.g. ``["pandas==1.5.2"]``.
     package_dir : str, optional (default None)
         The location of the local package to install and test.
 
