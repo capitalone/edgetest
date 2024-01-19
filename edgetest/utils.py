@@ -522,7 +522,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
 
 
 def get_lower_bounds(requirements: str, lower: str) -> str:
-    """Get lower bounds of requested packages from installation requirements.
+    r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
     packages requested in ``lower`` to find the lower bounds.
@@ -530,9 +530,11 @@ def get_lower_bounds(requirements: str, lower: str) -> str:
     Parameters
     ----------
     requirements : str
-        Project setup requirements.
+        Project setup requirements,
+        e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
     lower : str
-        Newline-delimited packages requested
+        Newline-delimited packages requested,
+         e.g. ``"pandas\nnumpy"``.
 
     Returns
     -------
