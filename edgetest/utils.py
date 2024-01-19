@@ -220,18 +220,21 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
                 and "options" in config
                 and "install_requires" in config["options"]
             ):
-                output["envs"][-1]["lower"] = "\n".join(
-                    f"{pkg_name}=={lower_bound}"
-                    for pkg_name, lower_bound in get_lower(
-                        config.get("options", "install_requires")
-                    ).items()
-                    if _isin_case_dashhyphen_ins(
-                        pkg_name, output["envs"][-1]["lower"].split("\n")
-                    )
-                    and lower_bound is not None
-                    # TODO: Emit warning if lower_bound is None but package is in lower
+                lower_with_bounds = ""
+                for pkg_name, lower_bound in get_lower(
+                    config.get("options", "install_requires")
+                ).items():
                     # TODO: Parse through extra requirements as well to get lower bounds
-                )
+                    if lower_bound is None:
+                        LOG.warning(
+                            "Requested %s lower bound, but did not find in install requirements.",
+                            pkg_name,
+                        )
+                    elif _isin_case_dashhyphen_ins(
+                        pkg_name, output["envs"][-1]["lower"].split("\n")
+                    ):
+                        lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
+                output["envs"][-1]["lower"] = lower_with_bounds
         else:
             output[section_name[1]] = dict(config[section])
     if len(output["envs"]) == 0:
@@ -356,18 +359,21 @@ def parse_toml(
                         and "project" in config
                         and "dependencies" in config["project"]  # type: ignore
                     ):
-                        output["envs"][-1]["lower"] = "\n".join(
-                            f"{pkg_name}=={lower_bound}"
-                            for pkg_name, lower_bound in get_lower(
-                                dict(config["project"])["dependencies"]  # type: ignore
-                            ).items()
-                            if _isin_case_dashhyphen_ins(
-                                pkg_name, output["envs"][-1]["lower"].split("\n")
-                            )
-                            and lower_bound is not None
-                            # TODO: Emit warning if lower_bound is None but package is in lower
+                        lower_with_bounds = ""
+                        for pkg_name, lower_bound in get_lower(
+                            dict(config["project"])["dependencies"]
+                        ).items():
                             # TODO: Parse through extra requirements as well to get lower bounds
-                        )
+                            if lower_bound is None:
+                                LOG.warning(
+                                    "Requested %s lower bound, but did not find in install requirements.",
+                                    pkg_name,
+                                )
+                            elif _isin_case_dashhyphen_ins(
+                                pkg_name, output["envs"][-1]["lower"].split("\n")
+                            ):
+                                lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
+                        output["envs"][-1]["lower"] = lower_with_bounds
             elif isinstance(config["edgetest"][section], Table):  # type: ignore
                 output[section] = dict(config["edgetest"][section])  # type: ignore
 
