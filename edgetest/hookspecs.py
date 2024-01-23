@@ -95,6 +95,25 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
     """
 
 
+@hookspec(firstresult=True)
+def run_install_lower(basedir: str, envname: str, lower: Dict[str, str], conf: Dict):
+    """Install lower bounds of packages provided.
+
+    Parameters
+    ----------
+    basedir : str
+        The base directory location for the environment.
+    envname : str
+        Environment to install into.
+    lower_bounds : Dict[str, str]
+        Lower bounds of packages to install.
+    conf : Dict
+        The configuration dictionary for the environment. This is useful if you
+        want to add configuration arguments for additional dependencies that can
+        only be installed through the environment manager (e.g. Conda).
+    """
+
+
 @hookspec
 def post_run_hook(testers: List, conf: Dict):
     """Post testing hook.

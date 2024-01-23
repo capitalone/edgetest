@@ -150,17 +150,19 @@ def cli(
             TestPackage(
                 hook=pm.hook,
                 envname=env["name"],
-                upgrade=env["upgrade"],
+                upgrade=env.get("upgrade"),
+                lower=env.get("lower"),
                 package_dir=env["package_dir"],
             )
         )
         # Set up the test environment
         if nosetup:
             click.echo(f"Using existing environment for {env['name']}...")
+            testers[-1].setup(skip=True, **env)
         else:
             testers[-1].setup(**env)
         # Run the tests
-        if notest:
+        if notest or not testers[-1].setup_status:
             click.echo(f"Skipping tests for {env['name']}")
         else:
             testers[-1].run_tests(env["command"])

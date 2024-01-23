@@ -3,7 +3,12 @@ from unittest.mock import patch
 
 import pytest
 
-from edgetest.lib import create_environment, path_to_python, run_update
+from edgetest.lib import (
+    create_environment,
+    path_to_python,
+    run_install_lower,
+    run_update,
+)
 
 
 @patch("edgetest.lib.platform", autospec=True)
@@ -45,3 +50,23 @@ def test_run_update(mock_run):
     mock_run.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):
         run_update("test", "test", ["1", "2"], {"test": "test"})
+
+
+@patch("edgetest.lib._run_command", autospec=True)
+def test_run_install_lower(mock_run):
+    python_path = path_to_python("test", "test")
+    run_install_lower("test", "test", ["package1==1", "package2==2"], {"test": "test"})
+    mock_run.assert_called_with(
+        python_path,
+        "-m",
+        "pip",
+        "install",
+        "package1==1",
+        "package2==2",
+    )
+
+    mock_run.side_effect = RuntimeError()
+    with pytest.raises(RuntimeError):
+        run_install_lower(
+            "test", "test", ["package1==1", "package2==2"], {"test": "test"}
+        )

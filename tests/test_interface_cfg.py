@@ -22,6 +22,19 @@ command =
     pytest tests -m 'not integration'
 """
 
+SETUP_CFG_LOWER = """
+[options]
+install_requires =
+    myupgrade
+    mylower<=0.1.0,>=0.0.1
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
+command =
+    pytest tests -m 'not integration'
+"""
+
 SETUP_CFG_REQS = """
 [options]
 install_requires =
@@ -60,30 +73,49 @@ PIP_LIST = """
 
 TABLE_OUTPUT = """
 
-=============  ===============  ===================  =================
-Environment    Passing tests    Upgraded packages    Package version
-=============  ===============  ===================  =================
-myenv          True             myupgrade            0.2.0
-=============  ===============  ===================  =================
+=============  ==================  ===============  ===================  ==================  =================
+Environment    Setup successful    Passing tests    Upgraded packages    Lowered packages    Package version
+=============  ==================  ===============  ===================  ==================  =================
+myenv          True                True             myupgrade                                0.2.0
+=============  ==================  ===============  ===================  ==================  =================
+"""
+
+TABLE_OUTPUT_LOWER = """
+
+=============  ==================  ===============  ===================  ==================  =================
+Environment    Setup successful    Passing tests    Upgraded packages    Lowered packages    Package version
+=============  ==================  ===============  ===================  ==================  =================
+myenv_lower    True                True                                  mylower             0.0.1
+=============  ==================  ===============  ===================  ==================  =================
 """
 
 TABLE_OUTPUT_NOTEST = """
 
-=============  ===============  ===================  =================
-Environment    Passing tests    Upgraded packages    Package version
-=============  ===============  ===================  =================
-myenv          False            myupgrade            0.2.0
-=============  ===============  ===================  =================
+=============  ==================  ===============  ===================  ==================  =================
+Environment    Setup successful    Passing tests    Upgraded packages    Lowered packages    Package version
+=============  ==================  ===============  ===================  ==================  =================
+myenv          True                False            myupgrade                                0.2.0
+=============  ==================  ===============  ===================  ==================  =================
 """
+
+TABLE_OUTPUT_NOTEST_LOWER = """
+
+=============  ==================  ===============  ===================  ==================  =================
+Environment    Setup successful    Passing tests    Upgraded packages    Lowered packages    Package version
+=============  ==================  ===============  ===================  ==================  =================
+myenv_lower    True                False                                 mylower             0.0.1
+=============  ==================  ===============  ===================  ==================  =================
+"""
+
 
 TABLE_OUTPUT_REQS = """
 
-================  ===============  ===================  =================
-Environment       Passing tests    Upgraded packages    Package version
-================  ===============  ===================  =================
-myupgrade         True             myupgrade            0.2.0
-all-requirements  True             myupgrade            0.2.0
-================  ===============  ===================  =================
+================  ==================  ===============  ===================  ==================  =================
+Environment       Setup successful    Passing tests    Upgraded packages    Lowered packages    Package version
+================  ==================  ===============  ===================  ==================  =================
+myupgrade         True                True             myupgrade                                0.2.0
+all-requirements  True                True             myupgrade                                0.2.0
+================  ==================  ===============  ===================  ==================  =================
 """
 
 
@@ -153,6 +185,68 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
     ]
 
     assert result.output == TABLE_OUTPUT
+
+
+@patch("edgetest.lib.EnvBuilder", autospec=True)
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
+    """Test creating a basic environment."""
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    type(mock_cpopen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem() as loc:
+        with open("setup.cfg", "w") as outfile:
+            outfile.write(SETUP_CFG_LOWER)
+
+        result = runner.invoke(cli, ["--config=setup.cfg"])
+
+    assert result.exit_code == 0
+
+    env_loc = Path(loc) / ".edgetest" / "myenv_lower"
+    if platform.system() == "Windows":
+        py_loc = env_loc / "Scripts" / "python"
+    else:
+        py_loc = env_loc / "bin" / "python"
+
+    mock_builder.return_value.create.assert_called_with(env_loc)
+    assert mock_popen.call_args_list == [
+        call(
+            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
+                f"{str(py_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "mylower==0.0.1",
+            ),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+    ]
+    assert mock_cpopen.call_args_list == [
+        call(
+            (
+                f"{str(py_loc)}",
+                "-m",
+                "pytest",
+                "tests",
+                "-m",
+                "not integration",
+            ),
+            universal_newlines=True,
+        )
+    ]
+
+    assert result.output == TABLE_OUTPUT_LOWER
 
 
 @patch("edgetest.lib.EnvBuilder", autospec=True)
@@ -367,6 +461,44 @@ def test_cli_nosetup(mock_popen, mock_cpopen):
     )
 
 
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_nosetup_lower(mock_popen, mock_cpopen):
+    """Test creating a basic environment."""
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    type(mock_cpopen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem() as loc:
+        with open("setup.cfg", "w") as outfile:
+            outfile.write(SETUP_CFG_LOWER)
+
+        result = runner.invoke(cli, ["--config=setup.cfg", "--nosetup"])
+
+    assert result.exit_code == 0
+
+    env_loc = str(Path(loc) / ".edgetest" / "myenv_lower")
+    if platform.system() == "Windows":
+        py_loc = Path(env_loc) / "Scripts" / "python"
+    else:
+        py_loc = Path(env_loc) / "bin" / "python"
+
+    assert mock_cpopen.call_args_list == [
+        call(
+            (f"{py_loc}", "-m", "pytest", "tests", "-m", "not integration"),
+            universal_newlines=True,
+        )
+    ]
+
+    assert (
+        result.output
+        == f"""Using existing environment for myenv_lower...\n{TABLE_OUTPUT_LOWER}"""
+    )
+
+
 @patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
 def test_cli_notest(mock_popen, mock_builder):
@@ -417,3 +549,52 @@ def test_cli_notest(mock_popen, mock_builder):
     ]
 
     assert result.output == f"""Skipping tests for myenv\n{TABLE_OUTPUT_NOTEST}"""
+
+
+@patch("edgetest.lib.EnvBuilder", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_notest_lower(mock_popen, mock_builder):
+    """Test creating a basic environment."""
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem() as loc:
+        with open("setup.cfg", "w") as outfile:
+            outfile.write(SETUP_CFG_LOWER)
+
+        result = runner.invoke(cli, ["--config=setup.cfg", "--notest"])
+
+    assert result.exit_code == 0
+
+    env_loc = Path(loc) / ".edgetest" / "myenv_lower"
+    if platform.system() == "Windows":
+        py_loc = env_loc / "Scripts" / "python"
+    else:
+        py_loc = env_loc / "bin" / "python"
+
+    mock_builder.return_value.create.assert_called_with(env_loc)
+    assert mock_popen.call_args_list == [
+        call(
+            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
+                f"{str(py_loc)}",
+                "-m",
+                "pip",
+                "install",
+                "mylower==0.0.1",
+            ),
+            stdout=-1,
+            universal_newlines=True,
+        ),
+    ]
+
+    assert (
+        result.output
+        == f"""Skipping tests for myenv_lower\n{TABLE_OUTPUT_NOTEST_LOWER}"""
+    )
