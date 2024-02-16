@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="edgetest" href="modules.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>edgetest package - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -213,7 +213,7 @@
 <p>Core module.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">edgetest.core.</span></span><span class="sig-name descname"><span class="pre">TestPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_HookRelay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgrade</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">edgetest.core.</span></span><span class="sig-name descname"><span class="pre">TestPackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hook</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_HookRelay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgrade</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">package_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Run test commands with bleeding edge dependencies.</p>
 <dl class="field-list simple">
@@ -222,6 +222,8 @@
 <li><p><strong>hook</strong> (<em>_HookRelay</em>) – The hook object from <code class="docutils literal notranslate"><span class="pre">pluggy</span></code>.</p></li>
 <li><p><strong>envname</strong> (<em>str</em>) – The name of the conda environment to create/use.</p></li>
 <li><p><strong>upgrade</strong> (<em>list</em>) – The list of packages to upgrade</p></li>
+<li><p><strong>lower</strong> (<em>list</em>) – The list of packages to install lower bounds alongside the lower bound value.
+E.g. <code class="docutils literal notranslate"><span class="pre">[&quot;pandas==1.5.2&quot;]</span></code>.</p></li>
 <li><p><strong>package_dir</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default None</em><em>)</em>) – The location of the local package to install and test.</p></li>
 </ul>
 </dd>
@@ -245,6 +247,20 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="edgetest.core.TestPackage.lowered_packages">
+<span class="sig-name descname"><span class="pre">lowered_packages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.lowered_packages"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.lowered_packages" title="Permalink to this definition">#</a></dt>
+<dd><p>Get list of lowered packages for the test environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of lowered packages and their versions</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[Dict[str, str]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -282,13 +298,15 @@ after <code class="docutils literal notranslate"><span class="pre">run_tests</sp
 
 <dl class="py method">
 <dt class="sig sig-object py" id="edgetest.core.TestPackage.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.setup" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extras</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/edgetest/core.html#TestPackage.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.core.TestPackage.setup" title="Permalink to this definition">#</a></dt>
 <dd><p>Set up the testing environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>extras</strong> (<em>list</em><em>, </em><em>optional</em><em> (</em><em>default None</em><em>)</em>) – The list of extra installations to include.</p></li>
 <li><p><strong>deps</strong> (<em>list</em><em>, </em><em>optional</em><em> (</em><em>default None</em><em>)</em>) – A list of additional dependencies to install via <code class="docutils literal notranslate"><span class="pre">pip</span></code></p></li>
+<li><p><strong>skip</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default False</em><em>)</em>) – Whether to skip setup as a pre-made environment has already been
+created.</p></li>
 <li><p><strong>**options</strong> – Additional options for <code class="docutils literal notranslate"><span class="pre">self.hook.create_environment</span></code>.</p></li>
 </ul>
 </dd>
@@ -399,6 +417,24 @@ is the python executable for the environment.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="edgetest.hookspecs.run_install_lower">
+<span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">run_install_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#run_install_lower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.run_install_lower" title="Permalink to this definition">#</a></dt>
+<dd><p>Install lower bounds of packages provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basedir</strong> (<em>str</em>) – The base directory location for the environment.</p></li>
+<li><p><strong>envname</strong> (<em>str</em>) – Environment to install into.</p></li>
+<li><p><strong>lower_bounds</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Lower bounds of packages to install.</p></li>
+<li><p><strong>conf</strong> (<em>Dict</em>) – The configuration dictionary for the environment. This is useful if you
+want to add configuration arguments for additional dependencies that can
+only be installed through the environment manager (e.g. Conda).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="edgetest.hookspecs.run_update">
 <span class="sig-prename descclassname"><span class="pre">edgetest.hookspecs.</span></span><span class="sig-name descname"><span class="pre">run_update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgrade</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/hookspecs.html#run_update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.hookspecs.run_update" title="Permalink to this definition">#</a></dt>
 <dd><p>Update packages from upgrade list.</p>
@@ -459,6 +495,24 @@ only be installed through the environment manager (e.g. Conda).</p></li>
 <dt class="sig sig-object py" id="edgetest.lib.path_to_python">
 <span class="sig-prename descclassname"><span class="pre">edgetest.lib.</span></span><span class="sig-name descname"><span class="pre">path_to_python</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/lib.html#path_to_python"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.lib.path_to_python" title="Permalink to this definition">#</a></dt>
 <dd><p>Return the path to the python executable.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="edgetest.lib.run_install_lower">
+<span class="sig-prename descclassname"><span class="pre">edgetest.lib.</span></span><span class="sig-name descname"><span class="pre">run_install_lower</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">basedir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">envname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/edgetest/lib.html#run_install_lower"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.lib.run_install_lower" title="Permalink to this definition">#</a></dt>
+<dd><p>Install lower bounds of packages provided.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>basedir</strong> (<em>str</em>) – The base directory location for the environment.</p></li>
+<li><p><strong>envname</strong> (<em>str</em>) – Environment to install into.</p></li>
+<li><p><strong>lower</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – Lower bounds of packages to install.</p></li>
+<li><p><strong>conf</strong> (<em>Dict</em>) – The configuration dictionary for the environment. This is useful if you
+want to add configuration arguments for additional dependencies that can
+only be installed through the environment manager (e.g. Conda).</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -604,7 +658,7 @@ only be installed through the environment manager (e.g. Conda).</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.Schema.schema">
-<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'envs':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'schema':</span> <span class="pre">{'command':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'pytest',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'deps':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'extras':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'name':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'package_dir':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'.',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'upgrade':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'}},</span> <span class="pre">'type':</span> <span class="pre">'dict'},</span> <span class="pre">'type':</span> <span class="pre">'list'}}</span></em><a class="headerlink" href="#edgetest.schema.Schema.schema" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'envs':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'schema':</span> <span class="pre">{'command':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'pytest',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'deps':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'extras':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'lower':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'upgrade',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'name':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'package_dir':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'.',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'upgrade':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'lower',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'}},</span> <span class="pre">'type':</span> <span class="pre">'dict'},</span> <span class="pre">'type':</span> <span class="pre">'list'}}</span></em><a class="headerlink" href="#edgetest.schema.Schema.schema" title="Permalink to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -651,6 +705,33 @@ or the string representing the requirements file.</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="edgetest.utils.get_lower_bounds">
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">get_lower_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#get_lower_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.get_lower_bounds" title="Permalink to this definition">#</a></dt>
+<dd><p>Get lower bounds of requested packages from installation requirements.</p>
+<p>Parses through the project <code class="docutils literal notranslate"><span class="pre">requirements</span></code> and the newline-delimited
+packages requested in <code class="docutils literal notranslate"><span class="pre">lower</span></code> to find the lower bounds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>requirements</strong> (<em>str</em>) – Project setup requirements,
+e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4&quot;</span></code></p></li>
+<li><p><strong>lower</strong> (<em>str</em>) – <dl class="simple">
+<dt>Newline-delimited packages requested,</dt><dd><p>e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas\nnumpy&quot;</span></code>.</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The packages along with the lower bound, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas==1.5.1\nnumpy==1.22.1&quot;</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -721,7 +802,7 @@ start with <code class="docutils literal notranslate"><span class="pre">edgetest
 you have <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> as follows:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
 <span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;pandas&quot;</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -732,24 +813,24 @@ the installation requirements (the <code class="docutils literal notranslate"><s
 To set global defaults for you environments, use the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> table:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span>
 <span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;tests&quot;</span>
+<span class="w">    </span><span class="s2">&quot;tests&quot;</span>
 <span class="p">]</span>
-<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
 
 <span class="k">[edgetest.envs.pandas]</span>
 <span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;pandas&quot;</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
 <span class="p">]</span>
 </pre></div>
 </div>
 <p>For this single environment file, the above configuration is equivalent to</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
 <span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;tests&quot;</span>
+<span class="w">    </span><span class="s2">&quot;tests&quot;</span>
 <span class="p">]</span>
-<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
 <span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;pandas&quot;</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -902,6 +983,7 @@ or the string representing the requirements file.</p></li>
 <li><a class="reference internal" href="#edgetest.core.TestPackage"><code class="docutils literal notranslate"><span class="pre">TestPackage</span></code></a><ul>
 <li><a class="reference internal" href="#edgetest.core.TestPackage._basedir"><code class="docutils literal notranslate"><span class="pre">TestPackage._basedir</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.core.TestPackage.status"><code class="docutils literal notranslate"><span class="pre">TestPackage.status</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.core.TestPackage.lowered_packages"><code class="docutils literal notranslate"><span class="pre">TestPackage.lowered_packages()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.core.TestPackage.python_path"><code class="docutils literal notranslate"><span class="pre">TestPackage.python_path</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.core.TestPackage.run_tests"><code class="docutils literal notranslate"><span class="pre">TestPackage.run_tests()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.core.TestPackage.setup"><code class="docutils literal notranslate"><span class="pre">TestPackage.setup()</span></code></a></li>
@@ -913,10 +995,12 @@ or the string representing the requirements file.</p></li>
 <li><a class="reference internal" href="#edgetest.hookspecs.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.hookspecs.post_run_hook"><code class="docutils literal notranslate"><span class="pre">post_run_hook()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.hookspecs.pre_run_hook"><code class="docutils literal notranslate"><span class="pre">pre_run_hook()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.hookspecs.run_install_lower"><code class="docutils literal notranslate"><span class="pre">run_install_lower()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.hookspecs.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.interface.get_plugin_manager"><code class="docutils literal notranslate"><span class="pre">get_plugin_manager()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.lib.create_environment"><code class="docutils literal notranslate"><span class="pre">create_environment()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.lib.path_to_python"><code class="docutils literal notranslate"><span class="pre">path_to_python()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.lib.run_install_lower"><code class="docutils literal notranslate"><span class="pre">run_install_lower()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.lib.run_update"><code class="docutils literal notranslate"><span class="pre">run_update()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.logger.get_logger"><code class="docutils literal notranslate"><span class="pre">get_logger()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.report.gen_report"><code class="docutils literal notranslate"><span class="pre">gen_report()</span></code></a></li>
@@ -937,6 +1021,7 @@ or the string representing the requirements file.</p></li>
 </li>
 <li><a class="reference internal" href="#edgetest.utils.convert_requirements"><code class="docutils literal notranslate"><span class="pre">convert_requirements()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.gen_requirements_config"><code class="docutils literal notranslate"><span class="pre">gen_requirements_config()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.get_lower_bounds"><code class="docutils literal notranslate"><span class="pre">get_lower_bounds()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.parse_cfg"><code class="docutils literal notranslate"><span class="pre">parse_cfg()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.parse_toml"><code class="docutils literal notranslate"><span class="pre">parse_toml()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.pushd"><code class="docutils literal notranslate"><span class="pre">pushd()</span></code></a></li>
@@ -957,11 +1042,11 @@ or the string representing the requirements file.</p></li>
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
-    <script src="../_static/clipboard.min.js"></script>
-    <script src="../_static/copybutton.js"></script>
+</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
 </html>

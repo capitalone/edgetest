@@ -1,16 +1,16 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>edgetest.utils - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -422,6 +422,15 @@
         <span class="k">if</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;envs&quot;</span><span class="p">:</span>
             <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]))</span>
             <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">section_name</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="s2">&quot;lower&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="ow">and</span> <span class="s2">&quot;options&quot;</span> <span class="ow">in</span> <span class="n">config</span>
+                <span class="ow">and</span> <span class="s2">&quot;install_requires&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;options&quot;</span><span class="p">]</span>
+            <span class="p">):</span>
+                <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lower_bounds</span><span class="p">(</span>
+                    <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options&quot;</span><span class="p">,</span> <span class="s2">&quot;install_requires&quot;</span><span class="p">),</span>
+                    <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">],</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">output</span><span class="p">[</span><span class="n">section_name</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">])</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -541,13 +550,23 @@
                         <span class="p">)</span>
                     <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">env</span><span class="p">]))</span>  <span class="c1"># type: ignore</span>
                     <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">env</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="s2">&quot;lower&quot;</span> <span class="ow">in</span> <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="ow">and</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">config</span>
+                        <span class="ow">and</span> <span class="s2">&quot;dependencies&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+                    <span class="p">):</span>
+                        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lower_bounds</span><span class="p">(</span>
+                            <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">])[</span><span class="s2">&quot;dependencies&quot;</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">],</span>
+                        <span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">section</span><span class="p">],</span> <span class="n">Table</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
                 <span class="n">output</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;edgetest&quot;</span><span class="p">][</span><span class="n">section</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span>
-                <span class="n">requirements</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]),</span> <span class="n">conf</span><span class="o">=</span><span class="n">output</span>  <span class="c1"># type: ignore # noqa: E501</span>
+                <span class="n">requirements</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
+                <span class="n">conf</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>  <span class="c1"># type: ignore # noqa: E501</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">requirements</span><span class="p">:</span>
             <span class="n">req_conf</span> <span class="o">=</span> <span class="n">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
@@ -707,6 +726,47 @@
         <span class="k">if</span> <span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
             <span class="k">return</span> <span class="kc">True</span>
     <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="get_lower_bounds"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.get_lower_bounds">[docs]</a><span class="k">def</span> <span class="nf">get_lower_bounds</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get lower bounds of requested packages from installation requirements.</span>
+
+<span class="sd">    Parses through the project ``requirements`` and the newline-delimited</span>
+<span class="sd">    packages requested in ``lower`` to find the lower bounds.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    requirements : str</span>
+<span class="sd">        Project setup requirements,</span>
+<span class="sd">        e.g. ``&quot;pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4&quot;``</span>
+<span class="sd">    lower : str</span>
+<span class="sd">        Newline-delimited packages requested,</span>
+<span class="sd">         e.g. ``&quot;pandas\nnumpy&quot;``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The packages along with the lower bound, e.g. ``&quot;pandas==1.5.1\nnumpy==1.22.1&quot;``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">all_lower_bounds</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">pkg</span><span class="o">.</span><span class="n">project_name</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">extras</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">):</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="n">pkg</span><span class="o">.</span><span class="n">specs</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;&gt;=&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">parse_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="n">lower_with_bounds</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">pkg_name</span><span class="p">,</span> <span class="n">lower_bound</span> <span class="ow">in</span> <span class="n">all_lower_bounds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># TODO: Parse through extra requirements as well to get lower bounds</span>
+        <span class="k">if</span> <span class="n">lower_bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;Requested </span><span class="si">%s</span><span class="s2"> lower bound, but did not find in install requirements.&quot;</span><span class="p">,</span>
+                <span class="n">pkg_name</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">,</span> <span class="n">lower</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)):</span>
+            <span class="n">lower_with_bounds</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pkg_name</span><span class="si">}</span><span class="s2">==</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+
+    <span class="k">return</span> <span class="n">lower_with_bounds</span></div>
 </pre></div>
         </article>
       </div>
@@ -739,12 +799,12 @@
       
     </aside>
   </div>
-</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
-    <script src="../../_static/scripts/furo.js"></script>
-    <script src="../../_static/clipboard.min.js"></script>
-    <script src="../../_static/copybutton.js"></script>
-    <script src="../../_static/tabs.js"></script>
+</div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/tabs.js?v=3030b3cb"></script>
     </body>
 </html>

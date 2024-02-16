@@ -1,17 +1,17 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Extending edgetest through plugins" href="plugins.html" /><link rel="prev" title="Quick Start" href="quickstart.html" />
 
-    <!-- Generated with Sphinx 7.0.1 and Furo 2023.05.20 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
         <title>Advanced Usage - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=e6660623a769aa55fea372102b9bf3151b292993" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/tabs.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/tabs.css?v=a5c4661c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -245,7 +245,7 @@ configurations. Just note it must have a <code class="docutils literal notransla
 </div>
 </div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
 <span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;pandas&quot;</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -261,7 +261,7 @@ your requirements might look like this:</p>
 </div>
 </div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
 <span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s">&quot;pandas&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 </pre></div>
 </div>
@@ -295,8 +295,8 @@ call as follows:</p>
 </div>
 </div><div aria-labelledby="tab-3-3-1" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-1" name="3-1" role="tabpanel" tabindex="0"><p>Add an <code class="docutils literal notranslate"><span class="pre">extras</span></code> list to your environment:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span>
-<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myupgrade&quot;</span><span class="p">]</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-3-3-2" class="sphinx-tabs-panel" hidden="true" id="panel-3-3-2" name="3-2" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--extras</span></code> to the CLI call:</p>
@@ -322,9 +322,9 @@ call as follows:</p>
 </div>
 </div><div aria-labelledby="tab-4-4-1" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-1" name="4-1" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">command</span></code> key to your environment:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span>
-<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span>
-<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myupgrade&quot;</span><span class="p">]</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests&quot;</span><span class="p">]</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-4-4-2" class="sphinx-tabs-panel" hidden="true" id="panel-4-4-2" name="4-2" role="tabpanel" tabindex="0"><p>Add <code class="docutils literal notranslate"><span class="pre">--command</span></code> to your CLI call:</p>
@@ -356,10 +356,10 @@ can specify additional dependencies to be installed via <code class="docutils li
 </div>
 </div><div aria-labelledby="tab-5-5-1" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-1" name="5-1" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> list:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;myupgrade&quot;</span><span class="p">]</span>
-<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span>
-<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
-<span class="n">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;scikit-learn&quot;</span><span class="p">]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;myupgrade&quot;</span><span class="p">]</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests&quot;</span><span class="p">]</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="n">deps</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;scikit-learn&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-5-5-2" class="sphinx-tabs-panel" hidden="true" id="panel-5-5-2" name="5-2" role="tabpanel" tabindex="0"><p>Add a <code class="docutils literal notranslate"><span class="pre">deps</span></code> argument to your CLI call; this argument accepts multiple values.</p>
@@ -422,14 +422,14 @@ scikit-learn&gt;=0.23.0,&lt;=0.24.2
 <p>will apply the default arguments to each environment.</p>
 </div>
 </div><div aria-labelledby="tab-6-6-1" class="sphinx-tabs-panel" hidden="true" id="panel-6-6-1" name="6-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span>
-<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;tests&quot;</span><span class="p">]</span>
-<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tests&quot;</span><span class="p">]</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
 
 <span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;pandas&quot;</span><span class="p">]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pandas&quot;</span><span class="p">]</span>
 
 <span class="k">[edgetest.envs.numpy]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 </div></div>
@@ -455,12 +455,12 @@ in your testing project directory:</p>
 </pre></div>
 </div>
 </div><div aria-labelledby="tab-7-7-1" class="sphinx-tabs-panel" hidden="true" id="panel-7-7-1" name="7-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
-<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../mypackage&quot;</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;pandas&quot;</span><span class="p">]</span>
+<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../mypackage&quot;</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;pandas&quot;</span><span class="p">]</span>
 
 <span class="k">[edgetest.envs.numpy]</span>
-<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;../myotherpackage&quot;</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;numpy&quot;</span><span class="p">]</span>
+<span class="n">package_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;../myotherpackage&quot;</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;numpy&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>After running</p>
@@ -539,6 +539,77 @@ be updated.</p>
 </pre></div>
 </div>
 </div></div>
+</section>
+<section id="testing-lower-bounds-of-packages">
+<h2>Testing lower bounds of packages<a class="headerlink" href="#testing-lower-bounds-of-packages" title="Permalink to this heading">#</a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This feature is experimental and may change in future releases. Limited functionality is available.</p>
+</div>
+<p>Suppose you want to test if a new feature is compatible with dependencies’ lower bounds.
+You can use an edgetest environment to test the lower bounds of dependencies in your <code class="docutils literal notranslate"><span class="pre">setup.cfg</span></code> or <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> as follows:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-10-10-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-10-10-0" name="10-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-10-10-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-10-10-1" name="10-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-10-10-0" class="sphinx-tabs-panel" id="panel-10-10-0" name="10-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas_lower]</span>
+<span class="na">lower</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">pandas</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-10-10-1" class="sphinx-tabs-panel" hidden="true" id="panel-10-10-1" name="10-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas_lower]</span>
+<span class="n">lower</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div></div>
+<p>Running the edgetest command using this environment specification will:</p>
+<ol class="arabic simple">
+<li><p>Create your virtual environment (as in the standard case),</p></li>
+<li><p>Install the local package,</p></li>
+<li><p>Install the lower version of <code class="docutils literal notranslate"><span class="pre">pandas</span></code> as specified in your project configuration file, and</p></li>
+<li><p>Run the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> in the environment.</p></li>
+</ol>
+<p>For example, if your project configuration looks like this:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-11-11-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-11-11-0" name="11-0" role="tab" tabindex="0">.cfg</button><button aria-controls="panel-11-11-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-11-11-1" name="11-1" role="tab" tabindex="-1">.toml</button></div><div aria-labelledby="tab-11-11-0" class="sphinx-tabs-panel" id="panel-11-11-0" name="11-0" role="tabpanel" tabindex="0"><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[options]</span>
+<span class="na">install_requires</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">pandas&gt;</span><span class="o">=</span><span class="s">0.24.3</span>
+
+<span class="k">[edgetest.envs.pandas_lower]</span>
+<span class="na">lower</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="na">pandas</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-11-11-1" class="sphinx-tabs-panel" hidden="true" id="panel-11-11-1" name="11-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span>[project]
+dependencies = [
+    &quot;pandas&gt;=0.24.3&quot;,
+]
+
+[edgetest.envs.pandas_lower]
+lower =
+    pandas
+</pre></div>
+</div>
+</div></div>
+<p>then edgetest will:</p>
+<ol class="arabic simple">
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">pandas_lower</span></code> virtual environment,</p></li>
+<li><p>Install the local package,</p></li>
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">pandas==0.24.3</span></code>, and</p></li>
+<li><p>Run the <code class="docutils literal notranslate"><span class="pre">pytest</span></code> in the environment.</p></li>
+</ol>
+<p>Testing lower bounds of dependencies currently has the following limitations:</p>
+<ul class="simple">
+<li><p>Can only parse main dependencies. Edgetest cannot parse lower bounds specified in extras.</p></li>
+<li><p>Can only install lower bounds of packages specified with <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code>. Edgetest cannot test the lower bounds of packages specified with <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>.</p></li>
+<li><p>Cannot automatically update or export lower bounds of dependencies to a project configuration file.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is hard to install lower bounds of dependencies if they are very outdated.
+Older versions of dependencies like pandas may be incompatible with newer Python versions
+or may not be able to be installed with a given numpy version. In the case where installation
+is not possible, edgetest will report that the setup was unsuccessful and move on to the next environment.</p>
+</div>
 </section>
 <section id="using-plugins">
 <h2>Using plugins<a class="headerlink" href="#using-plugins" title="Permalink to this heading">#</a></h2>
@@ -652,6 +723,7 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
 <li><a class="reference internal" href="#running-a-single-environment">Running a single environment</a></li>
 <li><a class="reference internal" href="#exporting-an-upgraded-config-file">Exporting an upgraded config file</a></li>
 <li><a class="reference internal" href="#exporting-an-upgraded-requirements-file">Exporting an upgraded requirements file</a></li>
+<li><a class="reference internal" href="#testing-lower-bounds-of-packages">Testing lower bounds of packages</a></li>
 <li><a class="reference internal" href="#using-plugins">Using plugins</a></li>
 </ul>
 </li>
@@ -664,12 +736,12 @@ and maintained by the <code class="docutils literal notranslate"><span class="pr
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
-    <script src="_static/tabs.js"></script>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/tabs.js?v=3030b3cb"></script>
     </body>
 </html>
