@@ -1,5 +1,5 @@
 # This workflow runs edgetest on edgetest @ 17:35 UTC Fridays.
-# https://github.com/fdosani/run-edgetest-action
+# https://github.com/edgetest-dev/run-edgetest-action
 
 name: Run edgetest
 on:
@@ -14,7 +14,7 @@ jobs:
         with:
           ref: dev
       - id: run-edgetest
-        uses: fdosani/run-edgetest-action@v1.1
+        uses: edgetest-dev/run-edgetest-action@v1.4
         with:
           edgetest-flags: '-c setup.cfg --export'
           base-branch: 'dev'

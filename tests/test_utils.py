@@ -8,12 +8,13 @@ from tomlkit import array, string
 from edgetest.schema import BASE_SCHEMA, EdgetestValidator, Schema
 from edgetest.utils import (
     _convert_toml_array_to_string,
+    _isin_case_dashhyphen_ins,
     gen_requirements_config,
+    get_lower_bounds,
     parse_cfg,
     parse_toml,
     upgrade_pyproject_toml,
     upgrade_setup_cfg,
-    _isin_case_dashhyphen_ins,
 )
 
 REQS = """
@@ -25,6 +26,12 @@ CFG_NOREQS = """
 [edgetest.envs.myenv]
 upgrade =
     myupgrade
+command =
+    pytest tests -m 'not integration'
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
 command =
     pytest tests -m 'not integration'
 """
@@ -59,6 +66,12 @@ upgrade =
     myupgrade
 command =
     pytest tests
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
+command =
+    pytest tests
 """
 
 CFG_CUSTOM = """
@@ -74,6 +87,10 @@ mycustom = mykey
 [edgetest.envs.myenv]
 upgrade =
     myupgrade
+
+[edgetest.envs.myenv_lower]
+lower =
+    mylower
 """
 
 
@@ -82,6 +99,10 @@ TOML_NOREQS = """
 upgrade = [
     "myupgrade"
 ]
+command = "pytest tests -m 'not integration'"
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
 command = "pytest tests -m 'not integration'"
 """
 
@@ -111,6 +132,10 @@ command = "pytest tests -m 'not integration'"
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
 command = "pytest tests"
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
+command = "pytest tests"
 """
 
 TOML_CUSTOM = """
@@ -123,6 +148,9 @@ mycustom = "mykey"
 
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
+
+[edgetest.envs.myenv_lower]
+lower = ["mylower"]
 """
 
 
@@ -149,6 +177,18 @@ tests = [
 ]
 """
 
+REQS_NORMAL = """
+pandas>=1.0.0,<=2.0
+numpy<=0.24,>=0.01
+"""
+
+
+def test_get_lower_bounds():
+    """Test getting lower bound from reqs."""
+    assert get_lower_bounds(REQS_NORMAL, "pandas\nnumpy\n") == "pandas==1.0.0\nnumpy==0.01\n"
+    assert get_lower_bounds(REQS_NORMAL, "pandas") == "pandas==1.0.0\n"
+    assert get_lower_bounds(REQS_NORMAL, "") == ""
+    assert get_lower_bounds(REQS, "mydep2") == ""
 
 @patch("edgetest.utils.Path")
 def test_parse_reqs(mock_pathlib):
@@ -184,7 +224,12 @@ def test_parse_cfg(tmpdir):
                 "name": "myenv",
                 "upgrade": "\nmyupgrade",
                 "command": "\npytest tests -m 'not integration'",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
+                "command": "\npytest tests -m 'not integration'",
+            },
         ]
     }
 
@@ -209,7 +254,13 @@ def test_parse_cfg_default(tmpdir):
                 "upgrade": "\nmyupgrade",
                 "extras": "\ntests",
                 "command": "\npytest tests",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
+                "extras": "\ntests",
+                "command": "\npytest tests",
+            },
         ]
     }
 
@@ -287,7 +338,13 @@ def test_parse_custom_cfg(tmpdir):
                 "upgrade": "\nmyupgrade",
                 "extras": "\ntests",
                 "command": "\npytest tests -m 'not integration'",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "\nmylower",
+                "extras": "\ntests",
+                "command": "\npytest tests -m 'not integration'",
+            },
         ],
     }
 
@@ -316,7 +373,12 @@ def test_parse_toml(tmpdir):
                 "name": "myenv",
                 "upgrade": "myupgrade",
                 "command": "pytest tests -m 'not integration'",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
+                "command": "pytest tests -m 'not integration'",
+            },
         ]
     }
 
@@ -341,7 +403,13 @@ def test_parse_toml_default(tmpdir):
                 "upgrade": "myupgrade",
                 "extras": "tests",
                 "command": "pytest tests",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
+                "extras": "tests",
+                "command": "pytest tests",
+            },
         ]
     }
 
@@ -419,7 +487,13 @@ def test_parse_custom_toml(tmpdir):
                 "upgrade": "myupgrade",
                 "extras": "tests",
                 "command": "pytest tests -m 'not integration'",
-            }
+            },
+            {
+                "name": "myenv_lower",
+                "lower": "mylower",
+                "extras": "tests",
+                "command": "pytest tests -m 'not integration'",
+            },
         ],
     }
 

@@ -457,6 +457,90 @@ For instance, ``snowflake-connector-python[pandas]>=2.2.8,<2.3.9`` might be repl
                 --deps scikit-learn \
                 --export
 
+Testing lower bounds of packages
+--------------------------------
+
+.. warning::
+
+    This feature is experimental and may change in future releases. Limited functionality is available.
+
+Suppose you want to test if a new feature is compatible with dependencies' lower bounds.
+You can use an edgetest environment to test the lower bounds of dependencies in your ``setup.cfg`` or ``pyproject.toml`` as follows:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        .. code-block:: ini
+
+            [edgetest.envs.pandas_lower]
+            lower =
+                pandas
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas_lower]
+            lower = [
+                "pandas"
+            ]
+
+Running the edgetest command using this environment specification will:
+
+1. Create your virtual environment (as in the standard case),
+2. Install the local package,
+3. Install the lower version of ``pandas`` as specified in your project configuration file, and
+4. Run the ``pytest`` in the environment.
+
+For example, if your project configuration looks like this:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        .. code-block:: ini
+
+            [options]
+            install_requires =
+                pandas>=0.24.3
+
+            [edgetest.envs.pandas_lower]
+            lower =
+                pandas
+
+    .. tab:: .toml
+
+        .. code-block:: toml
+
+            [project]
+            dependencies = [
+                "pandas>=0.24.3",
+            ]
+
+            [edgetest.envs.pandas_lower]
+            lower =
+                pandas
+
+then edgetest will:
+
+1. Create the ``pandas_lower`` virtual environment,
+2. Install the local package,
+3. Install ``pandas==0.24.3``, and
+4. Run the ``pytest`` in the environment.
+
+Testing lower bounds of dependencies currently has the following limitations:
+
+- Can only parse main dependencies. Edgetest cannot parse lower bounds specified in extras.
+- Can only install lower bounds of packages specified with ``>=``. Edgetest cannot test the lower bounds of packages specified with ``>``.
+- Cannot automatically update or export lower bounds of dependencies to a project configuration file.
+
+.. note::
+    It is hard to install lower bounds of dependencies if they are very outdated.
+    Older versions of dependencies like pandas may be incompatible with newer Python versions
+    or may not be able to be installed with a given numpy version. In the case where installation
+    is not possible, edgetest will report that the setup was unsuccessful and move on to the next environment.
+
 Using plugins
 -------------
 

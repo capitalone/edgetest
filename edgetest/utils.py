@@ -215,6 +215,15 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
         if section_name[1] == "envs":
             output["envs"].append(dict(config[section]))
             output["envs"][-1]["name"] = section_name[2]
+            if (
+                "lower" in output["envs"][-1]
+                and "options" in config
+                and "install_requires" in config["options"]
+            ):
+                output["envs"][-1]["lower"] = get_lower_bounds(
+                    config.get("options", "install_requires"),
+                    output["envs"][-1]["lower"],
+                )
         else:
             output[section_name[1]] = dict(config[section])
     if len(output["envs"]) == 0:
@@ -334,13 +343,23 @@ def parse_toml(
                         )
                     output["envs"].append(dict(config["edgetest"]["envs"][env]))  # type: ignore
                     output["envs"][-1]["name"] = env
+                    if (
+                        "lower" in output["envs"][-1]
+                        and "project" in config
+                        and "dependencies" in config["project"]  # type: ignore
+                    ):
+                        output["envs"][-1]["lower"] = get_lower_bounds(
+                            dict(config["project"])["dependencies"],  # type: ignore
+                            output["envs"][-1]["lower"],
+                        )
             elif isinstance(config["edgetest"][section], Table):  # type: ignore
                 output[section] = dict(config["edgetest"][section])  # type: ignore
 
     if len(output["envs"]) == 0:
         if config.get("project").get("dependencies"):  # type: ignore
             output = convert_requirements(
-                requirements="\n".join(config["project"]["dependencies"]), conf=output  # type: ignore # noqa: E501
+                requirements="\n".join(config["project"]["dependencies"]),  # type: ignore
+                conf=output,  # type: ignore # noqa: E501
             )
         elif requirements:
             req_conf = gen_requirements_config(fname_or_buf=requirements)
@@ -500,3 +519,44 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
         if a.replace("_", "-").lower() == b.replace("_", "-").lower():
             return True
     return False
+
+
+def get_lower_bounds(requirements: str, lower: str) -> str:
+    r"""Get lower bounds of requested packages from installation requirements.
+
+    Parses through the project ``requirements`` and the newline-delimited
+    packages requested in ``lower`` to find the lower bounds.
+
+    Parameters
+    ----------
+    requirements : str
+        Project setup requirements,
+        e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
+    lower : str
+        Newline-delimited packages requested,
+         e.g. ``"pandas\nnumpy"``.
+
+    Returns
+    -------
+    str
+        The packages along with the lower bound, e.g. ``"pandas==1.5.1\nnumpy==1.22.1"``.
+    """
+    all_lower_bounds = {
+        pkg.project_name + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(
+            pkg.specs
+        ).get(">=")
+        for pkg in parse_requirements(requirements)
+    }
+
+    lower_with_bounds = ""
+    for pkg_name, lower_bound in all_lower_bounds.items():
+        # TODO: Parse through extra requirements as well to get lower bounds
+        if lower_bound is None:
+            LOG.warning(
+                "Requested %s lower bound, but did not find in install requirements.",
+                pkg_name,
+            )
+        elif _isin_case_dashhyphen_ins(pkg_name, lower.split("\n")):
+            lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
+
+    return lower_with_bounds
