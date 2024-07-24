@@ -70,7 +70,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{py_loc!s}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -172,7 +172,7 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{py_loc}", "-m", "pip", "install", ".[tests, complete]"),
+            ("uv", "pip", "install", f"--python={py_loc!s}", ".[tests, complete]"),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -208,19 +208,19 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
     assert mock_popen.call_args_list == [
         call(
             (
-                f"{py_loc}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
-                "otherpkg",
+                "otherpkg"
             ),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
-            (f"{py_loc}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc}", "."),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -256,13 +256,13 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
     assert mock_popen.call_args_list == [
         call(
             (
-                f"{py_loc}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
-                "otherpkg",
+                "otherpkg"
             ),
             stdout=-1,
             universal_newlines=True,
