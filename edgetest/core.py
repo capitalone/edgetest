@@ -66,7 +66,7 @@ class TestPackage:
     @property
     def basedir(self) -> Path:
         """Base directory.
-    
+
         Returns
         -------
         Path
