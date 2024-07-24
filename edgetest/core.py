@@ -50,8 +50,6 @@ class TestPackage:
     ):
         """Init method."""
         self.hook = hook
-        self._basedir = Path(Path.cwd(), ".edgetest")
-        self._basedir.mkdir(exist_ok=True)
         self.envname = envname
 
         if (upgrade is None and lower is None) or (
@@ -66,6 +64,20 @@ class TestPackage:
         self.status: bool = False
 
     @property
+    def basedir(self) -> Path:
+        """Base directory.
+    
+        Returns
+        -------
+        Path
+            Base directory for execution.
+        """
+        _basedir = Path.cwd() / ".edgetest"
+        _basedir.mkdir(exist_ok=True)
+
+        return _basedir
+
+    @property
     def python_path(self) -> str:
         """Get the path to the python executable.
 
@@ -74,7 +86,7 @@ class TestPackage:
         str
             The path to the python executable.
         """
-        return self.hook.path_to_python(basedir=self._basedir, envname=self.envname)  # type: ignore
+        return self.hook.path_to_python(basedir=self.basedir, envname=self.envname)  # type: ignore
 
     def setup(
         self,
@@ -113,7 +125,7 @@ class TestPackage:
         try:
             LOG.info(f"Creating the following environment: {self.envname}...")
             self.hook.create_environment(
-                basedir=self._basedir, envname=self.envname, conf=options
+                basedir=self.basedir, envname=self.envname, conf=options
             )
             LOG.info(f"Successfully created {self.envname}")
         except RuntimeError:
@@ -176,7 +188,7 @@ class TestPackage:
             )
             try:
                 self.hook.run_update(
-                    basedir=self._basedir,
+                    basedir=self.basedir,
                     envname=self.envname,
                     upgrade=self.upgrade,
                     conf=options,
@@ -196,7 +208,7 @@ class TestPackage:
             )
             try:
                 self.hook.run_install_lower(
-                    basedir=self._basedir,
+                    basedir=self.basedir,
                     envname=self.envname,
                     lower=self.lower,
                     conf=options,
