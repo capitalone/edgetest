@@ -7,12 +7,12 @@ import click
 import pluggy
 from tomlkit import dumps
 
-from . import hookspecs, lib
-from .core import TestPackage
-from .logger import get_logger
-from .report import gen_report
-from .schema import EdgetestValidator, Schema
-from .utils import (
+from edgetest import hookspecs, lib
+from edgetest.core import TestPackage
+from edgetest.logger import get_logger
+from edgetest.report import gen_report
+from edgetest.schema import EdgetestValidator, Schema
+from edgetest.utils import (
     gen_requirements_config,
     parse_cfg,
     parse_toml,

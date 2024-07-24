@@ -14,7 +14,7 @@ from tomlkit import TOMLDocument, load
 from tomlkit.container import Container
 from tomlkit.items import Array, Item, String, Table
 
-from .logger import get_logger
+from edgetest.logger import get_logger
 
 LOG = get_logger(__name__)
 
@@ -310,7 +310,8 @@ def parse_toml(
     """
     options: Union[Item, Container, dict]
     # Read in the configuration file
-    config: TOMLDocument = load(open(filename))
+    with open(filename) as buf:
+        config: TOMLDocument = load(buf)
     # Parse
     output: Dict = {"envs": []}
     # Get any global options if necessary. First scan through and pop out any Tables
@@ -359,7 +360,7 @@ def parse_toml(
         if config.get("project").get("dependencies"):  # type: ignore
             output = convert_requirements(
                 requirements="\n".join(config["project"]["dependencies"]),  # type: ignore
-                conf=output,  # type: ignore # noqa: E501
+                conf=output,  # type: ignore
             )
         elif requirements:
             req_conf = gen_requirements_config(fname_or_buf=requirements)
@@ -404,7 +405,7 @@ def upgrade_requirements(
     except OSError:
         # Filename too long for the is_file() function
         cfg = fname_or_buf
-    pkgs = [pkg for pkg in parse_requirements(cfg)]
+    pkgs = list(parse_requirements(cfg))
     upgrades = {pkg["name"]: pkg["version"] for pkg in upgraded_packages}
 
     for pkg in pkgs:
@@ -480,7 +481,8 @@ def upgrade_pyproject_toml(
     TOMLDocument
         The updated TOMLDocument.
     """
-    parser: TOMLDocument = load(open(filename))
+    with open(filename) as buf:
+        parser: TOMLDocument = load(buf)
     if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
         LOG.info(f"Updating the requirements in {filename}")
         upgraded = upgrade_requirements(
@@ -490,7 +492,7 @@ def upgrade_pyproject_toml(
         parser["project"]["dependencies"] = upgraded.split("\n")  # type: ignore
     # Update the extras, if necessary
     if parser.get("project").get("optional-dependencies"):  # type: ignore
-        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore # noqa: E501
+        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
             upgraded = upgrade_requirements(
                 fname_or_buf="\n".join(dependencies),
                 upgraded_packages=upgraded_packages,
@@ -515,10 +517,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     bool
         Return ``True`` if ``a`` in vals, otherwise ``False``.
     """
-    for b in vals:
-        if a.replace("_", "-").lower() == b.replace("_", "-").lower():
-            return True
-    return False
+    return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
 def get_lower_bounds(requirements: str, lower: str) -> str:

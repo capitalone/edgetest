@@ -70,7 +70,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            (f"{py_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -122,6 +122,7 @@ def test_basic_setup_upgrade_error(
 
     tester.setup()
     assert not tester.setup_status
+
 
 @patch.object(Path, "cwd")
 @patch("edgetest.utils.Popen", autospec=True)

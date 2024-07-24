@@ -1,4 +1,5 @@
 """Create a fake package and test."""
+
 import configparser
 import sys
 from pathlib import Path
@@ -146,7 +147,7 @@ def test_toy_package():
         assert Path(loc, ".edgetest", "pandas").is_dir()
         assert "pandas" in result.stdout
 
-        if not sys.platform == "win32":
+        if sys.platform != "win32":
             assert Path(
                 loc, ".edgetest", "pandas", "lib", PY_VER, "site-packages", "pandas"
             ).is_dir()
@@ -180,7 +181,7 @@ def test_toy_package_lower():
         assert Path(loc, ".edgetest", "lower_env").is_dir()
         assert "pandas" in result.stdout
 
-        if not sys.platform == "win32":
+        if sys.platform != "win32":
             assert Path(
                 loc, ".edgetest", "lower_env", "lib", PY_VER, "site-packages", "pandas"
             ).is_dir()
@@ -214,7 +215,7 @@ def test_toy_package_dask():
         for envname in ("core", "lower_env"):
             assert Path(loc, ".edgetest", envname).is_dir()
 
-            if not sys.platform == "win32":
+            if sys.platform != "win32":
                 assert Path(
                     loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "dask"
                 ).is_dir()

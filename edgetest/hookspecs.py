@@ -4,7 +4,7 @@ from typing import Dict, List
 
 import pluggy
 
-from .schema import Schema
+from edgetest.schema import Schema
 
 hookspec = pluggy.HookspecMarker("edgetest")
 

@@ -148,13 +148,13 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            (f"{py_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -165,7 +165,7 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_loc)}", "-m", "pip", "list", "--format", "json"),
+            (f"{py_loc!s}", "-m", "pip", "list", "--format", "json"),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -173,7 +173,7 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
     assert mock_cpopen.call_args_list == [
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pytest",
                 "tests",
@@ -216,13 +216,13 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            (f"{py_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -235,7 +235,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
     assert mock_cpopen.call_args_list == [
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pytest",
                 "tests",
@@ -285,13 +285,13 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_myupgrade_loc)}", "-m", "pip", "install", "."),
+            (f"{py_myupgrade_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_myupgrade_loc)}",
+                f"{py_myupgrade_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -303,7 +303,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         ),
         call(
             (
-                f"{str(py_allreq_loc)}",
+                f"{py_allreq_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -314,7 +314,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         ),
         call(
             (
-                f"{str(py_allreq_loc)}",
+                f"{py_allreq_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -326,7 +326,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         ),
         call(
             (
-                f"{str(py_myupgrade_loc)}",
+                f"{py_myupgrade_loc!s}",
                 "-m",
                 "pip",
                 "list",
@@ -338,7 +338,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         ),
         call(
             (
-                f"{str(py_allreq_loc)}",
+                f"{py_allreq_loc!s}",
                 "-m",
                 "pip",
                 "list",
@@ -351,11 +351,11 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
     ]
     assert mock_cpopen.call_args_list == [
         call(
-            (f"{str(py_myupgrade_loc)}", "-m", "pytest"),
+            (f"{py_myupgrade_loc!s}", "-m", "pytest"),
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_allreq_loc)}", "-m", "pytest"),
+            (f"{py_allreq_loc!s}", "-m", "pytest"),
             universal_newlines=True,
         ),
     ]
@@ -406,8 +406,6 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen, mock_builder):
             outfile.write(SETUP_CFG_EXTRAS)
 
         result = runner.invoke(cli, ["--config=setup.cfg", "--export"])
-
-        print(result.output)
 
         with open("setup.cfg") as infile:
             out = infile.read()
@@ -525,13 +523,13 @@ def test_cli_notest(mock_popen, mock_builder):
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            (f"{py_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pip",
                 "install",
@@ -542,7 +540,7 @@ def test_cli_notest(mock_popen, mock_builder):
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_loc)}", "-m", "pip", "list", "--format", "json"),
+            (f"{py_loc!s}", "-m", "pip", "list", "--format", "json"),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -577,13 +575,13 @@ def test_cli_notest_lower(mock_popen, mock_builder):
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            (f"{py_loc!s}", "-m", "pip", "install", "."),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pip",
                 "install",

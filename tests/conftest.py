@@ -124,7 +124,6 @@ class FakeHookLowerError:
         raise RuntimeError("Could not install lower bounds of packages.")
 
 
-
 @pytest.fixture
 def plugin_manager():
     """The plugin manager for our fake hook."""
@@ -133,6 +132,7 @@ def plugin_manager():
     pm.register(FakeHook())
 
     return pm
+
 
 @pytest.fixture
 def plugin_manager_environment_error():
@@ -143,6 +143,7 @@ def plugin_manager_environment_error():
 
     return pm
 
+
 @pytest.fixture
 def plugin_manager_upgrade_error():
     """The plugin manager for our fake hook that raises errors."""
@@ -151,6 +152,7 @@ def plugin_manager_upgrade_error():
     pm.register(FakeHookUpdateError())
 
     return pm
+
 
 @pytest.fixture
 def plugin_manager_lower_error():
