@@ -157,11 +157,7 @@ class TestPackage:
             LOG.info(f"Installing the local package into {self.envname}...")
             try:
                 _run_command(
-                    "uv",
-                    "pip",
-                    "install",
-                    f"--python={self.python_path}",
-                    pkg
+                    "uv", "pip", "install", f"--python={self.python_path}", pkg
                 )
                 LOG.info(
                     f"Successfully installed the local package into {self.envname}..."
@@ -232,7 +228,9 @@ class TestPackage:
         if self.upgrade is None:
             return []
         # Get the version for the upgraded package(s)
-        out, _ = _run_command("uv", "pip", "list", f"--python={self.python_path}", "--format", "json")
+        out, _ = _run_command(
+            "uv", "pip", "list", f"--python={self.python_path}", "--format", "json"
+        )
         outjson = json.loads(out)
 
         upgrade_wo_extras = [pkg.split("[")[0] for pkg in self.upgrade]

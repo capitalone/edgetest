@@ -214,7 +214,7 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
                 f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
-                "otherpkg"
+                "otherpkg",
             ),
             stdout=-1,
             universal_newlines=True,
@@ -262,7 +262,7 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
                 f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
-                "otherpkg"
+                "otherpkg",
             ),
             stdout=-1,
             universal_newlines=True,

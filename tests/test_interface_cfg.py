@@ -153,14 +153,7 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
             universal_newlines=True,
         ),
         call(
-            (
-                "uv",
-                "pip",
-                "install",
-                f"--python={py_loc!s}",
-                "myupgrade",
-                "--upgrade"
-            ),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "myupgrade", "--upgrade"),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -221,13 +214,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
             universal_newlines=True,
         ),
         call(
-            (
-                "uv",
-                "pip",
-                "install",
-                f"--python={py_loc!s}",
-                "mylower==0.0.1"
-            ),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "mylower==0.0.1"),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -296,19 +283,13 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "install",
                 f"--python={py_myupgrade_loc!s}",
                 "myupgrade",
-                "--upgrade"
+                "--upgrade",
             ),
             stdout=-1,
             universal_newlines=True,
         ),
         call(
-            (
-                "uv",
-                "pip",
-                "install",
-                f"--python={py_allreq_loc!s}",
-                "."
-            ),
+            ("uv", "pip", "install", f"--python={py_allreq_loc!s}", "."),
             stdout=-1,
             universal_newlines=True,
         ),
@@ -319,7 +300,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "install",
                 f"--python={py_allreq_loc!s}",
                 "myupgrade",
-                "--upgrade"
+                "--upgrade",
             ),
             stdout=-1,
             universal_newlines=True,

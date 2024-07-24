@@ -71,12 +71,7 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
     python_path = path_to_python(basedir, envname)
     try:
         _run_command(
-            "uv",
-            "pip",
-            "install",
-            f"--python={python_path}",
-            *upgrade,
-            "--upgrade"
+            "uv", "pip", "install", f"--python={python_path}", *upgrade, "--upgrade"
         )
     except Exception as err:
         raise RuntimeError(f"Unable to pip upgrade: {upgrade}") from err
@@ -101,12 +96,6 @@ def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
     """
     python_path = path_to_python(basedir, envname)
     try:
-        _run_command(
-            "uv",
-            "pip",
-            "install",
-            f"--python={python_path}",
-            *lower
-        )
+        _run_command("uv", "pip", "install", f"--python={python_path}", *lower)
     except Exception as err:
         raise RuntimeError(f"Unable to pip install: {lower}") from err
