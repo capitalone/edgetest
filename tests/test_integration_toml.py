@@ -48,7 +48,7 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Polars[PyArrow]<=1.0.0,<=0.20.31"]
+dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Polars[pyarrow]<=1.0.0,>=0.20.31"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
@@ -195,7 +195,7 @@ def test_toy_package_extras():
             config = load(buf)
 
         assert "Scikit_Learn" in config["project"]["dependencies"][0]
-        assert "Polars[PyArrow]" in config["project"]["dependencies"][1]
+        assert "Polars[pyarrow]" in config["project"]["dependencies"][1]
         assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["core"]["upgrade"] == [
             "scikit-learn",
