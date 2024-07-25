@@ -16,7 +16,7 @@ hookimpl = pluggy.HookimplMarker("edgetest")
 def path_to_python(basedir: str, envname: str) -> str:
     """Return the path to the python executable."""
     if platform.system() == "Windows":
-        return str(Path(basedir) / envname / "Scripts" / "python")
+        return str(Path(basedir) / envname / "Scripts" / "python.exe")
     else:
         return str(Path(basedir) / envname / "bin" / "python")
 

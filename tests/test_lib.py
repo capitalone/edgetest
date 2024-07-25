@@ -15,7 +15,7 @@ from edgetest.lib import (
 def test_path_to_python(mock_platform):
     mock_platform.system.return_value = "Windows"
     assert path_to_python("test", "test") == str(
-        Path("test") / "test" / "Scripts" / "python"
+        Path("test") / "test" / "Scripts" / "python.exe"
     )
 
     mock_platform.system.return_value = "Unix"
