@@ -141,7 +141,7 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
@@ -205,7 +205,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv_lower"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
@@ -260,9 +260,11 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         result = runner.invoke(cli)
 
     if platform.system() == "Windows":
-        py_myupgrade_loc = Path(loc) / ".edgetest" / "myupgrade" / "Scripts" / "python"
+        py_myupgrade_loc = (
+            Path(loc) / ".edgetest" / "myupgrade" / "Scripts" / "python.exe"
+        )
         py_allreq_loc = (
-            Path(loc) / ".edgetest" / "all-requirements" / "Scripts" / "python"
+            Path(loc) / ".edgetest" / "all-requirements" / "Scripts" / "python.exe"
         )
     else:
         py_myupgrade_loc = Path(loc) / ".edgetest" / "myupgrade" / "bin" / "python"
@@ -428,7 +430,7 @@ def test_cli_nosetup(mock_popen, mock_cpopen):
 
     env_loc = str(Path(loc) / ".edgetest" / "myenv")
     if platform.system() == "Windows":
-        py_loc = Path(env_loc) / "Scripts" / "python"
+        py_loc = Path(env_loc) / "Scripts" / "python.exe"
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
@@ -473,7 +475,7 @@ def test_cli_nosetup_lower(mock_popen, mock_cpopen):
 
     env_loc = str(Path(loc) / ".edgetest" / "myenv_lower")
     if platform.system() == "Windows":
-        py_loc = Path(env_loc) / "Scripts" / "python"
+        py_loc = Path(env_loc) / "Scripts" / "python.exe"
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
@@ -509,7 +511,7 @@ def test_cli_notest(mock_popen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
@@ -564,7 +566,7 @@ def test_cli_notest_lower(mock_popen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv_lower"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
