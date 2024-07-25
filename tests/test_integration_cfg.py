@@ -22,7 +22,7 @@ zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    pandas<=1.2.0
+    polars<=1.0.0
 
 [options.extras_require]
 tests =
@@ -46,7 +46,7 @@ zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    pandas<=1.2.0,>=1.0.0
+    polars<=1.0.0,>=0.20.31
 
 [options.extras_require]
 tests =
@@ -58,11 +58,11 @@ extras =
 
 [edgetest.envs.lower_env]
 lower =
-    pandas
+    polars
 """
 
 
-SETUP_CFG_DASK = """
+SETUP_CFG_EXTRAS = """
 [metadata]
 name = toy_package
 version = 0.1.0
@@ -76,7 +76,7 @@ include_package_data = True
 packages = find:
 install_requires =
     scikit-learn>=1.0,<=1.2.0
-    dask[dataframe]<=2022.1.0,>=2021.6.1
+    polars[pyarrow]<=1.0.0,>=0.20.31
 
 [options.extras_require]
 tests =
@@ -87,14 +87,14 @@ extras =
     tests
 upgrade =
     Scikit_Learn
-    Dask[DataFrame]
+    Polars[PyArrow]
 
 [edgetest.envs.lower_env]
 extras =
     tests
 lower =
     scikit_Learn
-    Dask[DataFrame]
+    Polars[pyArrow]
 """
 
 
@@ -144,12 +144,12 @@ def test_toy_package():
 
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
-        assert Path(loc, ".edgetest", "pandas").is_dir()
-        assert "pandas" in result.stdout
+        assert Path(loc, ".edgetest", "polars").is_dir()
+        assert "polars" in result.stdout
 
         if sys.platform != "win32":
             assert Path(
-                loc, ".edgetest", "pandas", "lib", PY_VER, "site-packages", "pandas"
+                loc, ".edgetest", "polars", "lib", PY_VER, "site-packages", "polars"
             ).is_dir()
 
 
@@ -179,22 +179,22 @@ def test_toy_package_lower():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "lower_env").is_dir()
-        assert "pandas" in result.stdout
+        assert "polars" in result.stdout
 
         if sys.platform != "win32":
             assert Path(
-                loc, ".edgetest", "lower_env", "lib", PY_VER, "site-packages", "pandas"
+                loc, ".edgetest", "lower_env", "lib", PY_VER, "site-packages", "polars"
             ).is_dir()
 
 
 @pytest.mark.integration
-def test_toy_package_dask():
+def test_toy_package_extras():
     """Test using edgetest with a toy package."""
     runner = CliRunner()
 
     with runner.isolated_filesystem() as loc:
         with open("setup.cfg", "w") as outfile:
-            outfile.write(SETUP_CFG_DASK)
+            outfile.write(SETUP_CFG_EXTRAS)
         with open("setup.py", "w") as outfile:
             outfile.write(SETUP_PY)
         # Make a directory for the module
@@ -217,10 +217,10 @@ def test_toy_package_dask():
 
             if sys.platform != "win32":
                 assert Path(
-                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "dask"
+                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "polars"
                 ).is_dir()
                 assert Path(
-                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "pandas"
+                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "pyarrow"
                 ).is_dir()
                 assert Path(
                     loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "sklearn"
@@ -230,15 +230,15 @@ def test_toy_package_dask():
         config.read("setup.cfg")
 
         assert "scikit-learn" in config["options"]["install_requires"]
-        assert "dask[dataframe]" in config["options"]["install_requires"]
+        assert "polars[pyarrow]" in config["options"]["install_requires"]
         assert config["edgetest.envs.core"]["extras"] == "\ntests"
         assert (
-            config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nDask[DataFrame]"
+            config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nPolars[PyArrow]"
         )
         assert config["edgetest.envs.lower_env"]["extras"] == "\ntests"
         assert (
             config["edgetest.envs.lower_env"]["lower"]
-            == "\nscikit_Learn\nDask[DataFrame]"
+            == "\nscikit_Learn\nPolars[pyArrow]"
         )
-        assert "dask" in result.stdout
+        assert "polars" in result.stdout
         assert "scikit-learn" in result.stdout
