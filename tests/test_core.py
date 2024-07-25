@@ -72,6 +72,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -174,6 +175,7 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", ".[tests, complete]"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -217,11 +219,13 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
                 "otherpkg",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "install", f"--python={py_loc}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -265,6 +269,7 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
                 "otherpkg",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]

@@ -40,12 +40,14 @@ def _run_command(*args) -> Tuple[str, int]:
         Error raised when the command is not successfully executed.
     """
     LOG.debug(f"Running the following command: \n\n {' '.join(args)}")
-    popen = Popen(args, stdout=PIPE, universal_newlines=True)
-    out, _ = popen.communicate()
+    popen = Popen(args, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    out, err = popen.communicate()
     if popen.returncode:
         raise RuntimeError(
-            f"Unable to run the following command: \n\n {' '.join(args)}"
-        )
+            f"Unable to run the following command: \n\n {' '.join(args)} \n\n"
+            f"Returned the following stdout: \n\n {out} \n\n"
+            f"Returned the following stderr: \n\n {err} \n\n"
+        ) from None
 
     return out, popen.returncode
 

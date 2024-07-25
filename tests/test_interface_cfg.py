@@ -150,16 +150,19 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "myupgrade", "--upgrade"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -211,11 +214,13 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "mylower==0.0.1"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -274,6 +279,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         call(
             ("uv", "pip", "install", f"--python={py_myupgrade_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -286,11 +292,13 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "install", f"--python={py_allreq_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -303,6 +311,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -315,6 +324,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "json",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -327,6 +337,7 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "json",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -425,6 +436,7 @@ def test_cli_nosetup(mock_popen, mock_cpopen):
         call(
             ("uv", "pip", "list", f"--python={py_loc}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -506,6 +518,7 @@ def test_cli_notest(mock_popen, mock_builder):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -518,11 +531,13 @@ def test_cli_notest(mock_popen, mock_builder):
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -558,6 +573,7 @@ def test_cli_notest_lower(mock_popen, mock_builder):
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
@@ -569,6 +585,7 @@ def test_cli_notest_lower(mock_popen, mock_builder):
                 "mylower==0.0.1",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
