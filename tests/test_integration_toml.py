@@ -1,5 +1,5 @@
 """Create a fake package and test."""
-import configparser
+
 import sys
 from pathlib import Path
 
@@ -15,7 +15,7 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["pandas<=1.2.0"]
+dependencies = ["polars<=1.0.0"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
@@ -30,7 +30,7 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["pandas<=1.2.0,>=1.0.0"]
+dependencies = ["polars<=1.0.0,>=0.20.31"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
@@ -39,27 +39,27 @@ tests = ["pytest"]
 extras = ["tests"]
 
 [edgetest.envs.lower_env]
-lower = ["pandas"]
+lower = ["polars"]
 """
 
-SETUP_TOML_DASK = """
+SETUP_TOML_EXTRAS = """
 [project]
 name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Dask[dataframe]<=2022.1.0,>=2021.6.1"]
+dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Polars[pyarrow]<=1.0.0,>=0.20.31"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
 
 [edgetest.envs.core]
 extras = ["tests"]
-upgrade = ["scikit-learn", "dask[dataframe]"]
+upgrade = ["scikit-learn", "polars[pyarrow]"]
 
 [edgetest.envs.lower_env]
 extras = ["tests"]
-lower = ["scikit-learn", "dask[dataframe]"]
+lower = ["scikit-learn", "polars[pyarrow]"]
 """
 
 
@@ -109,12 +109,12 @@ def test_toy_package():
 
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
-        assert Path(loc, ".edgetest", "pandas").is_dir()
-        assert "pandas" in result.stdout
+        assert Path(loc, ".edgetest", "polars").is_dir()
+        assert "polars" in result.stdout
 
-        if not sys.platform == "win32":
+        if sys.platform != "win32":
             assert Path(
-                loc, ".edgetest", "pandas", "lib", PY_VER, "site-packages", "pandas"
+                loc, ".edgetest", "polars", "lib", PY_VER, "site-packages", "polars"
             ).is_dir()
 
 
@@ -144,22 +144,22 @@ def test_toy_package_lower():
         assert result.exit_code == 0
         assert Path(loc, ".edgetest").is_dir()
         assert Path(loc, ".edgetest", "lower_env").is_dir()
-        assert "pandas" in result.stdout
+        assert "polars" in result.stdout
 
-        if not sys.platform == "win32":
+        if sys.platform != "win32":
             assert Path(
-                loc, ".edgetest", "lower_env", "lib", PY_VER, "site-packages", "pandas"
+                loc, ".edgetest", "lower_env", "lib", PY_VER, "site-packages", "polars"
             ).is_dir()
 
 
 @pytest.mark.integration
-def test_toy_package_dask():
+def test_toy_package_extras():
     """Test using edgetest with a toy package."""
     runner = CliRunner()
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML_DASK)
+            outfile.write(SETUP_TOML_EXTRAS)
         with open("setup.py", "w") as outfile:
             outfile.write(SETUP_PY)
         # Make a directory for the module
@@ -180,30 +180,31 @@ def test_toy_package_dask():
         for envname in ("core", "lower_env"):
             assert Path(loc, ".edgetest", envname).is_dir()
 
-            if not sys.platform == "win32":
+            if sys.platform != "win32":
                 assert Path(
-                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "dask"
+                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "polars"
                 ).is_dir()
                 assert Path(
-                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "pandas"
+                    loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "pyarrow"
                 ).is_dir()
                 assert Path(
                     loc, ".edgetest", envname, "lib", PY_VER, "site-packages", "sklearn"
                 ).is_dir()
 
-        config = load(open("pyproject.toml"))
+        with open("pyproject.toml") as buf:
+            config = load(buf)
 
         assert "Scikit_Learn" in config["project"]["dependencies"][0]
-        assert "Dask" in config["project"]["dependencies"][1]
+        assert "Polars[pyarrow]" in config["project"]["dependencies"][1]
         assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["core"]["upgrade"] == [
             "scikit-learn",
-            "dask[dataframe]",
+            "polars[pyarrow]",
         ]
         assert config["edgetest"]["envs"]["lower_env"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["lower_env"]["lower"] == [
             "scikit-learn",
-            "dask[dataframe]",
+            "polars[pyarrow]",
         ]
-        assert "dask" in result.stdout
+        assert "polars" in result.stdout
         assert "scikit-learn" in result.stdout

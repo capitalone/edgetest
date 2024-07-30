@@ -4,7 +4,7 @@ from typing import Any, List
 
 from tabulate import tabulate
 
-from .core import TestPackage
+from edgetest.core import TestPackage
 
 VALID_OUTPUTS = ["rst", "github"]
 

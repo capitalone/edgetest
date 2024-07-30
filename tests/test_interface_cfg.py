@@ -141,39 +141,35 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (
-                f"{str(py_loc)}",
-                "-m",
-                "pip",
-                "install",
-                "myupgrade",
-                "--upgrade",
-            ),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "myupgrade", "--upgrade"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_loc)}", "-m", "pip", "list", "--format", "json"),
+            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
     assert mock_cpopen.call_args_list == [
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pytest",
                 "tests",
@@ -209,33 +205,29 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv_lower"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (
-                f"{str(py_loc)}",
-                "-m",
-                "pip",
-                "install",
-                "mylower==0.0.1",
-            ),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "mylower==0.0.1"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
     assert mock_cpopen.call_args_list == [
         call(
             (
-                f"{str(py_loc)}",
+                f"{py_loc!s}",
                 "-m",
                 "pytest",
                 "tests",
@@ -268,9 +260,11 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
         result = runner.invoke(cli)
 
     if platform.system() == "Windows":
-        py_myupgrade_loc = Path(loc) / ".edgetest" / "myupgrade" / "Scripts" / "python"
+        py_myupgrade_loc = (
+            Path(loc) / ".edgetest" / "myupgrade" / "Scripts" / "python.exe"
+        )
         py_allreq_loc = (
-            Path(loc) / ".edgetest" / "all-requirements" / "Scripts" / "python"
+            Path(loc) / ".edgetest" / "all-requirements" / "Scripts" / "python.exe"
         )
     else:
         py_myupgrade_loc = Path(loc) / ".edgetest" / "myupgrade" / "bin" / "python"
@@ -285,77 +279,77 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_myupgrade_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_myupgrade_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_myupgrade_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_myupgrade_loc!s}",
                 "myupgrade",
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (
-                f"{str(py_allreq_loc)}",
-                "-m",
-                "pip",
-                "install",
-                ".",
-            ),
+            ("uv", "pip", "install", f"--python={py_allreq_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_allreq_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_allreq_loc!s}",
                 "myupgrade",
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_myupgrade_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "list",
+                f"--python={py_myupgrade_loc!s}",
                 "--format",
                 "json",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_allreq_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "list",
+                f"--python={py_allreq_loc!s}",
                 "--format",
                 "json",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
     assert mock_cpopen.call_args_list == [
         call(
-            (f"{str(py_myupgrade_loc)}", "-m", "pytest"),
+            (f"{py_myupgrade_loc!s}", "-m", "pytest"),
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_allreq_loc)}", "-m", "pytest"),
+            (f"{py_allreq_loc!s}", "-m", "pytest"),
             universal_newlines=True,
         ),
     ]
@@ -407,8 +401,6 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen, mock_builder):
 
         result = runner.invoke(cli, ["--config=setup.cfg", "--export"])
 
-        print(result.output)
-
         with open("setup.cfg") as infile:
             out = infile.read()
 
@@ -438,14 +430,15 @@ def test_cli_nosetup(mock_popen, mock_cpopen):
 
     env_loc = str(Path(loc) / ".edgetest" / "myenv")
     if platform.system() == "Windows":
-        py_loc = Path(env_loc) / "Scripts" / "python"
+        py_loc = Path(env_loc) / "Scripts" / "python.exe"
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{py_loc}", "-m", "pip", "list", "--format", "json"),
+            ("uv", "pip", "list", f"--python={py_loc}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -482,7 +475,7 @@ def test_cli_nosetup_lower(mock_popen, mock_cpopen):
 
     env_loc = str(Path(loc) / ".edgetest" / "myenv_lower")
     if platform.system() == "Windows":
-        py_loc = Path(env_loc) / "Scripts" / "python"
+        py_loc = Path(env_loc) / "Scripts" / "python.exe"
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
@@ -518,32 +511,35 @@ def test_cli_notest(mock_popen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "myupgrade",
                 "--upgrade",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (f"{str(py_loc)}", "-m", "pip", "list", "--format", "json"),
+            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -570,26 +566,28 @@ def test_cli_notest_lower(mock_popen, mock_builder):
 
     env_loc = Path(loc) / ".edgetest" / "myenv_lower"
     if platform.system() == "Windows":
-        py_loc = env_loc / "Scripts" / "python"
+        py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
 
     mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
             (
-                f"{str(py_loc)}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "mylower==0.0.1",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
