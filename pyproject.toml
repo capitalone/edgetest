@@ -109,6 +109,7 @@ upgrade = [
     "pluggy",
     "tabulate",
     "packaging",
+	"uv",
 ]
 
 [edgetest.envs.low]
@@ -122,6 +123,7 @@ lower = [
     "pluggy",
     "tabulate",
     "packaging",
+	"uv",
 ]
 
 # BUMPVER --------------------------------------------------------------------
