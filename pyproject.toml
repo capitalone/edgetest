@@ -49,7 +49,7 @@ tests = [
 qa = [
     "mypy",
 	"pre-commit",
-    "ruff==0.5",
+    "ruff~=0.5",
 	"types-click",
 	"types-setuptools",
 	"types-tabulate",
@@ -129,9 +129,8 @@ lower = [
 # BUMPVER --------------------------------------------------------------------
 
 [bumpver]
-current_version = "2023.6.1"
+current_version = "2024.8.0"
 version_pattern = "YYYY.MM.INC0"
-commit = true
 
 [bumpver.file_patterns]
 "docs/source/conf.py" = [
