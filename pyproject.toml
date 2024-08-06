@@ -131,7 +131,6 @@ lower = [
 [bumpver]
 current_version = "2023.6.1"
 version_pattern = "YYYY.MM.INC0"
-commit = true
 
 [bumpver.file_patterns]
 "docs/source/conf.py" = [
