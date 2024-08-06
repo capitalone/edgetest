@@ -129,7 +129,7 @@ lower = [
 # BUMPVER --------------------------------------------------------------------
 
 [bumpver]
-current_version = "2023.6.1"
+current_version = "2024.8.0"
 version_pattern = "YYYY.MM.INC0"
 
 [bumpver.file_patterns]
