@@ -23,7 +23,7 @@ def test_init(mock_path, tmpdir, plugin_manager):
 
     for tester in (tester_upgrade, tester_lower):
         assert tester.hook == plugin_manager.hook
-        assert tester._basedir == Path(str(location)) / ".edgetest"
+        assert tester.basedir == Path(str(location)) / ".edgetest"
         assert tester.package_dir == "."
         assert not tester.setup_status
         assert not tester.status
@@ -58,7 +58,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
         hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade"]
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup()
 
@@ -70,8 +70,9 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{str(py_loc)}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -95,7 +96,7 @@ def test_basic_setup_create_environment_error(
         upgrade=["myupgrade"],
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup()
     assert not tester.setup_status
@@ -118,10 +119,11 @@ def test_basic_setup_upgrade_error(
         upgrade=["myupgrade"],
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup()
     assert not tester.setup_status
+
 
 @patch.object(Path, "cwd")
 @patch("edgetest.utils.Popen", autospec=True)
@@ -140,7 +142,7 @@ def test_basic_setup_lower_error(
         lower=["mylower"],
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup()
     assert not tester.setup_status
@@ -159,7 +161,7 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
         hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade"]
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup(extras=["tests", "complete"])
 
@@ -171,8 +173,9 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
 
     assert mock_popen.call_args_list == [
         call(
-            (f"{py_loc}", "-m", "pip", "install", ".[tests, complete]"),
+            ("uv", "pip", "install", f"--python={py_loc!s}", ".[tests, complete]"),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -193,7 +196,7 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
         hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade"]
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup(deps=["-r requirements.txt", "otherpkg"])
 
@@ -207,20 +210,22 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
     assert mock_popen.call_args_list == [
         call(
             (
-                f"{py_loc}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
                 "otherpkg",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
         call(
-            (f"{py_loc}", "-m", "pip", "install", "."),
+            ("uv", "pip", "install", f"--python={py_loc}", "."),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]
@@ -241,7 +246,7 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
         hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade"]
     )
 
-    assert tester._basedir == Path(str(location)) / ".edgetest"
+    assert tester.basedir == Path(str(location)) / ".edgetest"
 
     tester.setup(deps=["-r requirements.txt", "otherpkg"])
 
@@ -255,15 +260,16 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
     assert mock_popen.call_args_list == [
         call(
             (
-                f"{py_loc}",
-                "-m",
+                "uv",
                 "pip",
                 "install",
+                f"--python={py_loc!s}",
                 "-r",
                 "requirements.txt",
                 "otherpkg",
             ),
             stdout=-1,
+            stderr=-1,
             universal_newlines=True,
         ),
     ]

@@ -1,28 +1,24 @@
-exclude: ^notebooks/
 repos:
-  - repo: https://github.com/psf/black
-    rev: 22.3.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.1
     hooks:
-      - id: black
-        types: [file, python]
+      # Run the linter.
+      - id: ruff
+        args: [ --fix ]
+      # Run the formatter.
+      - id: ruff-format
+        types_or: [ python, jupyter ]
+  # Mypy: Optional static type checking
+  # https://github.com/pre-commit/mirrors-mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.5.1
+    hooks:
+      - id: mypy
+        exclude: ^(docs|tests)\/
         language_version: python3.9
-  - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.10.1
-    hooks:
-      - id: isort
-  - repo: https://github.com/pycqa/flake8
-    rev: 4.0.1
-    hooks:
-      - id: flake8
-        additional_dependencies: [flake8-docstrings]
-        files: ^edgetest/
-        language_version: python3.9
-  - repo: https://github.com/jazzband/pip-tools
-    rev: 6.6.2
-    hooks:
-      - id: pip-compile
+        args: [--namespace-packages, --explicit-package-bases, --ignore-missing-imports, --non-interactive, --install-types]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.2.0
+    rev: v4.4.0
     hooks:
       - id: trailing-whitespace
       - id: debug-statements

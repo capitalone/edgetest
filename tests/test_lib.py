@@ -15,7 +15,7 @@ from edgetest.lib import (
 def test_path_to_python(mock_platform):
     mock_platform.system.return_value = "Windows"
     assert path_to_python("test", "test") == str(
-        Path("test") / "test" / "Scripts" / "python"
+        Path("test") / "test" / "Scripts" / "python.exe"
     )
 
     mock_platform.system.return_value = "Unix"
@@ -31,7 +31,7 @@ def test_path_to_python(mock_platform):
 @patch("edgetest.lib.EnvBuilder", autospec=True)
 def test_create_environment(mock_env_builder):
     create_environment("test", "test", {})
-    mock_env_builder.assert_called_with(with_pip=True)
+    mock_env_builder.assert_called_with(with_pip=False)
     mock_env_builder().create.assert_called_with(env_dir=Path("test", "test"))
 
     mock_env_builder().create.side_effect = RuntimeError()
@@ -44,7 +44,7 @@ def test_run_update(mock_run):
     python_path = path_to_python("test", "test")
     run_update("test", "test", ["1", "2"], {"test": "test"})
     mock_run.assert_called_with(
-        python_path, "-m", "pip", "install", "1", "2", "--upgrade"
+        "uv", "pip", "install", f"--python={python_path}", "1", "2", "--upgrade"
     )
 
     mock_run.side_effect = RuntimeError()
@@ -57,10 +57,10 @@ def test_run_install_lower(mock_run):
     python_path = path_to_python("test", "test")
     run_install_lower("test", "test", ["package1==1", "package2==2"], {"test": "test"})
     mock_run.assert_called_with(
-        python_path,
-        "-m",
+        "uv",
         "pip",
         "install",
+        f"--python={python_path}",
         "package1==1",
         "package2==2",
     )

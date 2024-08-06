@@ -1,6 +1,5 @@
 """Package initialization."""
 
-
 __version__ = "2024.4.0"
 
 __title__ = "edgetest"

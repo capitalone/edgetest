@@ -8,8 +8,8 @@ from typing import Dict, List, Optional
 
 from pluggy._hooks import _HookRelay
 
-from .logger import get_logger
-from .utils import _isin_case_dashhyphen_ins, _run_command, pushd
+from edgetest.logger import get_logger
+from edgetest.utils import _isin_case_dashhyphen_ins, _run_command, pushd
 
 LOG = get_logger(__name__)
 
@@ -50,8 +50,6 @@ class TestPackage:
     ):
         """Init method."""
         self.hook = hook
-        self._basedir = Path(Path.cwd(), ".edgetest")
-        self._basedir.mkdir(exist_ok=True)
         self.envname = envname
 
         if (upgrade is None and lower is None) or (
@@ -66,6 +64,20 @@ class TestPackage:
         self.status: bool = False
 
     @property
+    def basedir(self) -> Path:
+        """Base directory.
+
+        Returns
+        -------
+        Path
+            Base directory for execution.
+        """
+        _basedir = Path.cwd() / ".edgetest"
+        _basedir.mkdir(exist_ok=True)
+
+        return _basedir
+
+    @property
     def python_path(self) -> str:
         """Get the path to the python executable.
 
@@ -74,7 +86,7 @@ class TestPackage:
         str
             The path to the python executable.
         """
-        return self.hook.path_to_python(basedir=self._basedir, envname=self.envname)  # type: ignore
+        return self.hook.path_to_python(basedir=self.basedir, envname=self.envname)  # type: ignore
 
     def setup(
         self,
@@ -113,7 +125,7 @@ class TestPackage:
         try:
             LOG.info(f"Creating the following environment: {self.envname}...")
             self.hook.create_environment(
-                basedir=self._basedir, envname=self.envname, conf=options
+                basedir=self.basedir, envname=self.envname, conf=options
             )
             LOG.info(f"Successfully created {self.envname}")
         except RuntimeError:
@@ -137,10 +149,10 @@ class TestPackage:
                 split = [shlex.split(dep) for dep in deps]
                 try:
                     _run_command(
-                        self.python_path,
-                        "-m",
+                        "uv",
                         "pip",
                         "install",
+                        f"--python={self.python_path}",
                         *[itm for lst in split for itm in lst],
                     )
                 except RuntimeError:
@@ -156,7 +168,9 @@ class TestPackage:
 
             LOG.info(f"Installing the local package into {self.envname}...")
             try:
-                _run_command(self.python_path, "-m", "pip", "install", pkg)
+                _run_command(
+                    "uv", "pip", "install", f"--python={self.python_path}", pkg
+                )
                 LOG.info(
                     f"Successfully installed the local package into {self.envname}..."
                 )
@@ -174,7 +188,7 @@ class TestPackage:
             )
             try:
                 self.hook.run_update(
-                    basedir=self._basedir,
+                    basedir=self.basedir,
                     envname=self.envname,
                     upgrade=self.upgrade,
                     conf=options,
@@ -194,7 +208,7 @@ class TestPackage:
             )
             try:
                 self.hook.run_install_lower(
-                    basedir=self._basedir,
+                    basedir=self.basedir,
                     envname=self.envname,
                     lower=self.lower,
                     conf=options,
@@ -226,7 +240,9 @@ class TestPackage:
         if self.upgrade is None:
             return []
         # Get the version for the upgraded package(s)
-        out, _ = _run_command(self.python_path, "-m", "pip", "list", "--format", "json")
+        out, _ = _run_command(
+            "uv", "pip", "list", f"--python={self.python_path}", "--format", "json"
+        )
         outjson = json.loads(out)
 
         upgrade_wo_extras = [pkg.split("[")[0] for pkg in self.upgrade]
