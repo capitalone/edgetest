@@ -49,9 +49,9 @@ tests = [
 qa = [
     "mypy",
 	"pre-commit",
-    "ruff==0.3.7",
+    "ruff==0.5",
 	"types-click",
-	"types-pkg_resources",
+	"types-setuptools",
 	"types-tabulate",
 ]
 build = [
@@ -169,7 +169,6 @@ target-version = "py39"
 
 [tool.ruff.lint]
 preview = true
-ignore-init-module-imports = true
 select = [
 	"E",  # pycodestyle errors
 	"W",  # pycodestyle warnings
