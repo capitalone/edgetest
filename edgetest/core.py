@@ -40,6 +40,9 @@ class TestPackage:
         after ``run_tests`` has been executed.
     """
 
+    # Tell pytest this isn't for tests
+    __test__ = False
+
     def __init__(
         self,
         hook: _HookRelay,
