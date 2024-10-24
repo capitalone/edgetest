@@ -46,7 +46,7 @@ zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    polars<=1.0.0,>=0.20.31
+    polars>=1.0.0,<=1.5.0
 
 [options.extras_require]
 tests =
@@ -75,8 +75,8 @@ zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    scikit-learn>=1.0,<=1.2.0
-    polars[pyarrow]<=1.0.0,>=0.20.31
+    scikit-learn>=1.3.2,<=1.4.0
+    polars[pyarrow]>=1.0.0,<=1.5.0
 
 [options.extras_require]
 tests =
