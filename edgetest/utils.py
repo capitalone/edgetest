@@ -8,8 +8,8 @@ from pathlib import Path
 from subprocess import PIPE, Popen
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from packaging.specifiers import SpecifierSet
-from pkg_resources import parse_requirements
+from packaging.requirements import Requirement
+from packaging.specifiers import Specifier, SpecifierSet
 from tomlkit import TOMLDocument, load
 from tomlkit.container import Container
 from tomlkit.items import Array, Item, String, Table
@@ -97,7 +97,11 @@ def convert_requirements(requirements: str, conf: Optional[Dict] = None) -> Dict
         A configuration dictionary.
     """
     conf = {"envs": []} if conf is None else conf
-    pkgs = [pkg.project_name for pkg in parse_requirements(requirements)]
+    pkgs = [
+        Requirement(val).name
+        for val in requirements.splitlines()
+        if not (val.strip().startswith("#") or val.strip() == "")
+    ]
     for pkg in pkgs:
         conf["envs"].append({})
         conf["envs"][-1]["name"] = pkg
@@ -119,7 +123,7 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
     Parameters
     ----------
     fname_or_buf : str
-        Path to the requirements file to parse using ``pkg_resources.parse_requirements``
+        Path to the requirements file to parse using ``packaging.requirements.Requirement``
         or the string representing the requirements file.
     **options
         Options to apply to each test environment.
@@ -387,7 +391,7 @@ def upgrade_requirements(
     Parameters
     ----------
     fname_or_buf : str
-        Path to the requirements file to parse using ``pkg_resources.parse_requirements``
+        Path to the requirements file to parse using ``packaging.requirements.Requirement``
         or the string representing the requirements file.
     upgraded_packages : list
         A list of packages upgraded in the testing procedure.
@@ -407,23 +411,32 @@ def upgrade_requirements(
     except OSError:
         # Filename too long for the is_file() function
         cfg = fname_or_buf
-    pkgs = list(parse_requirements(cfg))
+    pkgs = [
+        Requirement(val)
+        for val in cfg.splitlines()
+        if not (val.strip().startswith("#") or val.strip() == "")
+    ]
     upgrades = {pkg["name"]: pkg["version"] for pkg in upgraded_packages}
 
     for pkg in pkgs:
-        if pkg.project_name not in upgrades:
+        if pkg.name not in upgrades:
             continue
         # Replace the spec
-        specs = deepcopy(pkg.specs)
+        specs = list(pkg.specifier)
+        new_spec = list(pkg.specifier)
         for index, value in enumerate(specs):
-            if value[0] == "<=":
-                pkg.specs[index] = ("<=", upgrades[pkg.project_name])
-            elif value[0] == "<":
-                pkg.specs[index] = ("!=", value[1])
-                pkg.specs.append(("<=", upgrades[pkg.project_name]))
-            elif value[0] == "==":
-                pkg.specs = [(">=", value[1]), ("<=", upgrades[pkg.project_name])]
-        pkg.specifier = SpecifierSet(",".join("".join(spec) for spec in pkg.specs))  # type: ignore
+            if value.operator == "<=":
+                new_spec[index] = Specifier(f"<={upgrades[pkg.name]}")
+            elif value.operator == "<":
+                new_spec[index] = Specifier(f"!={value.version}")
+                new_spec.append(Specifier(f"<={upgrades[pkg.name]}"))
+            elif value.operator == "==":
+                new_spec = Specifier(f">={value.version}") & Specifier(
+                    f"<={upgrades[pkg.name]}"
+                )  # type: ignore
+                # End the loop
+                break
+        pkg.specifier = SpecifierSet(",".join(str(spec) for spec in new_spec))
 
     return "\n".join(str(pkg) for pkg in pkgs)
 
@@ -522,7 +535,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
-def get_lower_bounds(requirements: str, lower: str) -> str:
+def get_lower_bounds(requirements: Union[str, List[str]], lower: str) -> str:
     r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
@@ -530,7 +543,7 @@ def get_lower_bounds(requirements: str, lower: str) -> str:
 
     Parameters
     ----------
-    requirements : str
+    requirements : str or list
         Project setup requirements,
         e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
     lower : str
@@ -542,12 +555,21 @@ def get_lower_bounds(requirements: str, lower: str) -> str:
     str
         The packages along with the lower bound, e.g. ``"pandas==1.5.1\nnumpy==1.22.1"``.
     """
-    all_lower_bounds = {
-        pkg.project_name + (f"[{','.join(pkg.extras)}]" if pkg.extras else ""): dict(
-            pkg.specs
-        ).get(">=")
-        for pkg in parse_requirements(requirements)
-    }
+    if isinstance(requirements, str):
+        pkgs = [
+            Requirement(val)
+            for val in requirements.splitlines()
+            if not (val.strip().startswith("#") or val.strip() == "")
+        ]
+    elif isinstance(requirements, list):
+        pkgs = [Requirement(val) for val in requirements]
+    all_lower_bounds: Dict[str, str] = {}
+    for pkg in pkgs:
+        full_name = pkg.name + (f"[{','.join(pkg.extras)}]" if pkg.extras else "")
+        for spec in pkg.specifier:
+            if spec.operator == ">=":
+                all_lower_bounds[full_name] = spec.version
+                break
 
     lower_with_bounds = ""
     for pkg_name, lower_bound in all_lower_bounds.items():
