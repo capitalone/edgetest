@@ -30,7 +30,7 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["polars<=1.0.0,>=0.20.31"]
+dependencies = ["polars>=1.0.0,<=1.5.0"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
@@ -48,7 +48,7 @@ name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
 requires-python = ">=3.7.0"
-dependencies = ["Scikit_Learn>=1.0,<=1.2.0", "Polars[pyarrow]<=1.0.0,>=0.20.31"]
+dependencies = ["Scikit_Learn>=1.3.2,<=1.4.0", "Polars[pyarrow]>=1.0.0,<=1.5.0"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
