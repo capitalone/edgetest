@@ -10,7 +10,6 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
     
     
@@ -759,7 +758,7 @@ file with one environment per requirement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fname_or_buf</strong> (<em>str</em>) – Path to the requirements file to parse using <code class="docutils literal notranslate"><span class="pre">pkg_resources.parse_requirements</span></code>
+<li><p><strong>fname_or_buf</strong> (<em>str</em>) – Path to the requirements file to parse using <code class="docutils literal notranslate"><span class="pre">packaging.requirements.Requirement</span></code>
 or the string representing the requirements file.</p></li>
 <li><p><strong>**options</strong> – Options to apply to each test environment.</p></li>
 </ul>
@@ -775,14 +774,14 @@ or the string representing the requirements file.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.get_lower_bounds">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">get_lower_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#get_lower_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.get_lower_bounds" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">get_lower_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#get_lower_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.get_lower_bounds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get lower bounds of requested packages from installation requirements.</p>
 <p>Parses through the project <code class="docutils literal notranslate"><span class="pre">requirements</span></code> and the newline-delimited
 packages requested in <code class="docutils literal notranslate"><span class="pre">lower</span></code> to find the lower bounds.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>requirements</strong> (<em>str</em>) – Project setup requirements,
+<li><p><strong>requirements</strong> (<em>str</em><em> or </em><em>list</em>) – Project setup requirements,
 e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4&quot;</span></code></p></li>
 <li><p><strong>lower</strong> (<em>str</em>) – <dl class="simple">
 <dt>Newline-delimited packages requested,</dt><dd><p>e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas\nnumpy&quot;</span></code>.</p>
@@ -954,7 +953,7 @@ function will look for dependencies in the requirements file.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fname_or_buf</strong> (<em>str</em>) – Path to the requirements file to parse using <code class="docutils literal notranslate"><span class="pre">pkg_resources.parse_requirements</span></code>
+<li><p><strong>fname_or_buf</strong> (<em>str</em>) – Path to the requirements file to parse using <code class="docutils literal notranslate"><span class="pre">packaging.requirements.Requirement</span></code>
 or the string representing the requirements file.</p></li>
 <li><p><strong>upgraded_packages</strong> (<em>list</em>) – A list of packages upgraded in the testing procedure.</p></li>
 </ul>
