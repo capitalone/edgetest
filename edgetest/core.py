@@ -75,10 +75,10 @@ class TestPackage:
         Path
             Base directory for execution.
         """
-        _basedir = Path.cwd() / ".edgetest"
-        _basedir.mkdir(exist_ok=True)
+        basedir = Path.cwd() / ".edgetest"
+        basedir.mkdir(exist_ok=True)
 
-        return _basedir
+        return basedir
 
     @property
     def python_path(self) -> str:
