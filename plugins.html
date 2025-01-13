@@ -7,7 +7,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>Extending edgetest through plugins - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -331,13 +331,13 @@ so let’s name our package <code class="docutils literal notranslate"><span cla
 <p>Let’s create the hooks. First, we want to create a hook for <a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.addoption" title="edgetest.hookspecs.addoption"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edgetest.hookspecs.addoption()</span></code></a>
 so we can add two sections to our environment configuration: <code class="docutils literal notranslate"><span class="pre">conda_install</span></code>
 and <code class="docutils literal notranslate"><span class="pre">python_version</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pluggy</span>
-<span class="kn">from</span> <span class="nn">edgetest.schema</span> <span class="kn">import</span> <span class="n">Schema</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pluggy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span>
 
 <span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
 <span class="nd">@hookimpl</span>
-<span class="k">def</span> <span class="nf">addoption</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">addoption</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Schema</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Add an environment-level variable for conda installation options.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -363,16 +363,16 @@ and <code class="docutils literal notranslate"><span class="pre">python_version<
 Cerberus validated section to the configuration file. Next, we’ll create a hook
 for <a class="reference internal" href="api/edgetest.html#edgetest.hookspecs.create_environment" title="edgetest.hookspecs.create_environment"><code class="xref py py-meth docutils literal notranslate"><span class="pre">edgetest.hookspecs.create_environment()</span></code></a> to let conda handle environment
 creation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span>
 
-<span class="kn">from</span> <span class="nn">edgetest.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">edgetest.utils</span> <span class="kn">import</span> <span class="n">_run_command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_run_command</span>
 
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="nd">@hookimpl</span>
-<span class="k">def</span> <span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the conda environment.</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>

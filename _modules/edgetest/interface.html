@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>edgetest.interface - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -251,19 +251,19 @@
           <h1>Source code for edgetest.interface</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Command-line interface.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span>
 
-<span class="kn">import</span> <span class="nn">click</span>
-<span class="kn">import</span> <span class="nn">pluggy</span>
-<span class="kn">from</span> <span class="nn">tomlkit</span> <span class="kn">import</span> <span class="n">dumps</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pluggy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tomlkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span>
 
-<span class="kn">from</span> <span class="nn">edgetest</span> <span class="kn">import</span> <span class="n">hookspecs</span><span class="p">,</span> <span class="n">lib</span>
-<span class="kn">from</span> <span class="nn">edgetest.core</span> <span class="kn">import</span> <span class="n">TestPackage</span>
-<span class="kn">from</span> <span class="nn">edgetest.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
-<span class="kn">from</span> <span class="nn">edgetest.report</span> <span class="kn">import</span> <span class="n">gen_report</span>
-<span class="kn">from</span> <span class="nn">edgetest.schema</span> <span class="kn">import</span> <span class="n">EdgetestValidator</span><span class="p">,</span> <span class="n">Schema</span>
-<span class="kn">from</span> <span class="nn">edgetest.utils</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest</span><span class="w"> </span><span class="kn">import</span> <span class="n">hookspecs</span><span class="p">,</span> <span class="n">lib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">TestPackage</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.report</span><span class="w"> </span><span class="kn">import</span> <span class="n">gen_report</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">EdgetestValidator</span><span class="p">,</span> <span class="n">Schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">gen_requirements_config</span><span class="p">,</span>
     <span class="n">parse_cfg</span><span class="p">,</span>
     <span class="n">parse_toml</span><span class="p">,</span>
@@ -275,7 +275,7 @@
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_plugin_manager"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.interface.get_plugin_manager">[docs]</a><span class="k">def</span> <span class="nf">get_plugin_manager</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">PluginManager</span><span class="p">:</span>
+<div class="viewcode-block" id="get_plugin_manager"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.interface.get_plugin_manager">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_plugin_manager</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">PluginManager</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the plugin manager.</span>
 
 <span class="sd">    Registers the default ``venv`` plugin.</span>
@@ -350,7 +350,7 @@
     <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether or not to export the updated requirements file. Overwrites input requirements.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="k">def</span> <span class="nf">cli</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cli</span><span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
     <span class="n">requirements</span><span class="p">,</span>
     <span class="n">environment</span><span class="p">,</span>

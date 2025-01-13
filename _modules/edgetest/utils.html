@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>edgetest.utils - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -251,26 +251,26 @@
           <h1>Source code for edgetest.utils</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Utility functions.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">configparser</span> <span class="kn">import</span> <span class="n">ConfigParser</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">configparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">copy</span><span class="w"> </span><span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">subprocess</span><span class="w"> </span><span class="kn">import</span> <span class="n">PIPE</span><span class="p">,</span> <span class="n">Popen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="kn">from</span> <span class="nn">packaging.requirements</span> <span class="kn">import</span> <span class="n">Requirement</span>
-<span class="kn">from</span> <span class="nn">packaging.specifiers</span> <span class="kn">import</span> <span class="n">Specifier</span><span class="p">,</span> <span class="n">SpecifierSet</span>
-<span class="kn">from</span> <span class="nn">tomlkit</span> <span class="kn">import</span> <span class="n">TOMLDocument</span><span class="p">,</span> <span class="n">load</span>
-<span class="kn">from</span> <span class="nn">tomlkit.container</span> <span class="kn">import</span> <span class="n">Container</span>
-<span class="kn">from</span> <span class="nn">tomlkit.items</span> <span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Table</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">packaging.requirements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Requirement</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">packaging.specifiers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Specifier</span><span class="p">,</span> <span class="n">SpecifierSet</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tomlkit</span><span class="w"> </span><span class="kn">import</span> <span class="n">TOMLDocument</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tomlkit.container</span><span class="w"> </span><span class="kn">import</span> <span class="n">Container</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tomlkit.items</span><span class="w"> </span><span class="kn">import</span> <span class="n">Array</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">Table</span>
 
-<span class="kn">from</span> <span class="nn">edgetest.logger</span> <span class="kn">import</span> <span class="n">get_logger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a command using ``subprocess.Popen``.</span>
 
 <span class="sd">    Parameters</span>
@@ -298,13 +298,13 @@
             <span class="sa">f</span><span class="s2">&quot;Unable to run the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Returned the following stdout: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;Returned the following stderr: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
-        <span class="p">)</span> <span class="kn">from</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">popen</span><span class="o">.</span><span class="n">returncode</span>
 
 
 <div class="viewcode-block" id="pushd"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.pushd">[docs]</a><span class="nd">@contextmanager</span>
-<span class="k">def</span> <span class="nf">pushd</span><span class="p">(</span><span class="n">new_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pushd</span><span class="p">(</span><span class="n">new_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a context manager for running commands in sub-directories.</span>
 
 <span class="sd">    Parameters</span>
@@ -320,7 +320,7 @@
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">curr_dir</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_convert_toml_array_to_string</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Item</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_toml_array_to_string</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Item</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Array</span><span class="p">):</span>
         <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">String</span><span class="p">):</span>
@@ -329,7 +329,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span>
 
 
-<div class="viewcode-block" id="convert_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.convert_requirements">[docs]</a><span class="k">def</span> <span class="nf">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<div class="viewcode-block" id="convert_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.convert_requirements">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate environments for a newline-separate list of package requirements.</span>
 
 <span class="sd">    This function will generate one environment per entry with an additional environment</span>
@@ -365,7 +365,7 @@
     <span class="k">return</span> <span class="n">conf</span></div>
 
 
-<div class="viewcode-block" id="gen_requirements_config"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.gen_requirements_config">[docs]</a><span class="k">def</span> <span class="nf">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<div class="viewcode-block" id="gen_requirements_config"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.gen_requirements_config">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration file from package requirements.</span>
 
 <span class="sd">    This function will convert the package installation requirements to a configuration</span>
@@ -397,7 +397,7 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="parse_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_cfg">[docs]</a><span class="k">def</span> <span class="nf">parse_cfg</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
+<div class="viewcode-block" id="parse_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_cfg">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_cfg</span><span class="p">(</span><span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;setup.cfg&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.ini`` style file.</span>
 
 <span class="sd">    This function can operate in two ways. First, it can look for sections that</span>
@@ -502,7 +502,7 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="parse_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_toml">[docs]</a><span class="k">def</span> <span class="nf">parse_toml</span><span class="p">(</span>
+<div class="viewcode-block" id="parse_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_toml">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">parse_toml</span><span class="p">(</span>
     <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.toml`` style file.</span>
@@ -634,7 +634,7 @@
     <span class="k">return</span> <span class="n">output</span></div>
 
 
-<div class="viewcode-block" id="upgrade_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_requirements">[docs]</a><span class="k">def</span> <span class="nf">upgrade_requirements</span><span class="p">(</span>
+<div class="viewcode-block" id="upgrade_requirements"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_requirements">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">upgrade_requirements</span><span class="p">(</span>
     <span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an upgraded requirements file.</span>
@@ -692,7 +692,7 @@
     <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="upgrade_setup_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_setup_cfg">[docs]</a><span class="k">def</span> <span class="nf">upgrade_setup_cfg</span><span class="p">(</span>
+<div class="viewcode-block" id="upgrade_setup_cfg"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_setup_cfg">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">upgrade_setup_cfg</span><span class="p">(</span>
     <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;setup.cfg&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ConfigParser</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Upgrade the ``setup.cfg`` file.</span>
@@ -730,7 +730,7 @@
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
-<div class="viewcode-block" id="upgrade_pyproject_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_pyproject_toml">[docs]</a><span class="k">def</span> <span class="nf">upgrade_pyproject_toml</span><span class="p">(</span>
+<div class="viewcode-block" id="upgrade_pyproject_toml"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_pyproject_toml">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">upgrade_pyproject_toml</span><span class="p">(</span>
     <span class="n">upgraded_packages</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TOMLDocument</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Upgrade the ``pyproject.toml`` file.</span>
@@ -768,7 +768,7 @@
     <span class="k">return</span> <span class="n">parser</span></div>
 
 
-<span class="k">def</span> <span class="nf">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vals</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run isin check that is case and dash/hyphen insensitive.</span>
 
 <span class="sd">    Paramaters</span>
@@ -786,7 +786,7 @@
     <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="get_lower_bounds"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.get_lower_bounds">[docs]</a><span class="k">def</span> <span class="nf">get_lower_bounds</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<div class="viewcode-block" id="get_lower_bounds"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.get_lower_bounds">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">get_lower_bounds</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get lower bounds of requested packages from installation requirements.</span>
 
 <span class="sd">    Parses through the project ``requirements`` and the newline-delimited</span>

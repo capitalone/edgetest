@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>edgetest.lib - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -251,20 +251,20 @@
           <h1>Source code for edgetest.lib</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Default virtual environment hook.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">platform</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">from</span> <span class="nn">venv</span> <span class="kn">import</span> <span class="n">EnvBuilder</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">venv</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnvBuilder</span>
 
-<span class="kn">import</span> <span class="nn">pluggy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pluggy</span>
 
-<span class="kn">from</span> <span class="nn">edgetest.utils</span> <span class="kn">import</span> <span class="n">_run_command</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_run_command</span>
 
 <span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="path_to_python"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.path_to_python">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the path to the python executable.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;Windows&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">)</span> <span class="o">/</span> <span class="n">envname</span> <span class="o">/</span> <span class="s2">&quot;Scripts&quot;</span> <span class="o">/</span> <span class="s2">&quot;python.exe&quot;</span><span class="p">)</span>
@@ -273,7 +273,7 @@
 
 
 <div class="viewcode-block" id="create_environment"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.create_environment">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the virtual environment for testing.</span>
 
 <span class="sd">    Creates an environment using ``venv``.</span>
@@ -296,11 +296,11 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">builder</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">env_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 
 
 <div class="viewcode-block" id="run_update"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.run_update">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update packages from upgrade list.</span>
 
 <span class="sd">    Parameters</span>
@@ -325,11 +325,11 @@
             <span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">upgrade</span><span class="p">,</span> <span class="s2">&quot;--upgrade&quot;</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip upgrade: </span><span class="si">{</span><span class="n">upgrade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip upgrade: </span><span class="si">{</span><span class="n">upgrade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 
 
 <div class="viewcode-block" id="run_install_lower"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.run_install_lower">[docs]</a><span class="nd">@hookimpl</span><span class="p">(</span><span class="n">trylast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">run_install_lower</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_install_lower</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Install lower bounds of packages provided.</span>
 
 <span class="sd">    Parameters</span>
@@ -349,7 +349,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="n">_run_command</span><span class="p">(</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">lower</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip install: </span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">err</span></div>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip install: </span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 </pre></div>
         </article>
       </div>

@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
         <title>edgetest.schema - Bleeding edge dependency testing documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -251,9 +251,9 @@
           <h1>Source code for edgetest.schema</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Define the Cerberus schema for the testing configuration.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">cerberus</span> <span class="kn">import</span> <span class="n">Validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cerberus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Validator</span>
 
 <span class="n">BASE_SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -301,12 +301,12 @@
 <span class="p">}</span>
 
 
-<div class="viewcode-block" id="Schema"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema">[docs]</a><span class="k">class</span> <span class="nc">Schema</span><span class="p">:</span>
+<div class="viewcode-block" id="Schema"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Schema</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;An editable schema.&quot;&quot;&quot;</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="n">BASE_SCHEMA</span>
 
-<div class="viewcode-block" id="Schema.add_envoption"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_envoption">[docs]</a>    <span class="k">def</span> <span class="nf">add_envoption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<div class="viewcode-block" id="Schema.add_envoption"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_envoption">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_envoption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an environment-level option.</span>
 
 <span class="sd">        Parameters</span>
@@ -322,7 +322,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="s2">&quot;schema&quot;</span><span class="p">][</span><span class="s2">&quot;schema&quot;</span><span class="p">][</span><span class="n">option</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>  <span class="c1"># type: ignore</span></div>
 
-<div class="viewcode-block" id="Schema.add_globaloption"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_globaloption">[docs]</a>    <span class="k">def</span> <span class="nf">add_globaloption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<div class="viewcode-block" id="Schema.add_globaloption"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_globaloption">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">add_globaloption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a global option.</span>
 
 <span class="sd">        Parameters</span>
@@ -339,10 +339,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">option</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span></div></div>
 
 
-<div class="viewcode-block" id="EdgetestValidator"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.EdgetestValidator">[docs]</a><span class="k">class</span> <span class="nc">EdgetestValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
+<div class="viewcode-block" id="EdgetestValidator"><a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.EdgetestValidator">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">EdgetestValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom validator for coercing lists from ``.ini`` style files.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_normalize_coerce_listify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_coerce_listify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce a value into a list.</span>
 
 <span class="sd">        Parameters</span>
@@ -360,7 +360,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">value</span>
 
-    <span class="k">def</span> <span class="nf">_normalize_coerce_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_coerce_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove leading and trailing spaces.</span>
 
 <span class="sd">        Parameters</span>
