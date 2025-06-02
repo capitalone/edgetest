@@ -194,8 +194,8 @@ def test_toy_package_extras():
         with open("pyproject.toml") as buf:
             config = load(buf)
 
-        assert "Scikit_Learn" in config["project"]["dependencies"][0]
-        assert "Polars[pyarrow]" in config["project"]["dependencies"][1]
+        assert "polars[pyarrow]" in config["project"]["dependencies"][0]
+        assert "scikit-learn" in config["project"]["dependencies"][1]
         assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["core"]["upgrade"] == [
             "scikit-learn",
