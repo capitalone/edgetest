@@ -22,10 +22,21 @@ command = "pytest tests -m 'not integration'"
 
 SETUP_TOML_LOWER = """
 [project]
-dependencies = ["myupgrade<=0.1.5", "mylower<=0.1.0,>=0.0.1"]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
 
 [edgetest.envs.myenv_lower]
-lower = ["mylower"]
+lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
@@ -34,29 +45,50 @@ SETUP_TOML_REQS = """
 dependencies = ["myupgrade<=0.1.5"]
 """
 
-SETUP_TOML_REQS_UPGRADE = """
-[project]
-dependencies = ["myupgrade<=0.2.0"]
+SETUP_TOML_REQS_UPGRADE = """[project]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [ "myupgrade<=0.2" ]
 """
 
-SETUP_TOML_EXTRAS = """
-[project.optional-dependencies]
-myextra = ["myupgrade<=0.1.5"]
+SETUP_TOML_EXTRAS = """[project]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+optional-dependencies.myextra = [ "myupgrade<=0.1.5" ]
 
 [edgetest.envs.myenv]
-upgrade = ["myupgrade"]
-extras = ["myextra"]
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
 """
 
 
-SETUP_TOML_EXTRAS_UPGRADE = """
-[project.optional-dependencies]
-myextra = ["myupgrade<=0.2.0"]
+SETUP_TOML_EXTRAS_UPGRADE = """[project]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+optional-dependencies.myextra = [ "myupgrade<=0.2" ]
 
 [edgetest.envs.myenv]
-upgrade = ["myupgrade"]
-extras = ["myextra"]
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
 """
 

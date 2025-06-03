@@ -5,6 +5,7 @@ from typing import List
 
 import click
 import pluggy
+import pyproject_fmt
 from tomlkit import dumps
 
 from edgetest import hookspecs, lib
@@ -207,6 +208,8 @@ def cli(
                 )
                 with open(requirements, "w") as outfile:
                     outfile.write(upgraded)
+            # Run the formatter
+            pyproject_fmt.run([config])
         else:
             click.echo(f"Overwriting the requirements file {requirements}...")
             upgraded = upgrade_requirements(
