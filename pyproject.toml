@@ -134,7 +134,7 @@ lint.pydocstyle.convention = "numpy"
 lint.preview = true
 
 [tool.pyproject-fmt]
-column_width = 79
+column_width = 88
 indent = 4
 keep_full_version = true
 max_supported_python = "3.12"
