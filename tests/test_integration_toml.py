@@ -22,6 +22,12 @@ tests = ["pytest"]
 
 [edgetest]
 extras = ["tests"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 SETUP_TOML_LOWER = """
@@ -40,6 +46,12 @@ extras = ["tests"]
 
 [edgetest.envs.lower_env]
 lower = ["polars"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 SETUP_TOML_EXTRAS = """
@@ -60,6 +72,12 @@ upgrade = ["scikit-learn", "polars[pyarrow]"]
 [edgetest.envs.lower_env]
 extras = ["tests"]
 lower = ["scikit-learn", "polars[pyarrow]"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 
