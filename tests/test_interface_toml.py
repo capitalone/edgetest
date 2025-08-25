@@ -20,43 +20,41 @@ upgrade = ["myupgrade"]
 command = "pytest tests -m 'not integration'"
 """
 
-SETUP_TOML_LOWER = """
-[project]
-dependencies = ["myupgrade<=0.1.5", "mylower<=0.1.0,>=0.0.1"]
+SETUP_TOML_LOWER = """[project]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
 
 [edgetest.envs.myenv_lower]
-lower = ["mylower"]
+lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
-SETUP_TOML_REQS = """
-[project]
+SETUP_TOML_REQS = """[project]
 dependencies = ["myupgrade<=0.1.5"]
 """
 
-SETUP_TOML_REQS_UPGRADE = """
-[project]
+SETUP_TOML_REQS_UPGRADE = """[project]
 dependencies = ["myupgrade<=0.2.0"]
 """
 
-SETUP_TOML_EXTRAS = """
-[project.optional-dependencies]
-myextra = ["myupgrade<=0.1.5"]
+SETUP_TOML_EXTRAS = """[project]
+optional-dependencies.myextra = [ "myupgrade<=0.1.5" ]
 
 [edgetest.envs.myenv]
-upgrade = ["myupgrade"]
-extras = ["myextra"]
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
 """
 
 
-SETUP_TOML_EXTRAS_UPGRADE = """
-[project.optional-dependencies]
-myextra = ["myupgrade<=0.2.0"]
+SETUP_TOML_EXTRAS_UPGRADE = """[project]
+optional-dependencies.myextra = ["myupgrade<=0.2.0"]
 
 [edgetest.envs.myenv]
-upgrade = ["myupgrade"]
-extras = ["myextra"]
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
 """
 

@@ -22,6 +22,12 @@ tests = ["pytest"]
 
 [edgetest]
 extras = ["tests"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 SETUP_TOML_LOWER = """
@@ -40,6 +46,12 @@ extras = ["tests"]
 
 [edgetest.envs.lower_env]
 lower = ["polars"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 SETUP_TOML_EXTRAS = """
@@ -60,6 +72,12 @@ upgrade = ["scikit-learn", "polars[pyarrow]"]
 [edgetest.envs.lower_env]
 extras = ["tests"]
 lower = ["scikit-learn", "polars[pyarrow]"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.12"
 """
 
 
@@ -194,8 +212,8 @@ def test_toy_package_extras():
         with open("pyproject.toml") as buf:
             config = load(buf)
 
-        assert "Scikit_Learn" in config["project"]["dependencies"][0]
-        assert "Polars[pyarrow]" in config["project"]["dependencies"][1]
+        assert "polars[pyarrow]" in config["project"]["dependencies"][0]
+        assert "scikit-learn" in config["project"]["dependencies"][1]
         assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
         assert config["edgetest"]["envs"]["core"]["upgrade"] == [
             "scikit-learn",
