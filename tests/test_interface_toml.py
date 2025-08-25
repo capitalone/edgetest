@@ -20,16 +20,7 @@ upgrade = ["myupgrade"]
 command = "pytest tests -m 'not integration'"
 """
 
-SETUP_TOML_LOWER = """
-[project]
-classifiers = [
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-]
+SETUP_TOML_LOWER = """[project]
 dependencies = [
   "myupgrade<=0.1.5",
   "mylower<=0.1,>=0.0.1"
@@ -40,32 +31,15 @@ lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
-SETUP_TOML_REQS = """
-[project]
+SETUP_TOML_REQS = """[project]
 dependencies = ["myupgrade<=0.1.5"]
 """
 
 SETUP_TOML_REQS_UPGRADE = """[project]
-classifiers = [
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-]
-dependencies = [ "myupgrade<=0.2" ]
+dependencies = ["myupgrade<=0.2.0"]
 """
 
 SETUP_TOML_EXTRAS = """[project]
-classifiers = [
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-]
 optional-dependencies.myextra = [ "myupgrade<=0.1.5" ]
 
 [edgetest.envs.myenv]
@@ -76,15 +50,7 @@ command = "pytest tests -m 'not integration'"
 
 
 SETUP_TOML_EXTRAS_UPGRADE = """[project]
-classifiers = [
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-]
-optional-dependencies.myextra = [ "myupgrade<=0.2" ]
+optional-dependencies.myextra = ["myupgrade<=0.2.0"]
 
 [edgetest.envs.myenv]
 upgrade = [ "myupgrade" ]
