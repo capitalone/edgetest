@@ -7,15 +7,16 @@ on:
     - cron: '35 17 * * 5'
 jobs:
   edgetest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: running edgetest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
         with:
           ref: dev
       - id: run-edgetest
-        uses: edgetest-dev/run-edgetest-action@v1.4
+        uses: edgetest-dev/run-edgetest-action@v1.6
         with:
-          edgetest-flags: '-c pyproject.toml --export'
+          edgetest-flags: '-c pyproject.toml -r requirements.txt --export'
           base-branch: 'dev'
           skip-pr: 'false'
+          add-paths: 'pyproject.toml, requirements.txt'
