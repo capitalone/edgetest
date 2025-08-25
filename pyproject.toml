@@ -34,13 +34,13 @@ dynamic = [
 
 dependencies = [
     "cerberus>=1.3.0,<=1.3.7",
-    "click>=7.0,<=8.2.0",
+    "click>=7.0,<=8.2.1",
     "packaging>20.6,<=25.0",
     "pluggy>=1.3.0,<=1.6.0",
-    "pyproject-fmt>=2.0.0,<=2.5.1",
+    "pyproject-fmt>=2.0.0,<=2.6.0",
     "tabulate>=0.8.9,<=0.9.0",
     "tomlkit<=0.11.4,>=0.11.4",
-    "uv>=0.2.0,<=0.7.4",
+    "uv>=0.2.0,<=0.8.13",
 ]
 optional-dependencies.build = [ "build", "bumpver", "twine", "wheel" ]
 optional-dependencies.dev = [
@@ -81,10 +81,6 @@ version = { attr = "edgetest.__version__" }
 readme = { file = [
     "README.md",
 ], content-type = "text/markdown" }
-
-##############################################################################
-# Tooling
-##############################################################################
 
 [tool.ruff]
 target-version = "py39"
