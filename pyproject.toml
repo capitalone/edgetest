@@ -155,7 +155,7 @@ lower = [
 # BUMPVER --------------------------------------------------------------------
 
 [bumpver]
-current_version = "2025.1.0"
+current_version = "2025.10.0"
 version_pattern = "YYYY.MM.INC0"
 
 [bumpver.file_patterns]
