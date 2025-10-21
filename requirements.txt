@@ -16,5 +16,5 @@ toml-fmt-common==1.0.1
     # via pyproject-fmt
 tomlkit==0.13.3
     # via edgetest (pyproject.toml)
-uv==0.8.13
+uv==0.9.5
     # via edgetest (pyproject.toml)
