@@ -38,7 +38,7 @@ dependencies = [
     "pyproject-fmt>=2.0.0,<=2.6.0",
     "tabulate>=0.8.9,<=0.9.0",
     "tomlkit>=0.11.4,<=0.13.3",
-    "uv>=0.2.0,<=0.8.13",
+    "uv>=0.2.0,<=0.9.6",
 ]
 optional-dependencies.build = [ "build", "bumpver", "twine", "wheel" ]
 optional-dependencies.dev = [
