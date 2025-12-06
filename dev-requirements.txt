@@ -195,7 +195,7 @@ typing-extensions==4.15.0
     # via
     #   beautifulsoup4
     #   mypy
-urllib3==2.5.0
+urllib3==2.6.0
     # via
     #   requests
     #   twine
