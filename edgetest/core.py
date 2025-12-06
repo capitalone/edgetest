@@ -4,7 +4,7 @@ import json
 import shlex
 from pathlib import Path
 from subprocess import Popen
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from pluggy._hooks import _HookRelay
 
@@ -47,9 +47,9 @@ class TestPackage:
         self,
         hook: _HookRelay,
         envname: str,
-        upgrade: Optional[List[str]] = None,
-        lower: Optional[List[str]] = None,
-        package_dir: Optional[str] = None,
+        upgrade: List[str] | None = None,
+        lower: List[str] | None = None,
+        package_dir: str | None = None,
     ):
         """Init method."""
         self.hook = hook
@@ -93,8 +93,8 @@ class TestPackage:
 
     def setup(
         self,
-        extras: Optional[List[str]] = None,
-        deps: Optional[List[str]] = None,
+        extras: List[str] | None = None,
+        deps: List[str] | None = None,
         skip: bool = False,
         **options,
     ) -> None:
