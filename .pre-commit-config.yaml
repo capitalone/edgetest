@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.4.1
+    rev: v0.14.8
     hooks:
       # Run the linter.
       - id: ruff
@@ -11,19 +11,19 @@ repos:
   # Mypy: Optional static type checking
   # https://github.com/pre-commit/mirrors-mypy
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.5.1
+    rev: v1.19.0
     hooks:
       - id: mypy
         exclude: ^(docs|tests)\/
-        language_version: python3.10
+        language_version: python3.12
         args: [--namespace-packages, --explicit-package-bases, --ignore-missing-imports, --non-interactive, --install-types]
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: debug-statements
       - id: end-of-file-fixer
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.5.0"
+    rev: "v2.8.0"
     hooks:
       - id: pyproject-fmt

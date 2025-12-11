@@ -6,7 +6,7 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Tuple
 
 from packaging.requirements import Requirement
 from packaging.specifiers import Specifier, SpecifierSet
@@ -69,7 +69,7 @@ def pushd(new_dir: str):
         os.chdir(curr_dir)
 
 
-def _convert_toml_array_to_string(item: Union[Item, Any]) -> str:
+def _convert_toml_array_to_string(item: Item | Any) -> str:
     if isinstance(item, Array):
         return "\n".join(item)
     elif isinstance(item, String):
@@ -78,7 +78,7 @@ def _convert_toml_array_to_string(item: Union[Item, Any]) -> str:
         raise ValueError
 
 
-def convert_requirements(requirements: str, conf: Optional[Dict] = None) -> Dict:
+def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
     """Generate environments for a newline-separate list of package requirements.
 
     This function will generate one environment per entry with an additional environment
@@ -146,7 +146,7 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
     return output
 
 
-def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -> Dict:
+def parse_cfg(filename: str = "setup.cfg", requirements: str | None = None) -> Dict:
     """Generate a configuration from a ``.ini`` style file.
 
     This function can operate in two ways. First, it can look for sections that
@@ -252,7 +252,7 @@ def parse_cfg(filename: str = "setup.cfg", requirements: Optional[str] = None) -
 
 
 def parse_toml(
-    filename: str = "pyproject.toml", requirements: Optional[str] = None
+    filename: str = "pyproject.toml", requirements: str | None = None
 ) -> Dict:
     """Generate a configuration from a ``.toml`` style file.
 
@@ -314,7 +314,7 @@ def parse_toml(
     Dict
         A configuration dictionary for ``edgetest``.
     """
-    options: Union[Item, Container, dict]
+    options: Item | Container | dict
     # Read in the configuration file
     with open(filename) as buf:
         config: TOMLDocument = load(buf)
@@ -535,7 +535,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
-def get_lower_bounds(requirements: Union[str, List[str]], lower: str) -> str:
+def get_lower_bounds(requirements: str | List[str], lower: str) -> str:
     r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
