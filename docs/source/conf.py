@@ -20,11 +20,11 @@ sys.path.insert(0, os.path.abspath("../.."))
 # -- Project information -----------------------------------------------------
 
 project = "Bleeding edge dependency testing"
-copyright = "2021, Akshay Gupta"
+copyright = "2025, Akshay Gupta"
 author = "Akshay Gupta"
 
 # The short X.Y version
-version = "2025.10.0"
+version = "2025.12.0"
 # The full version, including alpha/beta/rc tags
 release = ""
 
