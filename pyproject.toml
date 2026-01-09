@@ -109,6 +109,7 @@ lint.ignore = [
     "E117",   # Check indentation level. Using formatter instead.
     "E203",   # Check whitespace. Using formatter instead.
     "E501",   # Line too long. Using formatter instead.
+    "RUF067", # non-empty-init-module
     "SIM105", # Use ``contextlib.suppress(FileNotFoundError)`` insetad of try - execpt - pass.
     "SIM108", # Use ternary operator instead of if-else blocks.
     "UP006",  # ``typing.x`` is deprecated, use ``x`` instead
@@ -176,7 +177,7 @@ lower = [
 ]
 
 [bumpver]
-current_version = "2025.12.0"
+current_version = "2026.1.0"
 version_pattern = "YYYY.MM.INC0"
 
 [bumpver.file_patterns]
