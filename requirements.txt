@@ -14,7 +14,7 @@ tabulate==0.9.0
     # via edgetest (pyproject.toml)
 toml-fmt-common==1.1.0
     # via pyproject-fmt
-tomlkit==0.13.3
+tomlkit==0.14.0
     # via edgetest (pyproject.toml)
-uv==0.9.23
+uv==0.9.26
     # via edgetest (pyproject.toml)
