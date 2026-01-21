@@ -37,8 +37,8 @@ dependencies = [
     "pluggy<=1.6.0,>=1.5.0",
     "pyproject-fmt<=2.11.1,>=2.0.0",
     "tabulate<=0.9.0,>=0.8.9",
-    "tomlkit<=0.13.3,>=0.11.4",
-    "uv<=0.9.23,>=0.6.0",
+    "tomlkit<=0.14.0,>=0.11.4",
+    "uv<=0.9.26,>=0.6.0",
 ]
 optional-dependencies.build = [ "build", "bumpver", "twine", "wheel" ]
 optional-dependencies.dev = [
@@ -177,7 +177,7 @@ lower = [
 ]
 
 [bumpver]
-current_version = "2026.1.0"
+current_version = "2026.1.1"
 version_pattern = "YYYY.MM.INC0"
 
 [bumpver.file_patterns]
