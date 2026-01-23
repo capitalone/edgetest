@@ -50,7 +50,7 @@ furo==2025.12.19
     # via edgetest (pyproject.toml)
 id==1.5.0
     # via twine
-identify==2.6.15
+identify==2.6.16
     # via pre-commit
 idna==3.11
     # via requests
@@ -60,7 +60,7 @@ iniconfig==2.3.0
     # via pytest
 jaraco-classes==3.4.0
     # via keyring
-jaraco-context==6.0.2
+jaraco-context==6.1.0
     # via keyring
 jaraco-functools==4.4.0
     # via keyring
@@ -74,7 +74,7 @@ keyring==25.7.0
     # via twine
 lexid==2021.1006
     # via bumpver
-librt==0.7.7
+librt==0.7.8
     # via mypy
 markdown-it-py==4.0.0
     # via rich
@@ -94,13 +94,14 @@ nh3==0.3.2
     # via readme-renderer
 nodeenv==1.10.0
     # via pre-commit
-packaging==25.0
+packaging==26.0
     # via
     #   edgetest (pyproject.toml)
     #   build
     #   pytest
     #   sphinx
     #   twine
+    #   wheel
 pathspec==1.0.3
     # via mypy
 pillow==12.1.0
@@ -114,7 +115,7 @@ pluggy==1.6.0
     #   pytest-cov
 pre-commit==4.5.1
     # via edgetest (pyproject.toml)
-pycparser==2.23
+pycparser==3.0
     # via cffi
 pygments==2.19.2
     # via
@@ -155,13 +156,13 @@ rich==14.2.0
     # via twine
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.14.11
+ruff==0.14.14
     # via edgetest (pyproject.toml)
 secretstorage==3.5.0
     # via keyring
 snowballstemmer==3.0.1
     # via sphinx
-soupsieve==2.8.1
+soupsieve==2.8.3
     # via beautifulsoup4
 sphinx==9.1.0
     # via
@@ -195,7 +196,7 @@ toml==0.10.2
     # via bumpver
 toml-fmt-common==1.1.0
     # via pyproject-fmt
-tomlkit==0.13.3
+tomlkit==0.14.0
     # via edgetest (pyproject.toml)
 twine==6.2.0
     # via edgetest (pyproject.toml)
@@ -213,9 +214,9 @@ urllib3==2.6.3
     # via
     #   requests
     #   twine
-uv==0.9.23
+uv==0.9.26
     # via edgetest (pyproject.toml)
 virtualenv==20.36.1
     # via pre-commit
-wheel==0.45.1
+wheel==0.46.3
     # via edgetest (pyproject.toml)
