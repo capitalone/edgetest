@@ -16,6 +16,8 @@ cerberus==1.3.8
     # via edgetest (pyproject.toml)
 certifi==2026.1.4
     # via requests
+cffi==2.0.0
+    # via cryptography
 cfgv==3.5.0
     # via pre-commit
 charset-normalizer==3.4.4
@@ -32,6 +34,8 @@ coverage==7.13.1
     # via
     #   edgetest (pyproject.toml)
     #   pytest-cov
+cryptography==46.0.3
+    # via secretstorage
 distlib==0.4.0
     # via virtualenv
 docutils==0.22.4
@@ -60,6 +64,10 @@ jaraco-context==6.1.0
     # via keyring
 jaraco-functools==4.4.0
     # via keyring
+jeepney==0.9.0
+    # via
+    #   keyring
+    #   secretstorage
 jinja2==3.1.6
     # via sphinx
 keyring==25.7.0
@@ -86,13 +94,14 @@ nh3==0.3.2
     # via readme-renderer
 nodeenv==1.10.0
     # via pre-commit
-packaging==25.0
+packaging==26.0
     # via
     #   edgetest (pyproject.toml)
     #   build
     #   pytest
     #   sphinx
     #   twine
+    #   wheel
 pathspec==1.0.3
     # via mypy
 pillow==12.1.0
@@ -106,6 +115,8 @@ pluggy==1.6.0
     #   pytest-cov
 pre-commit==4.5.1
     # via edgetest (pyproject.toml)
+pycparser==3.0
+    # via cffi
 pygments==2.19.2
     # via
     #   accessible-pygments
@@ -145,8 +156,10 @@ rich==14.2.0
     # via twine
 roman-numerals==4.1.0
     # via sphinx
-ruff==0.14.13
+ruff==0.14.14
     # via edgetest (pyproject.toml)
+secretstorage==3.5.0
+    # via keyring
 snowballstemmer==3.0.1
     # via sphinx
 soupsieve==2.8.3
@@ -205,5 +218,5 @@ uv==0.9.26
     # via edgetest (pyproject.toml)
 virtualenv==20.36.1
     # via pre-commit
-wheel==0.45.1
+wheel==0.46.3
     # via edgetest (pyproject.toml)
