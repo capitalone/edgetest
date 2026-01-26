@@ -24,6 +24,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dynamic = [
     "readme",
@@ -132,7 +134,7 @@ lint.preview = true
 column_width = 88
 indent = 4
 keep_full_version = true
-max_supported_python = "3.12"
+max_supported_python = "3.14"
 
 [tool.pytest.ini_options]
 markers = [
