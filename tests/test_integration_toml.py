@@ -14,7 +14,7 @@ SETUP_TOML = """
 name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
-requires-python = ">=3.7.0"
+requires-python = ">=3.10.0"
 dependencies = ["polars<=1.0.0"]
 
 [project.optional-dependencies]
@@ -27,7 +27,7 @@ extras = ["tests"]
 column_width = 88
 indent = 4
 keep_full_version = true
-max_supported_python = "3.12"
+max_supported_python = "3.14"
 """
 
 SETUP_TOML_LOWER = """
@@ -35,7 +35,7 @@ SETUP_TOML_LOWER = """
 name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
-requires-python = ">=3.7.0"
+requires-python = ">=3.10.0"
 dependencies = ["polars>=1.0.0,<=1.5.0"]
 
 [project.optional-dependencies]
@@ -51,7 +51,7 @@ lower = ["polars"]
 column_width = 88
 indent = 4
 keep_full_version = true
-max_supported_python = "3.12"
+max_supported_python = "3.14"
 """
 
 SETUP_TOML_EXTRAS = """
@@ -59,8 +59,8 @@ SETUP_TOML_EXTRAS = """
 name = "toy_package"
 version = "0.1.0"
 description = "Fake description"
-requires-python = ">=3.7.0"
-dependencies = ["Scikit_Learn>=1.3.2,<=1.4.0", "Polars[pyarrow]>=1.0.0,<=1.5.0"]
+requires-python = ">=3.10.0"
+dependencies = ["Scikit_Learn>=1.7.0,<=1.7.2", "Polars[pyarrow]>=1.0.0,<=1.5.0"]
 
 [project.optional-dependencies]
 tests = ["pytest"]
@@ -77,7 +77,7 @@ lower = ["scikit-learn", "polars[pyarrow]"]
 column_width = 88
 indent = 4
 keep_full_version = true
-max_supported_python = "3.12"
+max_supported_python = "3.14"
 """
 
 

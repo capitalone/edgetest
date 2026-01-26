@@ -15,14 +15,14 @@ name = toy_package
 version = 0.1.0
 description = Fake description
 python_requires =
-    >=3.7.0
+    >=3.10.0
 
 [options]
 zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    polars<=1.0.0
+    polars<=2.0.0
 
 [options.extras_require]
 tests =
@@ -39,14 +39,14 @@ name = toy_package
 version = 0.1.0
 description = Fake description
 python_requires =
-    >=3.7.0
+    >=3.10.0
 
 [options]
 zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    polars>=1.0.0,<=1.5.0
+    polars>=1.30.0,<=1.35.0
 
 [options.extras_require]
 tests =
@@ -68,15 +68,15 @@ name = toy_package
 version = 0.1.0
 description = Fake description
 python_requires =
-    >=3.7.0
+    >=3.10.0
 
 [options]
 zip_safe = False
 include_package_data = True
 packages = find:
 install_requires =
-    scikit-learn>=1.3.2,<=1.4.0
-    polars[pyarrow]>=1.0.0,<=1.5.0
+    scikit-learn>=1.7.0,<=1.7.2
+    polars[pyarrow]>=1.30.0,<=1.35.0
 
 [options.extras_require]
 tests =
@@ -86,15 +86,15 @@ tests =
 extras =
     tests
 upgrade =
-    Scikit_Learn
-    Polars[PyArrow]
+    scikit-learn
+    polars[pyarrow]
 
 [edgetest.envs.lower_env]
 extras =
     tests
 lower =
-    scikit_Learn
-    Polars[pyArrow]
+    scikit-learn
+    polars[pyarrow]
 """
 
 
@@ -233,12 +233,12 @@ def test_toy_package_extras():
         assert "polars[pyarrow]" in config["options"]["install_requires"]
         assert config["edgetest.envs.core"]["extras"] == "\ntests"
         assert (
-            config["edgetest.envs.core"]["upgrade"] == "\nScikit_Learn\nPolars[PyArrow]"
+            config["edgetest.envs.core"]["upgrade"] == "\nscikit-learn\npolars[pyarrow]"
         )
         assert config["edgetest.envs.lower_env"]["extras"] == "\ntests"
         assert (
             config["edgetest.envs.lower_env"]["lower"]
-            == "\nscikit_Learn\nPolars[pyArrow]"
+            == "\nscikit-learn\npolars[pyarrow]"
         )
         assert "polars" in result.stdout
         assert "scikit-learn" in result.stdout
