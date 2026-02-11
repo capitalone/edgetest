@@ -104,7 +104,7 @@ packaging==26.0
     #   wheel
 pathspec==1.0.3
     # via mypy
-pillow==12.1.0
+pillow==12.1.1
     # via edgetest (pyproject.toml)
 platformdirs==4.5.1
     # via virtualenv
