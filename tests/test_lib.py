@@ -28,15 +28,19 @@ def test_path_to_python(mock_platform):
         path_to_python("test", "test")
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
-def test_create_environment(mock_env_builder):
+@patch("edgetest.lib._run_command", autospec=True)
+def test_create_environment(mock_run):
     create_environment("test", "test", {})
-    mock_env_builder.assert_called_with(with_pip=False)
-    mock_env_builder().create.assert_called_with(env_dir=Path("test", "test"))
+    mock_run.assert_called_with("uv", "venv", str(Path("test", "test")))
 
-    mock_env_builder().create.side_effect = RuntimeError()
+    create_environment("test", "test", {"python_version": "3.10"})
+    mock_run.assert_called_with(
+        "uv", "venv", str(Path("test", "test")), "--python=3.10"
+    )
+
+    mock_run.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):
-        create_environment("test", "test", {})
+        create_environment("test", "test", {"python_version": "3.10"})
 
 
 @patch("edgetest.lib._run_command", autospec=True)

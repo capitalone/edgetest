@@ -44,6 +44,11 @@ BASE_SCHEMA = {
                 },
                 "command": {"type": "string", "coerce": "strip", "default": "pytest"},
                 "package_dir": {"type": "string", "coerce": "strip", "default": "."},
+                "python_version": {
+                    "type": "string",
+                    "default": None,
+                    "nullable": True,
+                },
             },
         },
     }

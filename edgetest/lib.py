@@ -3,7 +3,6 @@
 import platform
 from pathlib import Path
 from typing import Dict, List
-from venv import EnvBuilder
 
 import pluggy
 
@@ -25,7 +24,7 @@ def path_to_python(basedir: str, envname: str) -> str:
 def create_environment(basedir: str, envname: str, conf: Dict):
     """Create the virtual environment for testing.
 
-    Creates an environment using ``venv``.
+    Creates an environment using ``uv``.
 
     Parameters
     ----------
@@ -41,9 +40,11 @@ def create_environment(basedir: str, envname: str, conf: Dict):
     RuntimeError
         Error raised if the environment cannot be created.
     """
-    builder = EnvBuilder(with_pip=False)
     try:
-        builder.create(env_dir=Path(basedir, envname))
+        callargs_ = ["uv", "venv", str(Path(basedir, envname))]
+        if (py_version := conf.get("python_version")) is not None:
+            callargs_.append(f"--python={py_version}")
+        _run_command(*callargs_)
     except Exception as err:
         raise RuntimeError(f"Unable to create {envname} in {basedir}") from err
 

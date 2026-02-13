@@ -109,10 +109,9 @@ all-requirements  True                True             myupgrade                
 """
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
+def test_cli_basic(mock_popen, mock_cpopen):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -135,8 +134,13 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
     else:
         py_loc = env_loc / "bin" / "python"
 
-    mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(env_loc)),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
@@ -180,10 +184,9 @@ def test_cli_basic(mock_popen, mock_cpopen, mock_builder):
     assert result.output == TABLE_OUTPUT
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
+def test_cli_basic_lower(mock_popen, mock_cpopen):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -206,8 +209,13 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
     else:
         py_loc = env_loc / "bin" / "python"
 
-    mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(env_loc)),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
@@ -244,10 +252,9 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, mock_builder):
     assert result.output == TABLE_OUTPUT_LOWER
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
+def test_cli_reqs(mock_popen, mock_cpopen):
     """Test running tests based on the requirements file."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -275,12 +282,13 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
 
     assert result.exit_code == 0
 
-    assert mock_builder.return_value.create.call_args_list == [
-        call(env_dir=Path(loc) / ".edgetest" / "myupgrade"),
-        call(env_dir=Path(loc) / ".edgetest" / "all-requirements"),
-    ]
-
     assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(Path(loc) / ".edgetest" / "myupgrade")),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
         call(
             ("uv", "pip", "install", f"--python={py_myupgrade_loc!s}", "."),
             stdout=-1,
@@ -296,6 +304,12 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
                 "myupgrade",
                 "--upgrade",
             ),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
+        call(
+            ("uv", "venv", str(Path(loc) / ".edgetest" / "all-requirements")),
             stdout=-1,
             stderr=-1,
             universal_newlines=True,
@@ -366,10 +380,9 @@ def test_cli_reqs(mock_popen, mock_cpopen, mock_builder):
     assert result.output == TABLE_OUTPUT_REQS
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_setup_reqs_update(mock_popen, mock_cpopen, mock_builder):
+def test_cli_setup_reqs_update(mock_popen, mock_cpopen):
     """Test running tests and updating requirements in a ``pyproject.toml`` file."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -392,10 +405,9 @@ def test_cli_setup_reqs_update(mock_popen, mock_cpopen, mock_builder):
     assert out == SETUP_TOML_REQS_UPGRADE
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_setup_extras_update(mock_popen, mock_cpopen, mock_builder):
+def test_cli_setup_extras_update(mock_popen, mock_cpopen):
     """Test running tests and updating extra installation requirements in a ``pyproject.toml`` file."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -501,9 +513,8 @@ def test_cli_nosetup_lower(mock_popen, mock_cpopen):
     )
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_notest(mock_popen, mock_builder):
+def test_cli_notest(mock_popen):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -524,8 +535,13 @@ def test_cli_notest(mock_popen, mock_builder):
     else:
         py_loc = env_loc / "bin" / "python"
 
-    mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(env_loc)),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
@@ -556,9 +572,8 @@ def test_cli_notest(mock_popen, mock_builder):
     assert result.output == f"""Skipping tests for myenv\n{TABLE_OUTPUT_NOTEST}"""
 
 
-@patch("edgetest.lib.EnvBuilder", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_notest_lower(mock_popen, mock_builder):
+def test_cli_notest_lower(mock_popen):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -579,8 +594,13 @@ def test_cli_notest_lower(mock_popen, mock_builder):
     else:
         py_loc = env_loc / "bin" / "python"
 
-    mock_builder.return_value.create.assert_called_with(env_loc)
     assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(env_loc)),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "."),
             stdout=-1,
