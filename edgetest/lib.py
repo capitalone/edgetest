@@ -44,6 +44,8 @@ def create_environment(basedir: str, envname: str, conf: Dict):
         callargs_ = ["uv", "venv", str(Path(basedir, envname))]
         if (py_version := conf.get("python_version")) is not None:
             callargs_.append(f"--python={py_version}")
+        if Path(basedir, envname).is_dir():
+            callargs_.append("--clear")
         _run_command(*callargs_)
     except Exception as err:
         raise RuntimeError(f"Unable to create {envname} in {basedir}") from err
