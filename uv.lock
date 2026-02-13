@@ -575,7 +575,7 @@ requires-dist = [
     { name = "pillow", marker = "extra == 'docs'" },
     { name = "pluggy", specifier = ">=1.5.0,<=1.6.0" },
     { name = "pre-commit", marker = "extra == 'qa'" },
-    { name = "pyproject-fmt", specifier = ">=2.0.0,<=2.11.1" },
+    { name = "pyproject-fmt", specifier = ">=2.0.0,<=2.16.0" },
     { name = "pytest", marker = "extra == 'tests'" },
     { name = "pytest-cov", marker = "extra == 'tests'" },
     { name = "recommonmark", marker = "extra == 'docs'" },
@@ -589,7 +589,7 @@ requires-dist = [
     { name = "types-click", marker = "extra == 'qa'" },
     { name = "types-setuptools", marker = "extra == 'qa'" },
     { name = "types-tabulate", marker = "extra == 'qa'" },
-    { name = "uv", specifier = ">=0.6.0,<=0.9.26" },
+    { name = "uv", specifier = ">=0.6.0,<=0.10.2" },
     { name = "wheel", marker = "extra == 'build'" },
 ]
 provides-extras = ["build", "dev", "docs", "qa", "tests"]
@@ -599,7 +599,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -677,7 +677,7 @@ name = "importlib-metadata"
 version = "8.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp" },
+    { name = "zipp", marker = "python_full_version < '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f3/49/3b30cad09e7771a4982d9975a8cbf64f00d4a1ececb53297f1d9a7be1b10/importlib_metadata-8.7.1.tar.gz", hash = "sha256:49fef1ae6440c182052f407c8d34a68f72efc36db9ca90dc0113398f2fdde8bb", size = 57107, upload-time = "2025-12-21T10:00:19.278Z" }
 wheels = [
