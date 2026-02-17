@@ -28,7 +28,7 @@ LOG = get_logger(__name__)
 def get_plugin_manager() -> pluggy.PluginManager:
     """Get the plugin manager.
 
-    Registers the default ``venv`` plugin.
+    Registers the default ``uv`` plugin.
 
     Returns
     -------
