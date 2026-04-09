@@ -34,7 +34,7 @@ coverage==7.13.4
     # via
     #   edgetest (pyproject.toml)
     #   pytest-cov
-cryptography==46.0.5
+cryptography==46.0.7
     # via secretstorage
 distlib==0.4.0
     # via virtualenv
