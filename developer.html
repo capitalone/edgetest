@@ -247,23 +247,23 @@
         <article role="main" id="furo-main-content">
           <section id="developer-instructions">
 <h1>Developer instructions<a class="headerlink" href="#developer-instructions" title="Link to this heading">¶</a></h1>
-<p>Guidance for Bleeding edge dependency testing developers</p>
+<p>Guidance for edgetest developers</p>
 <section id="pre-config-and-black">
 <h2>Pre-Config and Black<a class="headerlink" href="#pre-config-and-black" title="Link to this heading">¶</a></h2>
-<p>For developers, Bleeding edge dependency testing uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to run the
-<a class="reference external" href="https://github.com/ambv/black">black</a> code formatter before each commit.  In a nutshell what happens is:</p>
+<p>For developers, edgetest uses <a class="reference external" href="https://pre-commit.com/">pre-commit</a> to run the
+<a class="reference external" href="https://github.com/astral-sh/ruff">ruff</a> code formatter before each commit.  In a nutshell what happens is:</p>
 <ul class="simple">
 <li><p>You edit some code locally, then <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">add</span></code> and <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code></p></li>
-<li><p>As the commit is registered by <code class="docutils literal notranslate"><span class="pre">git</span></code>, the <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> package runs <code class="docutils literal notranslate"><span class="pre">black</span></code> on any changed files
+<li><p>As the commit is registered by <code class="docutils literal notranslate"><span class="pre">git</span></code>, the <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> package runs <code class="docutils literal notranslate"><span class="pre">ruff</span></code> on any changed files
 in the commit.  (You can also run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">run</span> <span class="pre">--all-files</span></code> to run on all files) and will show
-as having <em>failed</em> if it has made any edits.  If <code class="docutils literal notranslate"><span class="pre">black</span></code> has made edits to the edited files, you
+as having <em>failed</em> if it has made any edits.  If <code class="docutils literal notranslate"><span class="pre">ruff</span></code> has made edits to the edited files, you
 need to re-add and re-commit those specific files.</p></li>
 <li><p>Then you can <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">push</span></code> to your hearts’ content!</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">black</span></code> code formatter forces our hand on code formatting and style - that means that all of
+<li><p>The <code class="docutils literal notranslate"><span class="pre">ruff</span></code> code formatter forces our hand on code formatting and style - that means that all of
 the code follows the same style, and we can focus on the meat of the issue.</p></li>
 </ul>
-<p>The first time you clone Bleeding edge dependency testing into a new environment, you need to run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after
-pip/conda installation.  You do <em>not</em> need pre-commit to just run Bleeding edge dependency testing.  If you have a pre-existing
+<p>The first time you clone edgetest into a new environment, you need to run <code class="docutils literal notranslate"><span class="pre">pre-commit</span> <span class="pre">install</span></code> after
+pip/conda installation.  You do <em>not</em> need pre-commit to just run edgetest  If you have a pre-existing
 environment, go ahead and <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pre-commit</span></code> and you should be fine. Generally,
 only PRs with black styling will be accepted by the Bleeding edge dependency testing team.</p>
 </section>

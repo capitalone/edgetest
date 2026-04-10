@@ -249,20 +249,15 @@
 <h1>Release Guide<a class="headerlink" href="#release-guide" title="Link to this heading">¶</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
-<p>As part of the on going maintenance of the project having a standardized release
-procedure for our repos is key. We follows as pared down version of git-flow
-which can be read in more detail <a class="reference external" href="https://nvie.com/posts/a-successful-git-branching-model/">here.</a>
-We use <code class="docutils literal notranslate"><span class="pre">bumpver</span></code> to automate calendar versioning. To run <code class="docutils literal notranslate"><span class="pre">bumpver</span></code> and update
-your branch in preparation for an upcoming release, run <code class="docutils literal notranslate"><span class="pre">bumpver</span> <span class="pre">update</span></code>. This
-will update all necessary files and commit them using <code class="docutils literal notranslate"><span class="pre">git</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">dev</span></code> is the default branch where most people will work with day to day.
-All features must be squash merged into this branch. The reason we squash merge
-is to prevent the dev branch from being polluted with endless commit messages
-when people are developing. Squashing collapses all the commits into one single
-new commit. It will also make it much easier to back out changes if something breaks.</p>
-<p><code class="docutils literal notranslate"><span class="pre">main</span></code> is where official releases will go. Each release on <code class="docutils literal notranslate"><span class="pre">main</span></code> should
-be tagged properly to denote a “version” that will have the corresponding artifact
-on PyPI for users to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>.</p>
+<p>Starting in 2026 we’ve modified our git workflow.</p>
+<p><code class="docutils literal notranslate"><span class="pre">main</span></code> will be the core branch where all features will get merged into and
+production ready code will also exist. When a release is ready to be made releases/tags will be use
+to point to the commit where the release should be made from.</p>
+<p>In the past we had used <code class="docutils literal notranslate"><span class="pre">dev</span></code>, in conjunction with <code class="docutils literal notranslate"><span class="pre">main</span></code>, but there were some issues
+with diverging branches and new rulesets which make the <code class="docutils literal notranslate"><span class="pre">main</span></code> only branching strategy
+easier to manage.</p>
+<p>Each release on <code class="docutils literal notranslate"><span class="pre">main</span></code> should be tagged properly to denote a “version” that will have the
+corresponding artifact on PyPI for users to <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> is where official documentation will go. After each release you should
 build the docs and push the HTML to the pages branch. When first setting up the
 repo you want to make sure your gh-pages is a orphaned branch since it is
@@ -273,15 +268,15 @@ disconnected and independent from the code: <code class="docutils literal notran
 <h2>TLDR;<a class="headerlink" href="#tldr" title="Link to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Each feature should have its own branch.</p></li>
-<li><p>Each feature branch should be squash merged into <code class="docutils literal notranslate"><span class="pre">dev</span></code></p></li>
+<li><p>Each feature branch should be squash merged into <code class="docutils literal notranslate"><span class="pre">main</span></code></p></li>
 <li><p>Before a release, bump the version using <code class="docutils literal notranslate"><span class="pre">bumpver</span></code>.</p></li>
-<li><p>Merge  <code class="docutils literal notranslate"><span class="pre">dev</span></code> into <code class="docutils literal notranslate"><span class="pre">main</span></code> via a regular “merge commits”</p></li>
-<li><p>Build and push docs <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>.</p></li>
-<li><p>Build and push version to PyPI.</p></li>
+<li><p>Create a release from <code class="docutils literal notranslate"><span class="pre">main</span></code> via Releases and Tags</p></li>
+<li><p>Build and push docs <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code>. (automated via actions)</p></li>
+<li><p>Build and push version to PyPI. (automated via actions)</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">main</span></code>, <code class="docutils literal notranslate"><span class="pre">dev</span></code>, and <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> should be protected in the GitHub UI
+<p><code class="docutils literal notranslate"><span class="pre">main</span></code>, and <code class="docutils literal notranslate"><span class="pre">gh-pages</span></code> should be protected in the GitHub UI
 so they aren’t accidentally deleted.</p>
 </div>
 </section>

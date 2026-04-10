@@ -241,14 +241,17 @@
           <h1>Source code for edgetest.lib</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Default virtual environment hook.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">platform</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">venv</span><span class="w"> </span><span class="kn">import</span> <span class="n">EnvBuilder</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">click</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pluggy</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_run_command</span>
+
+<span class="n">LOG</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">hookimpl</span> <span class="o">=</span> <span class="n">pluggy</span><span class="o">.</span><span class="n">HookimplMarker</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">)</span>
 
@@ -271,7 +274,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the virtual environment for testing.</span>
 
-<span class="sd">    Creates an environment using ``venv``.</span>
+<span class="sd">    Creates an environment using ``uv``.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -287,9 +290,13 @@
 <span class="sd">    RuntimeError</span>
 <span class="sd">        Error raised if the environment cannot be created.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">builder</span> <span class="o">=</span> <span class="n">EnvBuilder</span><span class="p">(</span><span class="n">with_pip</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">builder</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">env_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">))</span>
+        <span class="n">callargs_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;venv&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">))]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">py_version</span> <span class="o">:=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;python_version&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">callargs_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">py_version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">callargs_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--clear&quot;</span><span class="p">)</span>
+        <span class="n">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">callargs_</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to create </span><span class="si">{</span><span class="n">envname</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">basedir</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 
@@ -351,6 +358,31 @@
         <span class="n">_run_command</span><span class="p">(</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">lower</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip install: </span><span class="si">{</span><span class="n">lower</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
+
+
+
+<div class="viewcode-block" id="post_run_hook">
+<a class="viewcode-back" href="../../api/edgetest.html#edgetest.lib.post_run_hook">[docs]</a>
+<span class="nd">@hookimpl</span><span class="p">(</span><span class="n">tryfirst</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">post_run_hook</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Refresh ``uv.lock`` based on the test output.&quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">get_current_context</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;export&quot;</span><span class="p">]:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Skipping ``uv lock --upgrade`` as the requirements have not been updated.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span>
+        <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">status</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;uv.lock&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+    <span class="p">):</span>
+        <span class="c1"># uv.lock exists already and the last tester passed</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">_run_command</span><span class="p">(</span><span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;lock&quot;</span><span class="p">,</span> <span class="s2">&quot;--upgrade&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to update the ``uv.lock`` file.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+            <span class="s2">&quot;Skpping ``uv.lock`` refresh as the tests didn&#39;t pass and/or we couldn&#39;t find an existing ``uv.lock`` file.&quot;</span>
+        <span class="p">)</span></div>
 
 </pre></div>
         </article>

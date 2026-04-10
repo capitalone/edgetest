@@ -142,6 +142,33 @@ call as follows:
 
         The above command will install ``.[tests, complete]``.
 
+Using a specific python version
+-------------------------------
+
+To specify the python version for your virtual environments, modify your configuration as follows:
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        Add ``python_version`` to your environment:
+
+        .. code-block:: ini
+
+            [edgetest.envs.pandas]
+            upgrade =
+                pandas
+            python_version = "3.13"
+
+    .. tab:: .toml
+
+        Add ``python_version`` to your environment:
+
+        .. code-block:: toml
+
+            [edgetest.envs.pandas]
+            upgrade = ["pandas"]
+            python_version = "3.10"
 
 Modifying the test command
 --------------------------
@@ -553,7 +580,7 @@ and maintained by the ``edgetest`` developer team:
 |                                                                          |                                                                    |
 +==========================================================================+====================================================================+
 | `edgetest-conda <https://github.com/capitalone/edgetest-conda>`_         | | Uses ``conda`` or ``mamba`` for environment creation instead of  |
-|                                                                          | | ``venv``.                                                        |
+|                                                                          | | ``uv``.                                                        |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------+
 | `edgetest-hub <https://github.com/capitalone/edgetest-hub>`_             | | Creates a pull request in your GitHub repository with the        |
 |                                                                          | | dependency updates.                                              |
