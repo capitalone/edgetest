@@ -16,7 +16,7 @@ jobs:
       - id: run-edgetest
         uses: edgetest-dev/run-edgetest-action@v1.6
         with:
-          edgetest-flags: '-c pyproject.toml -r requirements.txt --export'
+          edgetest-flags: '-c pyproject.toml --export'
           base-branch: 'main'
           skip-pr: 'false'
-          add-paths: 'pyproject.toml, requirements.txt'
+          add-paths: 'pyproject.toml, uv.lock'
