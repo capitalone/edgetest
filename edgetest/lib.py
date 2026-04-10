@@ -1,12 +1,16 @@
 """Default virtual environment hook."""
 
+import logging
 import platform
 from pathlib import Path
 from typing import Dict, List
 
+import click
 import pluggy
 
 from edgetest.utils import _run_command
+
+LOG = logging.getLogger(__name__)
 
 hookimpl = pluggy.HookimplMarker("edgetest")
 
@@ -102,3 +106,25 @@ def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
         _run_command("uv", "pip", "install", f"--python={python_path}", *lower)
     except Exception as err:
         raise RuntimeError(f"Unable to pip install: {lower}") from err
+
+
+@hookimpl(tryfirst=True)
+def post_run_hook(testers: List, conf: Dict):
+    """Refresh ``uv.lock`` based on the test output."""
+    ctx = click.get_current_context()
+    if not ctx.params["export"]:
+        LOG.info(
+            "Skipping ``uv lock --upgrade`` as the requirements have not been updated."
+        )
+    elif (
+        testers[-1].status and (Path(ctx.params["config"]).parent / "uv.lock").is_file()
+    ):
+        # uv.lock exists already and the last tester passed
+        try:
+            _run_command("uv", "lock", "--upgrade")
+        except RuntimeError:
+            LOG.info("Unable to update the ``uv.lock`` file.")
+    else:
+        LOG.info(
+            "Skpping ``uv.lock`` refresh as the tests didn't pass and/or we couldn't find an existing ``uv.lock`` file."
+        )

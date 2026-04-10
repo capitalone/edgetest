@@ -60,6 +60,7 @@ optional-dependencies.docs = [
 optional-dependencies.qa = [
     "mypy",
     "pre-commit",
+    "pre-commit-uv",
     "ruff~=0.5",
     "types-click",
     "types-setuptools",
