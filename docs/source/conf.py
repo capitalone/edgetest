@@ -24,7 +24,7 @@ copyright = "2025, Akshay Gupta"
 author = "Akshay Gupta"
 
 # The short X.Y version
-version = "2026.1.1"
+version = "2026.4.0"
 # The full version, including alpha/beta/rc tags
 release = ""
 
