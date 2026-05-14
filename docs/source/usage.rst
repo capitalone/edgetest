@@ -407,6 +407,35 @@ your end output should look something like this:
     Testing multiple local packages is only supported with the configuration file syntax.
 
 
+Implementing a dependency cooldown
+----------------------------------
+
+`Dependency cooldowns <https://blog.yossarian.net/2025/11/21/We-should-all-be-using-dependency-cooldowns>`_ allow
+users to prevent ``edgetest`` from installing newly released upgrades in the interest of supply chain security.
+To use this feature, specify ``exclude_newer`` in your configuration. Documentation on this parameter can be found
+in the ``uv`` documentation `here <https://docs.astral.sh/uv/reference/cli/#uv-pip-install--exclude-newer>`_.
+
+.. tabs::
+
+    .. tab:: .cfg
+
+        Add ``exclude_newer`` to your environment or default configuration:
+
+        .. code-block:: ini
+
+            [edgetest]
+            exclude_newer =
+                3 days
+
+    .. tab:: .toml
+
+        Add ``exclude_newer`` to your environment or default configuration:
+
+        .. code-block:: toml
+
+            [edgetest]
+            exclude_newer = "3 days"
+
 Running a single environment
 ----------------------------
 
@@ -580,7 +609,7 @@ and maintained by the ``edgetest`` developer team:
 |                                                                          |                                                                    |
 +==========================================================================+====================================================================+
 | `edgetest-conda <https://github.com/capitalone/edgetest-conda>`_         | | Uses ``conda`` or ``mamba`` for environment creation instead of  |
-|                                                                          | | ``uv``.                                                        |
+|                                                                          | | ``uv``.                                                          |
 +--------------------------------------------------------------------------+--------------------------------------------------------------------+
 | `edgetest-hub <https://github.com/capitalone/edgetest-hub>`_             | | Creates a pull request in your GitHub repository with the        |
 |                                                                          | | dependency updates.                                              |
