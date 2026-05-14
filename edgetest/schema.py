@@ -12,6 +12,12 @@ BASE_SCHEMA = {
             "type": "dict",
             "schema": {
                 "name": {"type": "string", "coerce": "strip", "required": True},
+                "exclude_newer": {
+                    "type": "string",
+                    "coerce": "strip",
+                    "default": None,
+                    "nullable": True,
+                },
                 "upgrade": {
                     "type": "list",
                     "schema": {

@@ -22,6 +22,18 @@ command =
     pytest tests -m 'not integration'
 """
 
+
+SETUP_CFG_COOLDOWN = """[edgetest]
+exclude_newer =
+    3 days
+
+[edgetest.envs.myenv]
+upgrade =
+    myupgrade
+command =
+    pytest tests -m 'not integration'
+"""
+
 SETUP_CFG_LOWER = """
 [options]
 install_requires =
@@ -159,6 +171,82 @@ def test_cli_basic(mock_popen, mock_cpopen):
         ),
         call(
             ("uv", "pip", "install", f"--python={py_loc!s}", "myupgrade", "--upgrade"),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
+        call(
+            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
+    ]
+    assert mock_cpopen.call_args_list == [
+        call(
+            (
+                f"{py_loc!s}",
+                "-m",
+                "pytest",
+                "tests",
+                "-m",
+                "not integration",
+            ),
+            universal_newlines=True,
+        )
+    ]
+
+    assert result.output == TABLE_OUTPUT
+
+
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_basic_cooldown(mock_popen, mock_cpopen):
+    """Test creating a basic environment with dependency cooldowns."""
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    type(mock_cpopen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem() as loc:
+        with open("setup.cfg", "w") as outfile:
+            outfile.write(SETUP_CFG_COOLDOWN)
+
+        result = runner.invoke(cli, ["--config=setup.cfg"])
+
+    assert result.exit_code == 0
+
+    env_loc = Path(loc) / ".edgetest" / "myenv"
+    if platform.system() == "Windows":
+        py_loc = env_loc / "Scripts" / "python.exe"
+    else:
+        py_loc = env_loc / "bin" / "python"
+
+    assert mock_popen.call_args_list == [
+        call(
+            ("uv", "venv", str(env_loc)),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
+        call(
+            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            stdout=-1,
+            stderr=-1,
+            universal_newlines=True,
+        ),
+        call(
+            (
+                "uv",
+                "pip",
+                "install",
+                f"--python={py_loc!s}",
+                "myupgrade",
+                "--upgrade",
+                "--exclude-newer='3 days'",
+            ),
             stdout=-1,
             stderr=-1,
             universal_newlines=True,
