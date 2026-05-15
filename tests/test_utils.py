@@ -124,6 +124,17 @@ extras = ["tests"]
 command = "pytest tests -m 'not integration'"
 """
 
+TOML_REQS_COOLDOWN = """
+[project]
+dependencies = [
+    "myupgrade"
+]
+[edgetest]
+extras = ["tests"]
+command = "pytest tests -m 'not integration'"
+exclude_newer = "3 days"
+"""
+
 TOML_NOREQS_DEFAULTS = """
 [edgetest]
 extras = ["tests"]
@@ -472,6 +483,35 @@ def test_parse_toml_reqs_default(tmpdir):
     validator = EdgetestValidator(schema=BASE_SCHEMA)
 
     assert validator.validate(toml)
+
+
+def test_parse_toml_cooldown(tmpdir):
+    """Test parsing a config with a dependency cooldown."""
+    location = tmpdir.mkdir("mylocation")
+    conf_loc = Path(str(location), "myconfig.toml")
+    with open(conf_loc, "w") as outfile:
+        outfile.write(TOML_REQS_COOLDOWN)
+
+    toml = parse_toml(filename=conf_loc)
+
+    assert toml == {
+        "envs": [
+            {
+                "name": "myupgrade",
+                "upgrade": "myupgrade",
+                "extras": "tests",
+                "command": "pytest tests -m 'not integration'",
+                "exclude_newer": "3 days",
+            },
+            {
+                "name": "all-requirements",
+                "upgrade": "myupgrade",
+                "extras": "tests",
+                "command": "pytest tests -m 'not integration'",
+                "exclude_newer": "3 days",
+            },
+        ]
+    }
 
 
 def test_parse_custom_toml(tmpdir):

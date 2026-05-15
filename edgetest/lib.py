@@ -68,7 +68,8 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
     upgrade : list
         The list of packages to upgrade
     conf : dict
-        Ignored.
+        The configuration dictionary. The configuration is parsed for ``exclude_newer``,
+        which maps to the parameter of the same name in ``uv``.
 
     Raises
     ------
@@ -76,10 +77,18 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
         Error raised if the packages cannot be updated.
     """
     python_path = path_to_python(basedir, envname)
+    callargs_ = [
+        "uv",
+        "pip",
+        "install",
+        f"--python={python_path}",
+        *upgrade,
+        "--upgrade",
+    ]
+    if (cooldown_ := conf.get("exclude_newer")) is not None:
+        callargs_.append(f"--exclude-newer={cooldown_}")
     try:
-        _run_command(
-            "uv", "pip", "install", f"--python={python_path}", *upgrade, "--upgrade"
-        )
+        _run_command(*callargs_)
     except Exception as err:
         raise RuntimeError(f"Unable to pip upgrade: {upgrade}") from err
 
