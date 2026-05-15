@@ -3,16 +3,14 @@
 import os
 from configparser import ConfigParser
 from contextlib import contextmanager
-from copy import deepcopy
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Any, Dict, List, Tuple
+from typing import Dict, List, Tuple
 
 from packaging.requirements import Requirement
 from packaging.specifiers import Specifier, SpecifierSet
 from tomlkit import TOMLDocument, load
-from tomlkit.container import Container
-from tomlkit.items import Array, Item, String, Table
+from tomlkit.items import Table
 
 from edgetest.logger import get_logger
 
@@ -67,15 +65,6 @@ def pushd(new_dir: str):
         yield
     finally:
         os.chdir(curr_dir)
-
-
-def _convert_toml_array_to_string(item: Item | Any) -> str:
-    if isinstance(item, Array):
-        return "\n".join(item)
-    elif isinstance(item, String):
-        return str(item)
-    else:
-        raise ValueError
 
 
 def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
@@ -256,49 +245,83 @@ def parse_toml(
 ) -> Dict:
     """Generate a configuration from a ``.toml`` style file.
 
-    This function can operate in two ways. First, it will look for tables that
-    start with ``edgetest`` and build a configuration. Suppose
-    you have ``pyproject.toml`` as follows:
+    This function will look for a table that starts with either ``edgetest``
+    or ``tool.edgetest``:
 
-    .. code-block:: toml
+    .. tabs::
 
-        [edgetest.envs.pandas]
-        upgrade = [
-            "pandas"
-        ]
+        .. tab:: legacy
+
+            .. code-block:: toml
+
+                [edgetest.envs.pandas]
+                upgrade = [ "pandas" ]
+
+        .. tab:: ``tool``-style
+
+            .. code-block:: toml
+
+                [[tool.edgetest.env]]
+                name = "pandas"
+                upgrade = [ "pandas" ]
 
     This will result in a configuration that has one testing environment, named
     ``pandas``, that upgrades the ``pandas`` package.
 
-    If you don't have any tables that start with ``edgetest.envs``, we will look for
-    the installation requirements (the ``dependencies`` key within the ``project`` section).
-    To set global defaults for you environments, use the ``edgetest`` table:
+    If you don't have any tables that start with ``edgetest.envs`` or entries under the
+    name ``tool.edgetest.env``, we will look for the installation requirements (the ``dependencies``
+    key within the ``project`` section). To set the global defaults for your environments, use
+    the ``edgetest`` or ``tool.edgetest`` table:
 
-    .. code-block:: toml
+    .. tabs::
 
-        [edgetest]
-        extras = [
-            "tests"
-        ]
-        command = "pytest tests -m 'not integration'"
+        .. tab:: legacy
 
-        [edgetest.envs.pandas]
-        upgrade = [
-            "pandas"
-        ]
+            .. code-block:: toml
+
+                [edgetest]
+                extras = [ "tests" ]
+                command = "pytest tests -m 'not integration'"
+
+                [edgetest.envs.pandas]
+                upgrade = [ "pandas" ]
+
+        .. tab:: ``tool``-style
+
+            .. code-block:: toml
+
+                [tool.edgetest]
+                extras = [ "tests" ]
+                command = "pytest tests -m 'not integration'"
+
+                [[tool.edgetest.env]]
+                name = "pandas"
+                upgrade = [ "pandas" ]
 
     For this single environment file, the above configuration is equivalent to
 
-    .. code-block:: toml
+    .. tabs::
 
-        [edgetest.envs.pandas]
-        extras = [
-            "tests"
-        ]
-        command = "pytest tests -m 'not integration'"
-        upgrade = [
-            "pandas"
-        ]
+        .. tab:: legacy
+
+            .. code-block:: toml
+
+                [edgetest.envs.pandas]
+                extras = [
+                    "tests"
+                ]
+                command = "pytest tests -m 'not integration'"
+                upgrade = [
+                    "pandas"
+                ]
+
+        .. tab:: ``tool``-style
+
+                [[tool.edgetest.env]]
+                name = "pandas"
+                extras = [ "tests" ]
+                command = "pytest tests -m 'not integration'"
+                upgrade = [ "pandas" ]
 
     Parameters
     ----------
@@ -314,53 +337,28 @@ def parse_toml(
     Dict
         A configuration dictionary for ``edgetest``.
     """
-    options: Item | Container | dict
+    options: dict
     # Read in the configuration file
     with open(filename) as buf:
         config: TOMLDocument = load(buf)
-    # Parse
-    output: Dict = {"envs": []}
-    # Get any global options if necessary. First scan through and pop out any Tables
-    temp_config = deepcopy(config)
-    if "edgetest" in config:
-        for j in config["edgetest"].items():  # type: ignore
-            if isinstance(config["edgetest"][j[0]], Table):  # type: ignore
-                _ = temp_config["edgetest"].pop(  # type: ignore
-                    j[0], None
-                )  # remove Tables from the temp config
-            else:
-                temp_config["edgetest"][j[0]] = _convert_toml_array_to_string(  # type: ignore
-                    temp_config["edgetest"][j[0]]  # type: ignore
-                )
-        options = temp_config["edgetest"]
+    # Check for ``[tool.edgetest]`` or ``[edgetest]``
+    if "edgetest" in config.get("tool", {}):
+        output, options = _parse_toml_tool(config["tool"]["edgetest"])
+    elif "edgetest" in config:
+        output, options = _parse_toml_classic(config["edgetest"])
     else:
+        output = {"envs": []}
         options = {}
 
-    # Check envs exists and any other Tables
-    if "edgetest" in config:
-        for section in config["edgetest"]:  # type: ignore
-            if section == "envs":
-                for env in config["edgetest"]["envs"]:  # type: ignore
-                    for item in config["edgetest"]["envs"][env]:  # type: ignore
-                        # If an Array then decompose to a string format
-                        config["edgetest"]["envs"][env][  # type: ignore
-                            item
-                        ] = _convert_toml_array_to_string(
-                            config["edgetest"]["envs"][env][item]  # type: ignore
-                        )
-                    output["envs"].append(dict(config["edgetest"]["envs"][env]))  # type: ignore
-                    output["envs"][-1]["name"] = env
-                    if (
-                        "lower" in output["envs"][-1]
-                        and "project" in config
-                        and "dependencies" in config["project"]  # type: ignore
-                    ):
-                        output["envs"][-1]["lower"] = get_lower_bounds(
-                            dict(config["project"])["dependencies"],  # type: ignore
-                            output["envs"][-1]["lower"],
-                        )
-            elif isinstance(config["edgetest"][section], Table):  # type: ignore
-                output[section] = dict(config["edgetest"][section])  # type: ignore
+    for idx, env in enumerate(output["envs"]):
+        if (
+            "lower" in env
+            and "project" in config
+            and "dependencies" in config["project"]
+        ):
+            output["envs"][idx]["lower"] = get_lower_bounds(
+                dict(config["project"])["dependencies"], output["envs"][idx]["lower"]
+            )
 
     if len(output["envs"]) == 0:
         if config.get("project").get("dependencies"):  # type: ignore
@@ -381,6 +379,74 @@ def parse_toml(
         )
 
     return output
+
+
+def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
+    """Generate a configuration from a ``.toml`` style file.
+
+    This function is used to parse the classic ``edgetest`` table format.
+
+    Parameters
+    ----------
+    config : Table
+        The contents of ``[tool.edgetest]`` in the source TOML document.
+
+    Returns
+    -------
+    Dict
+        A configuration dictionary for ``edgetest``.
+    Dict
+        Global configuration options for ``edgetest``.
+    """
+    options = {
+        key: value.unwrap()
+        for key, value in config.items()
+        if not isinstance(value, Table)
+    }
+
+    output: Dict = {"envs": []}
+    for section in config:
+        if section == "envs":
+            for name, env in config["envs"].items():
+                output["envs"].append({**env.unwrap(), "name": name})
+        elif isinstance(config[section], Table):
+            output[section] = config[section].unwrap()
+
+    return output, options
+
+
+def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
+    """Generate a configuration from a ``.toml`` style configuration.
+
+    This function is used to parse the newer ``tool.edgetest`` table format.
+
+    Parameters
+    ----------
+    config : Table
+        The contents of ``[tool.edgetest]`` in the source TOML document.
+
+    Returns
+    -------
+    Dict
+        A basic configuration dictionary for ``edgetest``.
+    Dict
+        Global configuration options for ``edgetest``.
+    """
+    # Get any global options, if provided. First scan through and pop out any Tables
+    options = {
+        key: value.unwrap()
+        for key, value in config.items()
+        if key != "env" and not isinstance(value, Table)
+    }
+
+    output: Dict = {"envs": []}
+    for section in config:
+        if section == "env":
+            output["envs"] = config["env"].unwrap()
+        elif isinstance(config[section], Table):
+            output[section] = config[section].unwrap()
+
+    return output, options
 
 
 def upgrade_requirements(
@@ -535,7 +601,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
-def get_lower_bounds(requirements: str | List[str], lower: str) -> str:
+def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> str:
     r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
@@ -546,7 +612,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str) -> str:
     requirements : str or list
         Project setup requirements,
         e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
-    lower : str
+    lower : str | List[str]
         Newline-delimited packages requested,
          e.g. ``"pandas\nnumpy"``.
 
@@ -572,6 +638,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str) -> str:
                 break
 
     lower_with_bounds = ""
+    lower_ = lower.split("\n") if isinstance(lower, str) else lower
     for pkg_name, lower_bound in all_lower_bounds.items():
         # TODO: Parse through extra requirements as well to get lower bounds
         if lower_bound is None:
@@ -579,7 +646,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str) -> str:
                 "Requested %s lower bound, but did not find in install requirements.",
                 pkg_name,
             )
-        elif _isin_case_dashhyphen_ins(pkg_name, lower.split("\n")):
+        elif _isin_case_dashhyphen_ins(pkg_name, lower_):
             lower_with_bounds += f"{pkg_name}=={lower_bound}\n"
 
     return lower_with_bounds
