@@ -86,7 +86,7 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
         "--upgrade",
     ]
     if (cooldown_ := conf.get("exclude_newer")) is not None:
-        callargs_.append(f"--exclude-newer='{cooldown_}'")
+        callargs_.append(f"--exclude-newer={cooldown_}")
     try:
         _run_command(*callargs_)
     except Exception as err:

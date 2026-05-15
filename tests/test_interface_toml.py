@@ -238,7 +238,7 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
                 f"--python={py_loc!s}",
                 "myupgrade",
                 "--upgrade",
-                "--exclude-newer='3 days'",
+                "--exclude-newer=3 days",
             ),
             stdout=-1,
             stderr=-1,
