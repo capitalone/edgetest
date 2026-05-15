@@ -436,6 +436,15 @@ in the ``uv`` documentation `here <https://docs.astral.sh/uv/reference/cli/#uv-p
             [edgetest]
             exclude_newer = "3 days"
 
+.. important::
+
+    If you want to bypass the dependency cooldown *without* changing your core configuration,
+    you can use the ``--ignore-cooldown`` CLI flag.
+
+    .. code-block:: bash
+
+        edgetest -c pyproject.toml --ignore-cooldown
+
 Running a single environment
 ----------------------------
 
