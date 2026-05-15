@@ -100,6 +100,11 @@ def get_plugin_manager() -> pluggy.PluginManager:
     is_flag=True,
     help="Whether or not to export the updated requirements file. Overwrites input requirements.",
 )
+@click.option(
+    "--ignore-cooldown",
+    is_flag=True,
+    help="Allow the user to bypass the 'dependency cooldown' that may be implemented via `uv`'s ``exclude-newer`` parameter",
+)
 def cli(
     config,
     requirements,
@@ -110,6 +115,7 @@ def cli(
     deps,
     command,
     export,
+    ignore_cooldown,
 ):
     """Create the environments and test.
 

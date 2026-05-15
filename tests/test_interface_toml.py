@@ -4,6 +4,7 @@ import platform
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
 
+import pytest
 from click.testing import CliRunner
 
 from edgetest.interface import cli
@@ -192,9 +193,10 @@ def test_cli_basic(mock_popen, mock_cpopen):
     assert result.output == TABLE_OUTPUT
 
 
+@pytest.mark.parametrize("ignore_cooldown", [True, False])
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic_cooldown(mock_popen, mock_cpopen):
+def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
     """Test creating a basic environment with dependency cooldowns."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -207,7 +209,12 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
         with open("pyproject.toml", "w") as outfile:
             outfile.write(SETUP_TOML_COOLDOWN)
 
-        result = runner.invoke(cli, ["--config=pyproject.toml"])
+        if ignore_cooldown:
+            result = runner.invoke(
+                cli, ["--config=pyproject.toml", "--ignore-cooldown"]
+            )
+        else:
+            result = runner.invoke(cli, ["--config=pyproject.toml"])
 
     assert result.exit_code == 0
 
@@ -216,6 +223,18 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
         py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
+
+    # Upgrade installation argument depends on the parameterization
+    upgrade_callargs_ = [
+        "uv",
+        "pip",
+        "install",
+        f"--python={py_loc!s}",
+        "myupgrade",
+        "--upgrade",
+    ]
+    if not ignore_cooldown:
+        upgrade_callargs_.append("--exclude-newer=3 days")
 
     assert mock_popen.call_args_list == [
         call(
@@ -231,15 +250,7 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
             universal_newlines=True,
         ),
         call(
-            (
-                "uv",
-                "pip",
-                "install",
-                f"--python={py_loc!s}",
-                "myupgrade",
-                "--upgrade",
-                "--exclude-newer=3 days",
-            ),
+            tuple(upgrade_callargs_),
             stdout=-1,
             stderr=-1,
             universal_newlines=True,
