@@ -1,6 +1,7 @@
 """Utility functions."""
 
 import os
+import warnings
 from configparser import ConfigParser
 from contextlib import contextmanager
 from pathlib import Path
@@ -345,6 +346,14 @@ def parse_toml(
     if "edgetest" in config.get("tool", {}):
         output, options = _parse_toml_tool(config["tool"]["edgetest"])
     elif "edgetest" in config:
+        warnings.warn(
+            (
+                "The [edgetest] configuration format has been deprecated. Please "
+                "use [tool.edgetest] and [[tool.edgetest.env]] in the future."
+            ),
+            DeprecationWarning,
+            stacklevel=2,
+        )
         output, options = _parse_toml_classic(config["edgetest"])
     else:
         output = {"envs": []}
