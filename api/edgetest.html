@@ -10,6 +10,7 @@
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/tabs.css?v=a5c4661c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -584,7 +585,8 @@ only be installed through the environment manager (e.g. Conda).</p></li>
 <li><p><strong>basedir</strong> (<em>str</em>) – The base directory location for the environment.</p></li>
 <li><p><strong>envname</strong> (<em>str</em>) – The name of the virtual environment.</p></li>
 <li><p><strong>upgrade</strong> (<em>list</em>) – The list of packages to upgrade</p></li>
-<li><p><strong>conf</strong> (<em>dict</em>) – Ignored.</p></li>
+<li><p><strong>conf</strong> (<em>dict</em>) – The configuration dictionary. The configuration is parsed for <code class="docutils literal notranslate"><span class="pre">exclude_newer</span></code>,
+which maps to the parameter of the same name in <code class="docutils literal notranslate"><span class="pre">uv</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -717,7 +719,7 @@ only be installed through the environment manager (e.g. Conda).</p></li>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="edgetest.schema.Schema.schema">
-<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'envs':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'schema':</span> <span class="pre">{'command':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'pytest',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'deps':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'extras':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'lower':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'upgrade',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'name':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'package_dir':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'.',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'python_version':</span> <span class="pre">{'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'upgrade':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'lower',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'}},</span> <span class="pre">'type':</span> <span class="pre">'dict'},</span> <span class="pre">'type':</span> <span class="pre">'list'}}</span></em><a class="headerlink" href="#edgetest.schema.Schema.schema" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">schema</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'envs':</span> <span class="pre">{'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'schema':</span> <span class="pre">{'command':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'pytest',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'deps':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'exclude_newer':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'extras':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'lower':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'upgrade',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'},</span> <span class="pre">'name':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'package_dir':</span> <span class="pre">{'coerce':</span> <span class="pre">'strip',</span> <span class="pre">'default':</span> <span class="pre">'.',</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'python_version':</span> <span class="pre">{'default':</span> <span class="pre">None,</span> <span class="pre">'nullable':</span> <span class="pre">True,</span> <span class="pre">'type':</span> <span class="pre">'string'},</span> <span class="pre">'upgrade':</span> <span class="pre">{'coerce':</span> <span class="pre">'listify',</span> <span class="pre">'excludes':</span> <span class="pre">'lower',</span> <span class="pre">'required':</span> <span class="pre">True,</span> <span class="pre">'schema':</span> <span class="pre">{'type':</span> <span class="pre">'string'},</span> <span class="pre">'type':</span> <span class="pre">'list'}},</span> <span class="pre">'type':</span> <span class="pre">'dict'},</span> <span class="pre">'type':</span> <span class="pre">'list'}}</span></em><a class="headerlink" href="#edgetest.schema.Schema.schema" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -770,7 +772,7 @@ or the string representing the requirements file.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.get_lower_bounds">
-<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">get_lower_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#get_lower_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.get_lower_bounds" title="Link to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">get_lower_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lower</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#get_lower_bounds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.get_lower_bounds" title="Link to this definition">¶</a></dt>
 <dd><p>Get lower bounds of requested packages from installation requirements.</p>
 <p>Parses through the project <code class="docutils literal notranslate"><span class="pre">requirements</span></code> and the newline-delimited
 packages requested in <code class="docutils literal notranslate"><span class="pre">lower</span></code> to find the lower bounds.</p>
@@ -779,7 +781,7 @@ packages requested in <code class="docutils literal notranslate"><span class="pr
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>requirements</strong> (<em>str</em><em> or </em><em>list</em>) – Project setup requirements,
 e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4&quot;</span></code></p></li>
-<li><p><strong>lower</strong> (<em>str</em>) – <dl class="simple">
+<li><p><strong>lower</strong> (<em>str</em><em> | </em><em>List</em><em>[</em><em>str</em><em>]</em>) – <dl class="simple">
 <dt>Newline-delimited packages requested,</dt><dd><p>e.g. <code class="docutils literal notranslate"><span class="pre">&quot;pandas\nnumpy&quot;</span></code>.</p>
 </dd>
 </dl>
@@ -856,34 +858,47 @@ function will look for dependencies in the requirements file.</p></li>
 <dt class="sig sig-object py" id="edgetest.utils.parse_toml">
 <span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">parse_toml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'pyproject.toml'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#parse_toml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.parse_toml" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a configuration from a <code class="docutils literal notranslate"><span class="pre">.toml</span></code> style file.</p>
-<p>This function can operate in two ways. First, it will look for tables that
-start with <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> and build a configuration. Suppose
-you have <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> as follows:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
-<span class="p">]</span>
+<p>This function will look for a table that starts with either <code class="docutils literal notranslate"><span class="pre">edgetest</span></code>
+or <code class="docutils literal notranslate"><span class="pre">tool.edgetest</span></code>:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-0-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-0-0-0" name="0-0" role="tab" tabindex="0">legacy</button><button aria-controls="panel-0-0-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-0-0-1" name="0-1" role="tab" tabindex="-1"><code class="docutils literal notranslate"><span class="pre">tool</span></code>-style</button></div><div aria-labelledby="tab-0-0-0" class="sphinx-tabs-panel" id="panel-0-0-0" name="0-0" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span><span class="w"> </span><span class="p">]</span>
 </pre></div>
 </div>
+</div><div aria-labelledby="tab-0-0-1" class="sphinx-tabs-panel" hidden="true" id="panel-0-0-1" name="0-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[[tool.edgetest.env]]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span><span class="w"> </span><span class="p">]</span>
+</pre></div>
+</div>
+</div></div>
 <p>This will result in a configuration that has one testing environment, named
 <code class="docutils literal notranslate"><span class="pre">pandas</span></code>, that upgrades the <code class="docutils literal notranslate"><span class="pre">pandas</span></code> package.</p>
-<p>If you don’t have any tables that start with <code class="docutils literal notranslate"><span class="pre">edgetest.envs</span></code>, we will look for
-the installation requirements (the <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> key within the <code class="docutils literal notranslate"><span class="pre">project</span></code> section).
-To set global defaults for you environments, use the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> table:</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span>
-<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;tests&quot;</span>
-<span class="p">]</span>
+<p>If you don’t have any tables that start with <code class="docutils literal notranslate"><span class="pre">edgetest.envs</span></code> or entries under the
+name <code class="docutils literal notranslate"><span class="pre">tool.edgetest.env</span></code>, we will look for the installation requirements (the <code class="docutils literal notranslate"><span class="pre">dependencies</span></code>
+key within the <code class="docutils literal notranslate"><span class="pre">project</span></code> section). To set the global defaults for your environments, use
+the <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> or <code class="docutils literal notranslate"><span class="pre">tool.edgetest</span></code> table:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-1-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-1-1-0" name="1-0" role="tab" tabindex="0">legacy</button><button aria-controls="panel-1-1-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-1-1-1" name="1-1" role="tab" tabindex="-1"><code class="docutils literal notranslate"><span class="pre">tool</span></code>-style</button></div><div aria-labelledby="tab-1-1-0" class="sphinx-tabs-panel" id="panel-1-1-0" name="1-0" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest]</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;tests&quot;</span><span class="w"> </span><span class="p">]</span>
 <span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
 
 <span class="k">[edgetest.envs.pandas]</span>
-<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
-<span class="w">    </span><span class="s2">&quot;pandas&quot;</span>
-<span class="p">]</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span><span class="w"> </span><span class="p">]</span>
 </pre></div>
 </div>
+</div><div aria-labelledby="tab-1-1-1" class="sphinx-tabs-panel" hidden="true" id="panel-1-1-1" name="1-1" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[tool.edgetest]</span>
+<span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;tests&quot;</span><span class="w"> </span><span class="p">]</span>
+<span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+
+<span class="k">[[tool.edgetest.env]]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span>
+<span class="n">upgrade</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;pandas&quot;</span><span class="w"> </span><span class="p">]</span>
+</pre></div>
+</div>
+</div></div>
 <p>For this single environment file, the above configuration is equivalent to</p>
-<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-2-2-0" aria-selected="true" class="sphinx-tabs-tab" id="tab-2-2-0" name="2-0" role="tab" tabindex="0">legacy</button><button aria-controls="panel-2-2-1" aria-selected="false" class="sphinx-tabs-tab" id="tab-2-2-1" name="2-1" role="tab" tabindex="-1"><code class="docutils literal notranslate"><span class="pre">tool</span></code>-style</button></div><div aria-labelledby="tab-2-2-0" class="sphinx-tabs-panel" id="panel-2-2-0" name="2-0" role="tabpanel" tabindex="0"><div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[edgetest.envs.pandas]</span>
 <span class="n">extras</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
 <span class="w">    </span><span class="s2">&quot;tests&quot;</span>
 <span class="p">]</span>
@@ -893,6 +908,12 @@ To set global defaults for you environments, use the <code class="docutils liter
 <span class="p">]</span>
 </pre></div>
 </div>
+</div><div aria-labelledby="tab-2-2-1" class="sphinx-tabs-panel" hidden="true" id="panel-2-2-1" name="2-1" role="tabpanel" tabindex="0"><p>[[tool.edgetest.env]]
+name = “pandas”
+extras = [ “tests” ]
+command = “pytest tests -m ‘not integration’”
+upgrade = [ “pandas” ]</p>
+</div></div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1109,5 +1130,6 @@ or the string representing the requirements file.</p></li>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/tabs.js?v=3030b3cb"></script>
     </body>
 </html>

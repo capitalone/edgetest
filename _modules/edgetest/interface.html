@@ -344,6 +344,11 @@
     <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Whether or not to export the updated requirements file. Overwrites input requirements.&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="nd">@click</span><span class="o">.</span><span class="n">option</span><span class="p">(</span>
+    <span class="s2">&quot;--ignore-cooldown&quot;</span><span class="p">,</span>
+    <span class="n">is_flag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Allow the user to bypass the &#39;dependency cooldown&#39; that may be implemented via `uv`&#39;s ``exclude-newer`` parameter&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">cli</span><span class="p">(</span>
     <span class="n">config</span><span class="p">,</span>
     <span class="n">requirements</span><span class="p">,</span>
@@ -354,6 +359,7 @@
     <span class="n">deps</span><span class="p">,</span>
     <span class="n">command</span><span class="p">,</span>
     <span class="n">export</span><span class="p">,</span>
+    <span class="n">ignore_cooldown</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the environments and test.</span>
 

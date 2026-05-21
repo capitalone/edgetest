@@ -317,7 +317,8 @@
 <span class="sd">    upgrade : list</span>
 <span class="sd">        The list of packages to upgrade</span>
 <span class="sd">    conf : dict</span>
-<span class="sd">        Ignored.</span>
+<span class="sd">        The configuration dictionary. The configuration is parsed for ``exclude_newer``,</span>
+<span class="sd">        which maps to the parameter of the same name in ``uv``.</span>
 
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
@@ -325,10 +326,21 @@
 <span class="sd">        Error raised if the packages cannot be updated.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">python_path</span> <span class="o">=</span> <span class="n">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="p">)</span>
+    <span class="n">callargs_</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;uv&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+        <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">upgrade</span><span class="p">,</span>
+        <span class="s2">&quot;--upgrade&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">click</span><span class="o">.</span><span class="n">get_current_context</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cooldown_</span> <span class="o">:=</span> <span class="n">conf</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;exclude_newer&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">[</span>
+        <span class="s2">&quot;ignore_cooldown&quot;</span>
+    <span class="p">]:</span>
+        <span class="n">callargs_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--exclude-newer=</span><span class="si">{</span><span class="n">cooldown_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="n">_run_command</span><span class="p">(</span>
-            <span class="s2">&quot;uv&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">upgrade</span><span class="p">,</span> <span class="s2">&quot;--upgrade&quot;</span>
-        <span class="p">)</span>
+        <span class="n">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">callargs_</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unable to pip upgrade: </span><span class="si">{</span><span class="n">upgrade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span></div>
 
