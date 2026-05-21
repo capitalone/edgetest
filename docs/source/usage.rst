@@ -49,7 +49,7 @@ You can also specify your testing environment through ``setup.cfg`` or ``pyproje
             upgrade =
                 pandas
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         .. code-block:: toml
 
@@ -57,6 +57,14 @@ You can also specify your testing environment through ``setup.cfg`` or ``pyproje
             upgrade = [
                 "pandas"
             ]
+
+    .. tab:: .toml (modern)
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "pandas" ]
 
 If you're using a `PEP-517 <https://setuptools.pypa.io/en/latest/userguide/declarative_config.html>`_
 or `PEP-621 <https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html>`_ style installation configuration
@@ -122,7 +130,7 @@ call as follows:
             extras =
                 tests
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         Add an ``extras`` list to your environment:
 
@@ -131,6 +139,17 @@ call as follows:
             [edgetest.envs.pandas]
             upgrade = ["myupgrade"]
             extras = ["tests"]
+
+    .. tab:: .toml (modern)
+
+        Add an ``extras`` list to your environment:
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "myupgrade" ]
+            extras = [ "tests" ]
 
     .. tab:: Requirements parsing
 
@@ -160,7 +179,7 @@ To specify the python version for your virtual environments, modify your configu
                 pandas
             python_version = "3.13"
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         Add ``python_version`` to your environment:
 
@@ -168,6 +187,17 @@ To specify the python version for your virtual environments, modify your configu
 
             [edgetest.envs.pandas]
             upgrade = ["pandas"]
+            python_version = "3.10"
+
+    .. tab:: .toml (modern)
+
+        Add ``python_version`` to your environment:
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "pandas" ]
             python_version = "3.10"
 
 Modifying the test command
@@ -191,7 +221,7 @@ To customize your test command, modify the configuration or CLI call as follows:
             command =
                 pytest tests -m 'not integration'
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         Add a ``command`` key to your environment:
 
@@ -200,6 +230,18 @@ To customize your test command, modify the configuration or CLI call as follows:
             [edgetest.envs.pandas]
             upgrade = ["myupgrade"]
             extras = ["tests"]
+            command = "pytest tests -m 'not integration'"
+
+    .. tab:: .toml (modern)
+
+        Add a ``command`` key to your environment:
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "myupgrade" ]
+            extras = [ "tests" ]
             command = "pytest tests -m 'not integration'"
 
     .. tab:: Requirements parsing
@@ -240,7 +282,7 @@ To specify additional ``pip`` dependencies, modify as follows:
             deps =
                 scikit-learn
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         Add a ``deps`` list:
 
@@ -251,6 +293,19 @@ To specify additional ``pip`` dependencies, modify as follows:
             extras = ["tests"]
             command = "pytest tests -m 'not integration'"
             deps = ["scikit-learn"]
+
+    .. tab:: .toml (modern)
+
+        Add a ``deps`` list:
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "myupgrade" ]
+            extras = [ "tests" ]
+            command = "pytest tests -m 'not integration'"
+            deps = [ "scikit-learn" ]
 
     .. tab:: Requirements parsing
 
@@ -330,7 +385,7 @@ you can specify those under the ``edgetest`` section of your configuration:
             will apply the default arguments to each environment.
 
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         .. code-block:: toml
 
@@ -344,6 +399,21 @@ you can specify those under the ``edgetest`` section of your configuration:
             [edgetest.envs.numpy]
             upgrade = ["numpy"]
 
+    .. tab:: .toml (modern)
+
+        .. code-block:: toml
+
+            [tool.edgetest]
+            extras = [ "tests" ]
+            command = "pytest tests -m 'not integration'"
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            upgrade = [ "pandas" ]
+
+            [[tool.edgetest.env]]
+            name = "numpy"
+            upgrade = [ "numpy" ]
 
 Multiple packages
 -----------------
@@ -373,7 +443,7 @@ in your testing project directory:
 
             $ edgetest -c path/to/edgetest.cfg
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         .. code-block:: toml
 
@@ -384,6 +454,26 @@ in your testing project directory:
             [edgetest.envs.numpy]
             package_dir = "../myotherpackage"
             upgrade = ["numpy"]
+
+        After running
+
+        .. code-block:: console
+
+            $ edgetest -c path/to/edgetest.toml
+
+    .. tab:: .toml (modern)
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas"
+            package_dir = "../mypackage"
+            upgrade = [ "pandas" ]
+
+            [[tool.edgetest.env]]
+            name = "numpy"
+            package_dir = "../myotherpackage"
+            upgrade = [ "numpy" ]
 
         After running
 
@@ -427,7 +517,7 @@ in the ``uv`` documentation `here <https://docs.astral.sh/uv/reference/cli/#uv-p
             exclude_newer =
                 3 days
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         Add ``exclude_newer`` to your environment or default configuration:
 
@@ -435,6 +525,24 @@ in the ``uv`` documentation `here <https://docs.astral.sh/uv/reference/cli/#uv-p
 
             [edgetest]
             exclude_newer = "3 days"
+
+    .. tab:: .toml (modern)
+
+        Add ``exclude_newer`` to your environment or default configuration:
+
+        .. code-block:: toml
+
+            [tool.edgetest]
+            exclude_newer = "3 days"
+
+.. important::
+
+    If you want to bypass the dependency cooldown *without* changing your core configuration,
+    you can use the ``--ignore-cooldown`` CLI flag.
+
+    .. code-block:: bash
+
+        edgetest -c pyproject.toml --ignore-cooldown
 
 Running a single environment
 ----------------------------
@@ -533,7 +641,7 @@ You can use an edgetest environment to test the lower bounds of dependencies in 
             lower =
                 pandas
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         .. code-block:: toml
 
@@ -541,6 +649,14 @@ You can use an edgetest environment to test the lower bounds of dependencies in 
             lower = [
                 "pandas"
             ]
+
+    .. tab:: .toml (modern)
+
+        .. code-block:: toml
+
+            [[tool.edgetest.env]]
+            name = "pandas_lower"
+            lower = [ "pandas" ]
 
 Running the edgetest command using this environment specification will:
 
@@ -565,7 +681,7 @@ For example, if your project configuration looks like this:
             lower =
                 pandas
 
-    .. tab:: .toml
+    .. tab:: .toml (legacy)
 
         .. code-block:: toml
 
@@ -575,8 +691,22 @@ For example, if your project configuration looks like this:
             ]
 
             [edgetest.envs.pandas_lower]
-            lower =
-                pandas
+            lower = [
+                "pandas"
+            ]
+
+    .. tab:: .toml (modern)
+
+        .. code-block:: toml
+
+            [project]
+            dependencies = [
+                "pandas>=0.24.3",
+            ]
+
+            [[tool.edgetest.env]]
+            name = "pandas_lower"
+            lower = [ "pandas" ]
 
 then edgetest will:
 

@@ -1,4 +1,5 @@
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
@@ -43,13 +44,29 @@ def test_create_environment(mock_run):
         create_environment("test", "test", {"python_version": "3.10"})
 
 
+@pytest.mark.parametrize("ignore_cooldown", [True, False])
+@patch("edgetest.lib.click.get_current_context")
 @patch("edgetest.lib._run_command", autospec=True)
-def test_run_update(mock_run):
+def test_run_update(mock_run, mock_ctx, ignore_cooldown):
+    mock_ctx.return_value = SimpleNamespace(params={"ignore_cooldown": ignore_cooldown})
     python_path = path_to_python("test", "test")
-    run_update("test", "test", ["1", "2"], {"test": "test"})
-    mock_run.assert_called_with(
-        "uv", "pip", "install", f"--python={python_path}", "1", "2", "--upgrade"
-    )
+    run_update("test", "test", ["1", "2"], {"exclude_newer": "3 days"})
+
+    if ignore_cooldown:
+        mock_run.assert_called_with(
+            "uv", "pip", "install", f"--python={python_path}", "1", "2", "--upgrade"
+        )
+    else:
+        mock_run.assert_called_with(
+            "uv",
+            "pip",
+            "install",
+            f"--python={python_path}",
+            "1",
+            "2",
+            "--upgrade",
+            "--exclude-newer=3 days",
+        )
 
     mock_run.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):

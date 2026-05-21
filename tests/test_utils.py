@@ -3,11 +3,10 @@
 from pathlib import Path
 from unittest.mock import mock_open, patch
 
-from tomlkit import array, string
+import pytest
 
 from edgetest.schema import BASE_SCHEMA, EdgetestValidator, Schema
 from edgetest.utils import (
-    _convert_toml_array_to_string,
     _isin_case_dashhyphen_ins,
     gen_requirements_config,
     get_lower_bounds,
@@ -107,6 +106,19 @@ command = "pytest tests -m 'not integration'"
 """
 
 
+TOML_NOREQS_TOOL = """
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+command = "pytest tests -m 'not integration'"
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+
 TOML_REQS = """
 [project]
 dependencies = [
@@ -124,16 +136,40 @@ extras = ["tests"]
 command = "pytest tests -m 'not integration'"
 """
 
+
+TOML_REQS_DEFAULTS_TOOL = """
+[project]
+dependencies = [ "myupgrade" ]
+
+[tool.edgetest]
+extras = [ "tests" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+
 TOML_REQS_COOLDOWN = """
 [project]
 dependencies = [
     "myupgrade"
 ]
+
 [edgetest]
 extras = ["tests"]
 command = "pytest tests -m 'not integration'"
 exclude_newer = "3 days"
 """
+
+
+TOML_REQS_COOLDOWN_TOOL = """
+[project]
+dependencies = [ "myupgrade" ]
+
+[tool.edgetest]
+extras = [ "tests" ]
+command = "pytest tests -m 'not integration'"
+exclude_newer = "3 days"
+"""
+
 
 TOML_NOREQS_DEFAULTS = """
 [edgetest]
@@ -149,6 +185,23 @@ lower = ["mylower"]
 command = "pytest tests"
 """
 
+TOML_NOREQS_DEFAULTS_TOOL = """
+[tool.edgetest]
+extras = [ "tests" ]
+command = "pytest tests -m 'not integration'"
+
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+command = "pytest tests"
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
+command = "pytest tests"
+"""
+
+
 TOML_CUSTOM = """
 [edgetest]
 extras = ["tests"]
@@ -162,6 +215,24 @@ upgrade = ["myupgrade"]
 
 [edgetest.envs.myenv_lower]
 lower = ["mylower"]
+"""
+
+
+TOML_CUSTOM_TOOL = """
+[tool.edgetest]
+extras = [ "tests" ]
+command = "pytest tests -m 'not integration'"
+
+[tool.edgetest.custom]
+mycustom = "mykey"
+
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
 """
 
 
@@ -373,12 +444,13 @@ def test_parse_custom_cfg(tmpdir):
     assert validator.validate(cfg)
 
 
-def test_parse_toml(tmpdir):
+@pytest.mark.parametrize("toml_source", [TOML_NOREQS, TOML_NOREQS_TOOL])
+def test_parse_toml(tmpdir, toml_source):
     """Test parsing a config with no install requirements."""
     location = tmpdir.mkdir("mylocation")
     conf_loc = Path(str(location), "myconfig.toml")
     with open(conf_loc, "w") as outfile:
-        outfile.write(TOML_NOREQS)
+        outfile.write(toml_source)
 
     toml = parse_toml(filename=conf_loc)
 
@@ -386,12 +458,12 @@ def test_parse_toml(tmpdir):
         "envs": [
             {
                 "name": "myenv",
-                "upgrade": "myupgrade",
+                "upgrade": ["myupgrade"],
                 "command": "pytest tests -m 'not integration'",
             },
             {
                 "name": "myenv_lower",
-                "lower": "mylower",
+                "lower": ["mylower"],
                 "command": "pytest tests -m 'not integration'",
             },
         ]
@@ -402,12 +474,15 @@ def test_parse_toml(tmpdir):
     assert validator.validate(toml)
 
 
-def test_parse_toml_default(tmpdir):
+@pytest.mark.parametrize(
+    "toml_source", [TOML_NOREQS_DEFAULTS, TOML_NOREQS_DEFAULTS_TOOL]
+)
+def test_parse_toml_default(tmpdir, toml_source):
     """Test parsing a config with no install requirements and defaults."""
     location = tmpdir.mkdir("mylocation")
     conf_loc = Path(str(location), "myconfig.toml")
     with open(conf_loc, "w") as outfile:
-        outfile.write(TOML_NOREQS_DEFAULTS)
+        outfile.write(toml_source)
 
     toml = parse_toml(filename=conf_loc)
 
@@ -415,14 +490,14 @@ def test_parse_toml_default(tmpdir):
         "envs": [
             {
                 "name": "myenv",
-                "upgrade": "myupgrade",
-                "extras": "tests",
+                "upgrade": ["myupgrade"],
+                "extras": ["tests"],
                 "command": "pytest tests",
             },
             {
                 "name": "myenv_lower",
-                "lower": "mylower",
-                "extras": "tests",
+                "lower": ["mylower"],
+                "extras": ["tests"],
                 "command": "pytest tests",
             },
         ]
@@ -454,12 +529,13 @@ def test_parse_toml_reqs(tmpdir):
     assert validator.validate(toml)
 
 
-def test_parse_toml_reqs_default(tmpdir):
+@pytest.mark.parametrize("toml_source", [TOML_REQS_DEFAULTS, TOML_REQS_DEFAULTS_TOOL])
+def test_parse_toml_reqs_default(tmpdir, toml_source):
     """Test parsing a TOML style config with default arguments."""
     location = tmpdir.mkdir("mylocation")
     conf_loc = Path(str(location), "pyproject.toml")
     with open(conf_loc, "w") as outfile:
-        outfile.write(TOML_REQS_DEFAULTS)
+        outfile.write(toml_source)
 
     toml = parse_toml(filename=conf_loc)
 
@@ -468,13 +544,13 @@ def test_parse_toml_reqs_default(tmpdir):
             {
                 "name": "myupgrade",
                 "upgrade": "myupgrade",
-                "extras": "tests",
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
             },
             {
                 "name": "all-requirements",
                 "upgrade": "myupgrade",
-                "extras": "tests",
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
             },
         ]
@@ -485,12 +561,13 @@ def test_parse_toml_reqs_default(tmpdir):
     assert validator.validate(toml)
 
 
-def test_parse_toml_cooldown(tmpdir):
+@pytest.mark.parametrize("toml_source", [TOML_REQS_COOLDOWN, TOML_REQS_COOLDOWN_TOOL])
+def test_parse_toml_cooldown(tmpdir, toml_source):
     """Test parsing a config with a dependency cooldown."""
     location = tmpdir.mkdir("mylocation")
     conf_loc = Path(str(location), "myconfig.toml")
     with open(conf_loc, "w") as outfile:
-        outfile.write(TOML_REQS_COOLDOWN)
+        outfile.write(toml_source)
 
     toml = parse_toml(filename=conf_loc)
 
@@ -499,14 +576,14 @@ def test_parse_toml_cooldown(tmpdir):
             {
                 "name": "myupgrade",
                 "upgrade": "myupgrade",
-                "extras": "tests",
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
                 "exclude_newer": "3 days",
             },
             {
                 "name": "all-requirements",
                 "upgrade": "myupgrade",
-                "extras": "tests",
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
                 "exclude_newer": "3 days",
             },
@@ -514,12 +591,13 @@ def test_parse_toml_cooldown(tmpdir):
     }
 
 
-def test_parse_custom_toml(tmpdir):
+@pytest.mark.parametrize("toml_source", [TOML_CUSTOM, TOML_CUSTOM_TOOL])
+def test_parse_custom_toml(tmpdir, toml_source):
     """Test parsing a custom configuration."""
     location = tmpdir.mkdir("mylocation")
     conf_loc = Path(str(location), "pyproject.toml")
     with open(conf_loc, "w") as outfile:
-        outfile.write(TOML_CUSTOM)
+        outfile.write(toml_source)
 
     toml = parse_toml(filename=conf_loc)
 
@@ -528,14 +606,14 @@ def test_parse_custom_toml(tmpdir):
         "envs": [
             {
                 "name": "myenv",
-                "upgrade": "myupgrade",
-                "extras": "tests",
+                "upgrade": ["myupgrade"],
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
             },
             {
                 "name": "myenv_lower",
-                "lower": "mylower",
-                "extras": "tests",
+                "lower": ["mylower"],
+                "extras": ["tests"],
                 "command": "pytest tests -m 'not integration'",
             },
         ],
@@ -549,14 +627,6 @@ def test_parse_custom_toml(tmpdir):
     validator = EdgetestValidator(schema=schema.schema)
 
     assert validator.validate(toml)
-
-
-def test_convert_toml_array_to_string():
-    test_array = array("['a','b','c', 'd']")
-    test_string = string("abcd")
-
-    assert _convert_toml_array_to_string(test_array) == "a\nb\nc\nd"
-    assert _convert_toml_array_to_string(test_string) == "abcd"
 
 
 def test_upgrade_setup_cfg(tmpdir):

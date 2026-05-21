@@ -30,6 +30,27 @@ keep_full_version = true
 max_supported_python = "3.14"
 """
 
+SETUP_TOML_TOOL = """
+[project]
+name = "toy_package"
+version = "0.1.0"
+description = "Fake description"
+requires-python = ">=3.10.0"
+dependencies = ["polars<=1.0.0"]
+
+[project.optional-dependencies]
+tests = ["pytest"]
+
+[tool.edgetest]
+extras = ["tests"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.14"
+"""
+
 SETUP_TOML_LOWER = """
 [project]
 name = "toy_package"
@@ -45,6 +66,32 @@ tests = ["pytest"]
 extras = ["tests"]
 
 [edgetest.envs.lower_env]
+lower = ["polars"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.14"
+"""
+
+
+SETUP_TOML_LOWER_TOOL = """
+[project]
+name = "toy_package"
+version = "0.1.0"
+description = "Fake description"
+requires-python = ">=3.10.0"
+dependencies = ["polars>=1.0.0,<=1.5.0"]
+
+[project.optional-dependencies]
+tests = ["pytest"]
+
+[tool.edgetest]
+extras = ["tests"]
+
+[[tool.edgetest.env]]
+name = "lower_env"
 lower = ["polars"]
 
 [tool.pyproject-fmt]
@@ -81,6 +128,35 @@ max_supported_python = "3.14"
 """
 
 
+SETUP_TOML_EXTRAS_TOOL = """
+[project]
+name = "toy_package"
+version = "0.1.0"
+description = "Fake description"
+requires-python = ">=3.10.0"
+dependencies = ["Scikit_Learn>=1.7.0,<=1.7.2", "Polars[pyarrow]>=1.0.0,<=1.5.0"]
+
+[project.optional-dependencies]
+tests = ["pytest"]
+
+[[tool.edgetest.env]]
+name = "core"
+extras = ["tests"]
+upgrade = ["scikit-learn", "polars[pyarrow]"]
+
+[[tool.edgetest.env]]
+name = "lower_env"
+extras = ["tests"]
+lower = ["scikit-learn", "polars[pyarrow]"]
+
+[tool.pyproject-fmt]
+column_width = 88
+indent = 4
+keep_full_version = true
+max_supported_python = "3.14"
+"""
+
+
 SETUP_PY = """
 from setuptools import setup
 
@@ -104,13 +180,14 @@ PY_VER = f"python{sys.version_info.major}.{sys.version_info.minor}"
 
 @pytest.mark.skipif(sys.platform == "win32", reason="does not run on windows")
 @pytest.mark.integration
-def test_toy_package():
+@pytest.mark.parametrize("toml_source", [SETUP_TOML, SETUP_TOML_TOOL])
+def test_toy_package(toml_source):
     """Test using edgetest with a toy package."""
     runner = CliRunner()
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML)
+            outfile.write(toml_source)
         with open("setup.py", "w") as outfile:
             outfile.write(SETUP_PY)
         # Make a directory for the module
@@ -138,13 +215,14 @@ def test_toy_package():
 
 @pytest.mark.skipif(sys.platform == "win32", reason="does not run on windows")
 @pytest.mark.integration
-def test_toy_package_lower():
+@pytest.mark.parametrize("toml_source", [SETUP_TOML_LOWER, SETUP_TOML_LOWER_TOOL])
+def test_toy_package_lower(toml_source):
     """Test using edgetest with a toy package."""
     runner = CliRunner()
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML_LOWER)
+            outfile.write(toml_source)
         with open("setup.py", "w") as outfile:
             outfile.write(SETUP_PY)
         # Make a directory for the module
@@ -171,13 +249,14 @@ def test_toy_package_lower():
 
 
 @pytest.mark.integration
-def test_toy_package_extras():
+@pytest.mark.parametrize("toml_source", [SETUP_TOML_EXTRAS, SETUP_TOML_EXTRAS_TOOL])
+def test_toy_package_extras(toml_source):
     """Test using edgetest with a toy package."""
     runner = CliRunner()
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML_EXTRAS)
+            outfile.write(toml_source)
         with open("setup.py", "w") as outfile:
             outfile.write(SETUP_PY)
         # Make a directory for the module
@@ -214,15 +293,32 @@ def test_toy_package_extras():
 
         assert "polars[pyarrow]" in config["project"]["dependencies"][0]
         assert "scikit-learn" in config["project"]["dependencies"][1]
-        assert config["edgetest"]["envs"]["core"]["extras"] == ["tests"]
-        assert config["edgetest"]["envs"]["core"]["upgrade"] == [
-            "scikit-learn",
-            "polars[pyarrow]",
-        ]
-        assert config["edgetest"]["envs"]["lower_env"]["extras"] == ["tests"]
-        assert config["edgetest"]["envs"]["lower_env"]["lower"] == [
-            "scikit-learn",
-            "polars[pyarrow]",
-        ]
-        assert "polars" in result.stdout
-        assert "scikit-learn" in result.stdout
+
+        if (classic_ := config.get("edgetest")) is not None:
+            assert classic_["envs"]["core"]["extras"] == ["tests"]
+            assert classic_["envs"]["core"]["upgrade"] == [
+                "scikit-learn",
+                "polars[pyarrow]",
+            ]
+            assert classic_["envs"]["lower_env"]["extras"] == ["tests"]
+            assert classic_["envs"]["lower_env"]["lower"] == [
+                "scikit-learn",
+                "polars[pyarrow]",
+            ]
+            assert "polars" in result.stdout
+            assert "scikit-learn" in result.stdout
+        elif (tool_ := config.get("tool", {}).get("edgetest")) is not None:
+            assert tool_["env"][0]["name"] == "core"
+            assert tool_["env"][0]["extras"] == ["tests"]
+            assert tool_["env"][0]["upgrade"] == [
+                "scikit-learn",
+                "polars[pyarrow]",
+            ]
+            assert tool_["env"][1]["name"] == "lower_env"
+            assert tool_["env"][1]["extras"] == ["tests"]
+            assert tool_["env"][1]["lower"] == [
+                "scikit-learn",
+                "polars[pyarrow]",
+            ]
+            assert "polars" in result.stdout
+            assert "scikit-learn" in result.stdout

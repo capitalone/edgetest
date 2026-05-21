@@ -85,7 +85,10 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
         *upgrade,
         "--upgrade",
     ]
-    if (cooldown_ := conf.get("exclude_newer")) is not None:
+    ctx = click.get_current_context()
+    if (cooldown_ := conf.get("exclude_newer")) is not None and not ctx.params[
+        "ignore_cooldown"
+    ]:
         callargs_.append(f"--exclude-newer={cooldown_}")
     try:
         _run_command(*callargs_)

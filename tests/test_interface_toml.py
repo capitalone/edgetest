@@ -4,6 +4,7 @@ import platform
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
 
+import pytest
 from click.testing import CliRunner
 
 from edgetest.interface import cli
@@ -17,6 +18,13 @@ myupgrade
 SETUP_TOML = """
 [edgetest.envs.myenv]
 upgrade = ["myupgrade"]
+command = "pytest tests -m 'not integration'"
+"""
+
+SETUP_TOML_TOOL = """
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
 command = "pytest tests -m 'not integration'"
 """
 
@@ -39,6 +47,19 @@ lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
+SETUP_TOML_LOWER_TOOL = """
+[project]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+"""
+
 SETUP_TOML_REQS = """[project]
 dependencies = ["myupgrade<=0.1.5"]
 """
@@ -56,11 +77,31 @@ extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
 """
 
+SETUP_TOML_EXTRAS_TOOL = """[project]
+optional-dependencies.myextra = [ "myupgrade<=0.1.5" ]
+
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
+command = "pytest tests -m 'not integration'"
+"""
+
 
 SETUP_TOML_EXTRAS_UPGRADE = """[project]
 optional-dependencies.myextra = ["myupgrade<=0.2.0"]
 
 [edgetest.envs.myenv]
+upgrade = [ "myupgrade" ]
+extras = [ "myextra" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+SETUP_TOML_EXTRAS_UPGRADE_TOOL = """[project]
+optional-dependencies.myextra = ["myupgrade<=0.2.0"]
+
+[[tool.edgetest.env]]
+name = "myenv"
 upgrade = [ "myupgrade" ]
 extras = [ "myextra" ]
 command = "pytest tests -m 'not integration'"
@@ -117,9 +158,10 @@ all-requirements  True                True             myupgrade                
 """
 
 
+@pytest.mark.parametrize("toml_source", [SETUP_TOML, SETUP_TOML_TOOL])
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic(mock_popen, mock_cpopen):
+def test_cli_basic(mock_popen, mock_cpopen, toml_source):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -130,7 +172,7 @@ def test_cli_basic(mock_popen, mock_cpopen):
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML)
+            outfile.write(toml_source)
 
         result = runner.invoke(cli, ["--config=pyproject.toml"])
 
@@ -192,9 +234,10 @@ def test_cli_basic(mock_popen, mock_cpopen):
     assert result.output == TABLE_OUTPUT
 
 
+@pytest.mark.parametrize("ignore_cooldown", [True, False])
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic_cooldown(mock_popen, mock_cpopen):
+def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
     """Test creating a basic environment with dependency cooldowns."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -207,7 +250,12 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
         with open("pyproject.toml", "w") as outfile:
             outfile.write(SETUP_TOML_COOLDOWN)
 
-        result = runner.invoke(cli, ["--config=pyproject.toml"])
+        if ignore_cooldown:
+            result = runner.invoke(
+                cli, ["--config=pyproject.toml", "--ignore-cooldown"]
+            )
+        else:
+            result = runner.invoke(cli, ["--config=pyproject.toml"])
 
     assert result.exit_code == 0
 
@@ -216,6 +264,18 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
         py_loc = env_loc / "Scripts" / "python.exe"
     else:
         py_loc = env_loc / "bin" / "python"
+
+    # Upgrade installation argument depends on the parameterization
+    upgrade_callargs_ = [
+        "uv",
+        "pip",
+        "install",
+        f"--python={py_loc!s}",
+        "myupgrade",
+        "--upgrade",
+    ]
+    if not ignore_cooldown:
+        upgrade_callargs_.append("--exclude-newer=3 days")
 
     assert mock_popen.call_args_list == [
         call(
@@ -231,15 +291,7 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
             universal_newlines=True,
         ),
         call(
-            (
-                "uv",
-                "pip",
-                "install",
-                f"--python={py_loc!s}",
-                "myupgrade",
-                "--upgrade",
-                "--exclude-newer=3 days",
-            ),
+            tuple(upgrade_callargs_),
             stdout=-1,
             stderr=-1,
             universal_newlines=True,
@@ -268,9 +320,10 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen):
     assert result.output == TABLE_OUTPUT
 
 
+@pytest.mark.parametrize("toml_source", [SETUP_TOML_LOWER, SETUP_TOML_LOWER_TOOL])
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_basic_lower(mock_popen, mock_cpopen):
+def test_cli_basic_lower(mock_popen, mock_cpopen, toml_source):
     """Test creating a basic environment."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -281,7 +334,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen):
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML_LOWER)
+            outfile.write(toml_source)
 
         result = runner.invoke(cli, ["--config=pyproject.toml"])
 
@@ -489,9 +542,16 @@ def test_cli_setup_reqs_update(mock_popen, mock_cpopen):
     assert out == SETUP_TOML_REQS_UPGRADE
 
 
+@pytest.mark.parametrize(
+    "toml_source, toml_output",
+    [
+        (SETUP_TOML_EXTRAS, SETUP_TOML_EXTRAS_UPGRADE),
+        (SETUP_TOML_EXTRAS_TOOL, SETUP_TOML_EXTRAS_UPGRADE_TOOL),
+    ],
+)
 @patch("edgetest.core.Popen", autospec=True)
 @patch("edgetest.utils.Popen", autospec=True)
-def test_cli_setup_extras_update(mock_popen, mock_cpopen):
+def test_cli_setup_extras_update(mock_popen, mock_cpopen, toml_source, toml_output):
     """Test running tests and updating extra installation requirements in a ``pyproject.toml`` file."""
     mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
     type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
@@ -502,7 +562,7 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen):
 
     with runner.isolated_filesystem() as loc:
         with open("pyproject.toml", "w") as outfile:
-            outfile.write(SETUP_TOML_EXTRAS)
+            outfile.write(toml_source)
 
         result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
 
@@ -511,7 +571,7 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen):
 
     assert result.exit_code == 0
 
-    assert out == SETUP_TOML_EXTRAS_UPGRADE
+    assert out == toml_output
 
 
 @patch("edgetest.core.Popen", autospec=True)
