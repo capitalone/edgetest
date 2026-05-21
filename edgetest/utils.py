@@ -8,9 +8,9 @@ from pathlib import Path
 from subprocess import PIPE, Popen
 from typing import Dict, List, Tuple
 
+import tomlkit
 from packaging.requirements import Requirement
 from packaging.specifiers import Specifier, SpecifierSet
-from tomlkit import TOMLDocument, load
 from tomlkit.items import Table
 
 from edgetest.logger import get_logger
@@ -341,10 +341,11 @@ def parse_toml(
     options: dict
     # Read in the configuration file
     with open(filename) as buf:
-        config: TOMLDocument = load(buf)
+        config: tomlkit.TOMLDocument = tomlkit.load(buf)
     # Check for ``[tool.edgetest]`` or ``[edgetest]``
-    if "edgetest" in config.get("tool", {}):
-        output, options = _parse_toml_tool(config["tool"]["edgetest"])
+    config_: Table
+    if (config_ := config.get("tool", tomlkit.table()).get("edgetest")) is not None:
+        output, options = _parse_toml_tool(config_)
     elif "edgetest" in config:
         warnings.warn(
             (
@@ -354,7 +355,8 @@ def parse_toml(
             DeprecationWarning,
             stacklevel=2,
         )
-        output, options = _parse_toml_classic(config["edgetest"])
+        config_ = config.get("edgetest", tomlkit.table())
+        output, options = _parse_toml_classic(config_)
     else:
         output = {"envs": []}
         options = {}
@@ -363,10 +365,13 @@ def parse_toml(
         if (
             "lower" in env
             and "project" in config
-            and "dependencies" in config["project"]
+            and "dependencies" in config.get("project", tomlkit.array())
         ):
             output["envs"][idx]["lower"] = get_lower_bounds(
-                dict(config["project"])["dependencies"], output["envs"][idx]["lower"]
+                config.get("project", tomlkit.table())
+                .get("dependencies", tomlkit.array())
+                .unwrap(),
+                output["envs"][idx]["lower"],
             )
 
     if len(output["envs"]) == 0:
@@ -416,8 +421,8 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
     output: Dict = {"envs": []}
     for section in config:
         if section == "envs":
-            for name, env in config["envs"].items():
-                output["envs"].append({**env.unwrap(), "name": name})
+            for name, env in config.get("envs", tomlkit.table()).unwrap().items():
+                output["envs"].append({**env, "name": name})
         elif isinstance(config[section], Table):
             output[section] = config[section].unwrap()
 
@@ -556,7 +561,7 @@ def upgrade_setup_cfg(
 
 def upgrade_pyproject_toml(
     upgraded_packages: List[Dict[str, str]], filename: str = "pyproject.toml"
-) -> TOMLDocument:
+) -> tomlkit.TOMLDocument:
     """Upgrade the ``pyproject.toml`` file.
 
     Parameters
@@ -572,7 +577,7 @@ def upgrade_pyproject_toml(
         The updated TOMLDocument.
     """
     with open(filename) as buf:
-        parser: TOMLDocument = load(buf)
+        parser: tomlkit.TOMLDocument = tomlkit.load(buf)
     if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
         LOG.info(f"Updating the requirements in {filename}")
         upgraded = upgrade_requirements(
