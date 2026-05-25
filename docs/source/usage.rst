@@ -7,17 +7,17 @@ Configuration file
 Suppose you want to test upgrades for a subset of your dependencies. Instead of letting ``edgetest``
 parse your requirements file, you can create a configuration file:
 
-.. code-block:: ini
+.. code-block:: toml
 
-    [edgetest.envs.pandas]
-    upgrade =
-        pandas
+    [[tool.edgetest.env]]
+    name = "pandas"
+    upgrade = [ "pandas" ]
 
 Then run
 
 .. code-block:: console
 
-    $ edgetest -c edgetest.cfg
+    $ edgetest -c edgetest.toml
 
 This command will
 
@@ -29,25 +29,15 @@ This command will
 
 .. important::
 
-    This configuration file can be a standalone file which is distinct from the ``setup.cfg`` or ``pyproject.toml``
-    configurations. Just note it must have a ``edgetest.envs`` otherwise it expects a PEP 517-style ``setup.cfg``
+    This configuration file can be a standalone file, distinct from ``pyproject.toml``.
 
 
-
-``setup.cfg`` and ``pyproject.toml`` Configuration
+``pyproject.toml`` Configuration
 --------------------------------------------------
 
-You can also specify your testing environment through ``setup.cfg`` or ``pyproject.toml``:
+You can also specify your testing environment through ``pyproject.toml``:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
 
     .. tab:: .toml (legacy)
 
@@ -72,14 +62,6 @@ your requirements might look like this:
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [options]
-            install_requires =
-                pandas
-
     .. tab:: .toml
 
         .. code-block:: toml
@@ -89,15 +71,9 @@ your requirements might look like this:
                 "pandas",
             ]
 
-To point to ``setup.cfg`` or ``pyproject.toml``, supply the location of the file as your ``--config``:
+To point to ``pyproject.toml``, supply the location of the file as your ``--config``:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        .. code-block:: console
-
-            $ edgetest -c path/to/setup.cfg
 
     .. tab:: .toml
 
@@ -107,7 +83,7 @@ To point to ``setup.cfg`` or ``pyproject.toml``, supply the location of the file
 
 .. important::
 
-    Using ``setup.cfg`` or ``pyproject.toml`` will allow you to upgrade optional installations.
+    Using ``pyproject.toml`` will allow you to upgrade optional installations.
 
 
 Installing extras
@@ -118,19 +94,7 @@ call as follows:
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        Add an ``extras`` list to your environment:
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
-            extras =
-                tests
-
-    .. tab:: .toml (legacy)
+     .. tab:: .toml (legacy)
 
         Add an ``extras`` list to your environment:
 
@@ -168,17 +132,6 @@ To specify the python version for your virtual environments, modify your configu
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        Add ``python_version`` to your environment:
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
-            python_version = "3.13"
-
     .. tab:: .toml (legacy)
 
         Add ``python_version`` to your environment:
@@ -206,20 +159,6 @@ Modifying the test command
 To customize your test command, modify the configuration or CLI call as follows:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        Add a ``command`` key to your environment:
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
-            extras =
-                tests
-            command =
-                pytest tests -m 'not integration'
 
     .. tab:: .toml (legacy)
 
@@ -265,22 +204,6 @@ can specify additional dependencies to be installed via ``pip``.
 To specify additional ``pip`` dependencies, modify as follows:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        Add a ``deps`` list:
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
-            extras =
-                tests
-            command =
-                pytest tests -m "not integration"
-            deps =
-                scikit-learn
 
     .. tab:: .toml (legacy)
 
@@ -334,57 +257,6 @@ you can specify those under the ``edgetest`` section of your configuration:
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [edgetest]
-            extras =
-                tests
-            command =
-                pytest tests -m 'not integration'
-
-            [edgetest.envs.pandas]
-            upgrade =
-                pandas
-
-            [edgetest.envs.numpy]
-            upgrade =
-                numpy
-
-        .. important::
-
-            You can combine your configuration file with ``requirements.txt``. If you have the following
-            configuration file:
-
-            .. code-block:: ini
-
-                [options]
-                install_requires =
-
-                [edgetest]
-                extras =
-                    tests
-                command =
-                    pytest tests -m 'not integration'
-
-            and the following requirements file:
-
-            .. code-block:: text
-
-                pandas>=0.25.1,<=1.0.0
-                scikit-learn>=0.23.0,<=0.24.2
-
-
-            the following CLI call
-
-            .. code-block:: console
-
-                $ edgetest -c edgetest.cfg -r requirements.txt
-
-            will apply the default arguments to each environment.
-
-
     .. tab:: .toml (legacy)
 
         .. code-block:: toml
@@ -422,26 +294,6 @@ Suppose you have multiple local packages you want to test. You can include the `
 in your testing project directory:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas]
-            package_dir = ../mypackage
-            upgrade =
-                pandas
-
-            [edgetest.envs.numpy]
-            package_dir = ../myotherpackage
-            upgrade =
-                numpy
-
-        After running
-
-        .. code-block:: console
-
-            $ edgetest -c path/to/edgetest.cfg
 
     .. tab:: .toml (legacy)
 
@@ -507,16 +359,6 @@ in the ``uv`` documentation `here <https://docs.astral.sh/uv/reference/cli/#uv-p
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        Add ``exclude_newer`` to your environment or default configuration:
-
-        .. code-block:: ini
-
-            [edgetest]
-            exclude_newer =
-                3 days
-
     .. tab:: .toml (legacy)
 
         Add ``exclude_newer`` to your environment or default configuration:
@@ -559,15 +401,6 @@ Exporting an upgraded config file
 
 .. tabs::
 
-    .. tab:: .cfg
-
-        This will overwrite your current ``setup.cfg`` file with the updated requirements.
-
-            .. code-block:: console
-
-                $ edgetest -c /path/to/setup.cfg --export
-
-
     .. tab:: .toml
 
         This will overwrite your current ``pyproject.toml`` file with the updated requirements.
@@ -594,14 +427,14 @@ For instance, ``snowflake-connector-python[pandas]>=2.2.8,<2.3.9`` might be repl
 
 .. tabs::
 
-    .. tab:: Configuration file (cfg/toml)
+    .. tab:: Configuration file (toml)
 
         Include the correct ``--requirements`` filepath and use ``--export``:
 
         .. code-block:: console
 
             $ edgetest \
-                -c path/to/edgetest.cfg \
+                -c path/to/edgetest.toml \
                 --requirements requirements.txt \
                 --export
 
@@ -629,17 +462,9 @@ Testing lower bounds of packages
     This feature is experimental and may change in future releases. Limited functionality is available.
 
 Suppose you want to test if a new feature is compatible with dependencies' lower bounds.
-You can use an edgetest environment to test the lower bounds of dependencies in your ``setup.cfg`` or ``pyproject.toml`` as follows:
+You can use an edgetest environment to test the lower bounds of dependencies in your ``pyproject.toml`` as follows:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [edgetest.envs.pandas_lower]
-            lower =
-                pandas
 
     .. tab:: .toml (legacy)
 
@@ -668,18 +493,6 @@ Running the edgetest command using this environment specification will:
 For example, if your project configuration looks like this:
 
 .. tabs::
-
-    .. tab:: .cfg
-
-        .. code-block:: ini
-
-            [options]
-            install_requires =
-                pandas>=0.24.3
-
-            [edgetest.envs.pandas_lower]
-            lower =
-                pandas
 
     .. tab:: .toml (legacy)
 
