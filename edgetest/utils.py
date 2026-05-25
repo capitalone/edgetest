@@ -2,7 +2,6 @@
 
 import os
 import warnings
-from configparser import ConfigParser
 from contextlib import contextmanager
 from pathlib import Path
 from subprocess import PIPE, Popen
@@ -132,111 +131,6 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
     output = convert_requirements(requirements=cfg)
     for index in range(len(output["envs"])):
         output["envs"][index].update(options)
-
-    return output
-
-
-def parse_cfg(filename: str = "setup.cfg", requirements: str | None = None) -> Dict:
-    """Generate a configuration from a ``.ini`` style file.
-
-    This function can operate in two ways. First, it can look for sections that
-    start with ``edgetest`` and build a configuration. Suppose
-    you have ``setup.cfg`` as follows:
-
-    .. code-block:: ini
-
-        [edgetest.envs.pandas]
-        upgrade =
-            pandas
-
-    This will result in a configuration that has one testing environment, named
-    ``pandas``, that upgrades the ``pandas`` package.
-
-    If you don't have any sections that start with ``edgetest.envs``, we will look for
-    the PEP 517-style ``setup.cfg`` install requirements (the ``install_requires`` key
-    within the ``options`` section). To set global defaults for you environments, use
-    the ``edgetest`` section:
-
-    .. code-block:: ini
-
-        [edgetest]
-        extras =
-            tests
-        command =
-            pytest tests -m "not integration"
-
-        [edgetest.envs.pandas]
-        upgrade =
-            pandas
-
-    For this single environment file, the above configuration is equivalent to
-
-    .. code-block:: ini
-
-        [edgetest.envs.pandas]
-        extras =
-            tests
-        command =
-            pytest tests -m "not integration"
-        upgrade =
-            pandas
-
-    Parameters
-    ----------
-    filename : str, optional (default "setup.cfg")
-        The name of the configuration file to read. Defaults to ``setup.cfg``.
-    requirements : str, optional (default None)
-        An optional path to the requirements text file. If there are no PEP-517
-        style dependencies or coded environments in the edgetest configuration, this
-        function will look for dependencies in the requirements file.
-
-    Returns
-    -------
-    Dict
-        A configuration dictionary for ``edgetest``.
-    """
-    # Read in the configuration file
-    config = ConfigParser()
-    config.read(filename)
-    # Parse
-    output: Dict = {"envs": []}
-    # Get any global options if necessary
-    options = dict(config["edgetest"]) if "edgetest" in config else {}
-    # Next, create the sections
-    for section in config.sections():
-        if not section.startswith("edgetest."):
-            continue
-        # Look for the special ``envs`` key
-        section_name = section.split(".")
-        if section_name[1] == "envs":
-            output["envs"].append(dict(config[section]))
-            output["envs"][-1]["name"] = section_name[2]
-            if (
-                "lower" in output["envs"][-1]
-                and "options" in config
-                and "install_requires" in config["options"]
-            ):
-                output["envs"][-1]["lower"] = get_lower_bounds(
-                    config.get("options", "install_requires"),
-                    output["envs"][-1]["lower"],
-                )
-        else:
-            output[section_name[1]] = dict(config[section])
-    if len(output["envs"]) == 0:
-        if config.get("options", "install_requires"):
-            output = convert_requirements(
-                requirements=config["options"]["install_requires"], conf=output
-            )
-        elif requirements:
-            req_conf = gen_requirements_config(fname_or_buf=requirements)
-            output["envs"] = req_conf["envs"]
-        else:
-            raise ValueError("Please supply a valid list of environments to create.")
-    # Apply global environment options (without overwriting)
-    for idx in range(len(output["envs"])):
-        output["envs"][idx] = dict(
-            list(options.items()) + list(output["envs"][idx].items())
-        )
 
     return output
 
@@ -519,44 +413,6 @@ def upgrade_requirements(
         pkg.specifier = SpecifierSet(",".join(str(spec) for spec in new_spec))
 
     return "\n".join(str(pkg) for pkg in pkgs)
-
-
-def upgrade_setup_cfg(
-    upgraded_packages: List[Dict[str, str]], filename: str = "setup.cfg"
-) -> ConfigParser:
-    """Upgrade the ``setup.cfg`` file.
-
-    Parameters
-    ----------
-    upgraded_packages : List[Dict[str, str]]
-        A list of packages upgraded in the testing procedure.
-    filename : str, optional (default "setup.cfg")
-        The name of the configuration file to read. Defaults to ``setup.cfg``.
-
-    Returns
-    -------
-    ConfigParser
-        The updated configuration file.
-    """
-    parser = ConfigParser()
-    parser.read(filename)
-    if "options" in parser and parser.get("options", "install_requires"):
-        LOG.info(f"Updating the requirements in {filename}")
-        upgraded = upgrade_requirements(
-            fname_or_buf=parser["options"]["install_requires"].lstrip(),
-            upgraded_packages=upgraded_packages,
-        )
-        parser["options"]["install_requires"] = "\n" + upgraded
-    # Update the extras, if necessary
-    if "options.extras_require" in parser:
-        for extra, dependencies in parser.items("options.extras_require"):
-            upgraded = upgrade_requirements(
-                fname_or_buf=dependencies,
-                upgraded_packages=upgraded_packages,
-            )
-            parser["options.extras_require"][extra] = "\n" + upgraded
-
-    return parser
 
 
 def upgrade_pyproject_toml(
