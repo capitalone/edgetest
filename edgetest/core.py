@@ -4,7 +4,6 @@ import json
 import shlex
 from pathlib import Path
 from subprocess import Popen
-from typing import Dict, List
 
 from pluggy._hooks import _HookRelay
 
@@ -47,8 +46,8 @@ class TestPackage:
         self,
         hook: _HookRelay,
         envname: str,
-        upgrade: List[str] | None = None,
-        lower: List[str] | None = None,
+        upgrade: list[str] | None = None,
+        lower: list[str] | None = None,
         package_dir: str | None = None,
     ):
         """Init method."""
@@ -93,8 +92,8 @@ class TestPackage:
 
     def setup(
         self,
-        extras: List[str] | None = None,
-        deps: List[str] | None = None,
+        extras: list[str] | None = None,
+        deps: list[str] | None = None,
         skip: bool = False,
         **options,
     ) -> None:
@@ -227,7 +226,7 @@ class TestPackage:
                 f"Successfully installed lower bounds of packages in {self.envname}"
             )
 
-    def upgraded_packages(self) -> List[Dict[str, str]]:
+    def upgraded_packages(self) -> list[dict[str, str]]:
         """Get the list of upgraded packages for the test environment.
 
         Parameters
@@ -255,7 +254,7 @@ class TestPackage:
             if _isin_case_dashhyphen_ins(pkg.get("name", ""), upgrade_wo_extras)
         ]
 
-    def lowered_packages(self) -> List[Dict[str, str]]:
+    def lowered_packages(self) -> list[dict[str, str]]:
         """Get list of lowered packages for the test environment.
 
         Returns

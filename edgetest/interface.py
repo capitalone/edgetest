@@ -1,7 +1,6 @@
 """Command-line interface."""
 
 from pathlib import Path
-from typing import List
 
 import click
 import pluggy
@@ -147,7 +146,7 @@ def cli(
 
     # Run the pre-test hook
     pm.hook.pre_run_hook(conf=conf)
-    testers: List[TestPackage] = []
+    testers: list[TestPackage] = []
     for env in conf["envs"]:
         testers.append(
             TestPackage(

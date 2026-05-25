@@ -3,7 +3,6 @@
 import logging
 import platform
 from pathlib import Path
-from typing import Dict, List
 
 import click
 import pluggy
@@ -25,7 +24,7 @@ def path_to_python(basedir: str, envname: str) -> str:
 
 
 @hookimpl(trylast=True)
-def create_environment(basedir: str, envname: str, conf: Dict):
+def create_environment(basedir: str, envname: str, conf: dict):
     """Create the virtual environment for testing.
 
     Creates an environment using ``uv``.
@@ -56,7 +55,7 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
+def run_update(basedir: str, envname: str, upgrade: list, conf: dict):
     """Update packages from upgrade list.
 
     Parameters
@@ -97,7 +96,7 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
+def run_install_lower(basedir: str, envname: str, lower: list[str], conf: dict):
     """Install lower bounds of packages provided.
 
     Parameters
@@ -106,9 +105,9 @@ def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
         The base directory location for the environment.
     envname : str
         Environment to install into.
-    lower : List[str]
+    lower : list[str]
         Lower bounds of packages to install.
-    conf : Dict
+    conf : dict
         The configuration dictionary for the environment. This is useful if you
         want to add configuration arguments for additional dependencies that can
         only be installed through the environment manager (e.g. Conda).
@@ -121,7 +120,7 @@ def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
 
 
 @hookimpl(tryfirst=True)
-def post_run_hook(testers: List, conf: Dict):
+def post_run_hook(testers: list, conf: dict):
     """Refresh ``uv.lock`` based on the test output."""
     ctx = click.get_current_context()
     if not ctx.params["export"]:

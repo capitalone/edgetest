@@ -5,7 +5,6 @@ import warnings
 from contextlib import contextmanager
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Dict, List, Tuple
 
 import tomlkit
 from packaging.requirements import Requirement
@@ -17,7 +16,7 @@ from edgetest.logger import get_logger
 LOG = get_logger(__name__)
 
 
-def _run_command(*args) -> Tuple[str, int]:
+def _run_command(*args) -> tuple[str, int]:
     """Run a command using ``subprocess.Popen``.
 
     Parameters
@@ -67,7 +66,7 @@ def pushd(new_dir: str):
         os.chdir(curr_dir)
 
 
-def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
+def convert_requirements(requirements: str, conf: dict | None = None) -> dict:
     """Generate environments for a newline-separate list of package requirements.
 
     This function will generate one environment per entry with an additional environment
@@ -82,7 +81,7 @@ def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary.
     """
     conf = {"envs": []} if conf is None else conf
@@ -103,7 +102,7 @@ def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
     return conf
 
 
-def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
+def gen_requirements_config(fname_or_buf: str, **options) -> dict:
     """Generate a configuration file from package requirements.
 
     This function will convert the package installation requirements to a configuration
@@ -119,7 +118,7 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
 
     Returns
     -------
-    Dict
+    dict
         The configuration file.
     """
     # First, get the requirements
@@ -137,7 +136,7 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
 
 def parse_toml(
     filename: str = "pyproject.toml", requirements: str | None = None
-) -> Dict:
+) -> dict:
     """Generate a configuration from a ``.toml`` style file.
 
     This function will look for a table that starts with either ``edgetest``
@@ -229,7 +228,7 @@ def parse_toml(
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary for ``edgetest``.
     """
     options: dict
@@ -289,7 +288,7 @@ def parse_toml(
     return output
 
 
-def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
+def _parse_toml_classic(config: Table) -> tuple[dict, dict]:
     """Generate a configuration from a ``.toml`` style file.
 
     This function is used to parse the classic ``edgetest`` table format.
@@ -301,9 +300,9 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary for ``edgetest``.
-    Dict
+    dict
         Global configuration options for ``edgetest``.
     """
     options = {
@@ -312,7 +311,7 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
         if not isinstance(value, Table)
     }
 
-    output: Dict = {"envs": []}
+    output: dict = {"envs": []}
     for section in config:
         if section == "envs":
             for name, env in config.get("envs", tomlkit.table()).unwrap().items():
@@ -323,7 +322,7 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
     return output, options
 
 
-def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
+def _parse_toml_tool(config: Table) -> tuple[dict, dict]:
     """Generate a configuration from a ``.toml`` style configuration.
 
     This function is used to parse the newer ``tool.edgetest`` table format.
@@ -347,7 +346,7 @@ def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
         if key != "env" and not isinstance(value, Table)
     }
 
-    output: Dict = {"envs": []}
+    output: dict = {"envs": []}
     for section in config:
         if section == "env":
             output["envs"] = config["env"].unwrap()
@@ -358,7 +357,7 @@ def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
 
 
 def upgrade_requirements(
-    fname_or_buf: str, upgraded_packages: List[Dict[str, str]]
+    fname_or_buf: str, upgraded_packages: list[dict[str, str]]
 ) -> str:
     """Create an upgraded requirements file.
 
@@ -416,13 +415,13 @@ def upgrade_requirements(
 
 
 def upgrade_pyproject_toml(
-    upgraded_packages: List[Dict[str, str]], filename: str = "pyproject.toml"
+    upgraded_packages: list[dict[str, str]], filename: str = "pyproject.toml"
 ) -> tomlkit.TOMLDocument:
     """Upgrade the ``pyproject.toml`` file.
 
     Parameters
     ----------
-    upgraded_packages : List[Dict[str, str]]
+    upgraded_packages : list[dict[str, str]]
         A list of packages upgraded in the testing procedure.
     filename : str, optional (default "pyproject.toml")
         The name of the configuration file to read. Defaults to ``pyproject.toml``.
@@ -453,7 +452,7 @@ def upgrade_pyproject_toml(
     return parser
 
 
-def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
+def _isin_case_dashhyphen_ins(a: str, vals: list[str]) -> bool:
     """Run isin check that is case and dash/hyphen insensitive.
 
     Paramaters
@@ -471,7 +470,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
-def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> str:
+def get_lower_bounds(requirements: str | list[str], lower: str | list[str]) -> str:
     r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
@@ -482,7 +481,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> s
     requirements : str or list
         Project setup requirements,
         e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
-    lower : str | List[str]
+    lower : str | list[str]
         Newline-delimited packages requested,
          e.g. ``"pandas\nnumpy"``.
 
@@ -499,7 +498,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> s
         ]
     elif isinstance(requirements, list):
         pkgs = [Requirement(val) for val in requirements]
-    all_lower_bounds: Dict[str, str] = {}
+    all_lower_bounds: dict[str, str] = {}
     for pkg in pkgs:
         full_name = pkg.name + (f"[{','.join(pkg.extras)}]" if pkg.extras else "")
         for spec in pkg.specifier:
