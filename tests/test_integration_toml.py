@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 from click.testing import CliRunner
+from packaging.requirements import Requirement
 from tomlkit import load
 
 from edgetest.interface import cli
@@ -291,8 +292,9 @@ def test_toy_package_extras(toml_source):
         with open("pyproject.toml") as buf:
             config = load(buf)
 
-        assert "polars[pyarrow]" in config["project"]["dependencies"][0]
-        assert "scikit-learn" in config["project"]["dependencies"][1]
+        assert {"polars", "scikit-learn"} == {
+            Requirement(pkg).name for pkg in config["project"]["dependencies"]
+        }
 
         if (classic_ := config.get("edgetest")) is not None:
             assert classic_["envs"]["core"]["extras"] == ["tests"]
