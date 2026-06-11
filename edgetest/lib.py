@@ -6,6 +6,7 @@ from pathlib import Path
 
 import click
 import pluggy
+from uv import find_uv_bin
 
 from edgetest.utils import _run_command
 
@@ -44,7 +45,8 @@ def create_environment(basedir: str, envname: str, conf: dict):
         Error raised if the environment cannot be created.
     """
     try:
-        callargs_ = ["uv", "venv", str(Path(basedir, envname))]
+        uv_ = find_uv_bin()
+        callargs_ = [uv_, "venv", str(Path(basedir, envname))]
         if (py_version := conf.get("python_version")) is not None:
             callargs_.append(f"--python={py_version}")
         if Path(basedir, envname).is_dir():
@@ -76,8 +78,9 @@ def run_update(basedir: str, envname: str, upgrade: list, conf: dict):
         Error raised if the packages cannot be updated.
     """
     python_path = path_to_python(basedir, envname)
+    uv_ = find_uv_bin()
     callargs_ = [
-        "uv",
+        uv_,
         "pip",
         "install",
         f"--python={python_path}",
@@ -114,7 +117,8 @@ def run_install_lower(basedir: str, envname: str, lower: list[str], conf: dict):
     """
     python_path = path_to_python(basedir, envname)
     try:
-        _run_command("uv", "pip", "install", f"--python={python_path}", *lower)
+        uv_ = find_uv_bin()
+        _run_command(uv_, "pip", "install", f"--python={python_path}", *lower)
     except Exception as err:
         raise RuntimeError(f"Unable to pip install: {lower}") from err
 
@@ -132,7 +136,8 @@ def post_run_hook(testers: list, conf: dict):
     ):
         # uv.lock exists already and the last tester passed
         try:
-            _run_command("uv", "lock", "--upgrade")
+            uv_ = find_uv_bin()
+            _run_command(uv_, "lock", "--upgrade")
         except RuntimeError:
             LOG.info("Unable to update the ``uv.lock`` file.")
     else:

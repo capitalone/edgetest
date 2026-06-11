@@ -16,13 +16,15 @@ from edgetest.logger import get_logger
 LOG = get_logger(__name__)
 
 
-def _run_command(*args) -> tuple[str, int]:
+def _run_command(*args, env: dict[str, str] | None = None) -> tuple[str, int]:
     """Run a command using ``subprocess.Popen``.
 
     Parameters
     ----------
     *args
         Arguments for the command.
+    env : dict, optional (default None)
+        Environment variables for the subprocess call.
 
     Returns
     -------
@@ -37,7 +39,7 @@ def _run_command(*args) -> tuple[str, int]:
         Error raised when the command is not successfully executed.
     """
     LOG.debug(f"Running the following command: \n\n {' '.join(args)}")
-    popen = Popen(args, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    popen = Popen(args, stdout=PIPE, stderr=PIPE, env=env, universal_newlines=True)
     out, err = popen.communicate()
     if popen.returncode:
         raise RuntimeError(
