@@ -141,11 +141,10 @@ def cli(
         raise ValueError("Unable to validate configuration file.")
     conf = validator.document
 
-    if environment:
-        conf["envs"] = [env for env in conf["envs"] if env["name"] == environment]
-
     # Run the pre-test hook
     pm.hook.pre_run_hook(conf=conf)
+    if environment:
+        conf["envs"] = [env for env in conf["envs"] if env["name"] == environment]
     testers: list[TestPackage] = []
     for env in conf["envs"]:
         testers.append(
