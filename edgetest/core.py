@@ -6,6 +6,7 @@ from pathlib import Path
 from subprocess import Popen
 
 from pluggy._hooks import _HookRelay
+from uv import find_uv_bin
 
 from edgetest.logger import get_logger
 from edgetest.utils import _isin_case_dashhyphen_ins, _run_command, pushd
@@ -139,9 +140,15 @@ class TestPackage:
 
         # Install the local package
         with pushd(self.package_dir):
-            pkg = "."
+            uv_ = find_uv_bin()
+            base_cmd_ = [
+                uv_,
+                "sync",
+                "--inexact",
+                f"--python={self.python_path}",
+            ]
             if extras:
-                pkg += f"[{', '.join(extras)}]"
+                base_cmd_ += [f"--extra={e}" for e in extras]
             if deps:
                 LOG.info(
                     "Installing specified additional dependencies into %s: %s",
@@ -151,7 +158,7 @@ class TestPackage:
                 split = [shlex.split(dep) for dep in deps]
                 try:
                     _run_command(
-                        "uv",
+                        uv_,
                         "pip",
                         "install",
                         f"--python={self.python_path}",
@@ -171,7 +178,10 @@ class TestPackage:
             LOG.info(f"Installing the local package into {self.envname}...")
             try:
                 _run_command(
-                    "uv", "pip", "install", f"--python={self.python_path}", pkg
+                    *base_cmd_,
+                    env={
+                        "UV_PROJECT_ENVIRONMENT": str(Path(self.basedir, self.envname))
+                    },
                 )
                 LOG.info(
                     f"Successfully installed the local package into {self.envname}..."
@@ -242,8 +252,9 @@ class TestPackage:
         if self.upgrade is None:
             return []
         # Get the version for the upgraded package(s)
+        uv_ = find_uv_bin()
         out, _ = _run_command(
-            "uv", "pip", "list", f"--python={self.python_path}", "--format", "json"
+            uv_, "pip", "list", f"--python={self.python_path}", "--format", "json"
         )
         outjson = json.loads(out)
 
