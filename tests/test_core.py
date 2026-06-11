@@ -5,6 +5,7 @@ from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
 
 import pytest
+from uv import find_uv_bin
 
 from edgetest.core import TestPackage
 
@@ -68,11 +69,13 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
     else:
         py_loc = env_loc / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]
@@ -171,11 +174,20 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", ".[tests, complete]"),
+            (
+                uv_,
+                "sync",
+                "--inexact",
+                f"--python={py_loc!s}",
+                "--extra=tests",
+                "--extra=complete",
+            ),
             stdout=-1,
             stderr=-1,
+            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]
@@ -207,10 +219,11 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -220,12 +233,14 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]
@@ -257,10 +272,11 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -270,6 +286,7 @@ def test_setup_pip_deps_error(mock_popen, mock_path, tmpdir, plugin_manager):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]

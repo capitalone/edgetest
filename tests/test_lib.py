@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 import pytest
+from uv import find_uv_bin
 
 from edgetest.lib import (
     create_environment,
@@ -32,12 +33,12 @@ def test_path_to_python(mock_platform):
 @patch("edgetest.lib._run_command", autospec=True)
 def test_create_environment(mock_run):
     create_environment("test", "test", {})
-    mock_run.assert_called_with("uv", "venv", str(Path("test", "test")))
+    uv_ = find_uv_bin()
+    mock_run.assert_called_with(uv_, "venv", str(Path("test", "test")))
 
     create_environment("test", "test", {"python_version": "3.10"})
-    mock_run.assert_called_with(
-        "uv", "venv", str(Path("test", "test")), "--python=3.10"
-    )
+
+    mock_run.assert_called_with(uv_, "venv", str(Path("test", "test")), "--python=3.10")
 
     mock_run.side_effect = RuntimeError()
     with pytest.raises(RuntimeError):
@@ -52,13 +53,14 @@ def test_run_update(mock_run, mock_ctx, ignore_cooldown):
     python_path = path_to_python("test", "test")
     run_update("test", "test", ["1", "2"], {"exclude_newer": "3 days"})
 
+    uv_ = find_uv_bin()
     if ignore_cooldown:
         mock_run.assert_called_with(
-            "uv", "pip", "install", f"--python={python_path}", "1", "2", "--upgrade"
+            uv_, "pip", "install", f"--python={python_path}", "1", "2", "--upgrade"
         )
     else:
         mock_run.assert_called_with(
-            "uv",
+            uv_,
             "pip",
             "install",
             f"--python={python_path}",
@@ -77,8 +79,10 @@ def test_run_update(mock_run, mock_ctx, ignore_cooldown):
 def test_run_install_lower(mock_run):
     python_path = path_to_python("test", "test")
     run_install_lower("test", "test", ["package1==1", "package2==2"], {"test": "test"})
+
+    uv_ = find_uv_bin()
     mock_run.assert_called_with(
-        "uv",
+        uv_,
         "pip",
         "install",
         f"--python={python_path}",
