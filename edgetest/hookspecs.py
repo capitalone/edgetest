@@ -1,7 +1,5 @@
 """Hook specifications for edgetest."""
 
-from typing import Dict, List
-
 import pluggy
 
 from edgetest.schema import Schema
@@ -19,12 +17,12 @@ def addoption(schema: Schema):
 
 
 @hookspec
-def pre_run_hook(conf: Dict):
+def pre_run_hook(conf: dict):
     """Pre-setup and test hook.
 
     Parameters
     ----------
-    conf : Dict
+    conf : dict
         The entire configuration dictionary.
     """
 
@@ -50,7 +48,7 @@ def path_to_python(basedir: str, envname: str) -> str:
 
 
 @hookspec(firstresult=True)
-def create_environment(basedir: str, envname: str, conf: Dict):
+def create_environment(basedir: str, envname: str, conf: dict):
     """Create the virtual environment for testing.
 
     Parameters
@@ -72,7 +70,7 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookspec(firstresult=True)
-def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
+def run_update(basedir: str, envname: str, upgrade: list, conf: dict):
     """Update packages from upgrade list.
 
     Parameters
@@ -96,7 +94,7 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
 
 
 @hookspec(firstresult=True)
-def run_install_lower(basedir: str, envname: str, lower: Dict[str, str], conf: Dict):
+def run_install_lower(basedir: str, envname: str, lower: dict[str, str], conf: dict):
     """Install lower bounds of packages provided.
 
     Parameters
@@ -107,7 +105,7 @@ def run_install_lower(basedir: str, envname: str, lower: Dict[str, str], conf: D
         Environment to install into.
     lower_bounds : Dict[str, str]
         Lower bounds of packages to install.
-    conf : Dict
+    conf : dict
         The configuration dictionary for the environment. This is useful if you
         want to add configuration arguments for additional dependencies that can
         only be installed through the environment manager (e.g. Conda).
@@ -115,7 +113,7 @@ def run_install_lower(basedir: str, envname: str, lower: Dict[str, str], conf: D
 
 
 @hookspec
-def post_run_hook(testers: List, conf: Dict):
+def post_run_hook(testers: list, conf: dict):
     """Post testing hook.
 
     For executing code after the environment set up and testing.

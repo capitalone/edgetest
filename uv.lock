@@ -622,7 +622,7 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'tests'" },
     { name = "pytest-cov", marker = "extra == 'tests'" },
     { name = "recommonmark", marker = "extra == 'docs'" },
-    { name = "ruff", marker = "extra == 'qa'", specifier = "~=0.5" },
+    { name = "ruff", marker = "extra == 'qa'" },
     { name = "sphinx", marker = "extra == 'docs'" },
     { name = "sphinx-copybutton", marker = "extra == 'docs'" },
     { name = "sphinx-tabs", marker = "extra == 'docs'" },

@@ -10,86 +10,13 @@ from edgetest.utils import (
     _isin_case_dashhyphen_ins,
     gen_requirements_config,
     get_lower_bounds,
-    parse_cfg,
     parse_toml,
     upgrade_pyproject_toml,
-    upgrade_setup_cfg,
 )
 
 REQS = """
 mydep1>=0.1.0,<=0.2.0
 mydep2<=0.10.0
-"""
-
-CFG_NOREQS = """
-[edgetest.envs.myenv]
-upgrade =
-    myupgrade
-command =
-    pytest tests -m 'not integration'
-
-[edgetest.envs.myenv_lower]
-lower =
-    mylower
-command =
-    pytest tests -m 'not integration'
-"""
-
-CFG_REQS = """
-[options]
-install_requires =
-    myupgrade
-"""
-
-CFG_REQS_DEFAULTS = """
-[options]
-install_requires =
-    myupgrade
-
-[edgetest]
-extras =
-    tests
-command =
-    pytest tests -m 'not integration'
-"""
-
-CFG_NOREQS_DEFAULTS = """
-[edgetest]
-extras =
-    tests
-command =
-    pytest tests -m 'not integration'
-
-[edgetest.envs.myenv]
-upgrade =
-    myupgrade
-command =
-    pytest tests
-
-[edgetest.envs.myenv_lower]
-lower =
-    mylower
-command =
-    pytest tests
-"""
-
-CFG_CUSTOM = """
-[edgetest]
-extras =
-    tests
-command =
-    pytest tests -m 'not integration'
-
-[edgetest.custom]
-mycustom = mykey
-
-[edgetest.envs.myenv]
-upgrade =
-    myupgrade
-
-[edgetest.envs.myenv_lower]
-lower =
-    mylower
 """
 
 
@@ -236,17 +163,6 @@ lower = [ "mylower" ]
 """
 
 
-CFG_REQS_UPGRADE = """
-[options]
-install_requires =
-    pandas<=1.0.0,>=1.0.0
-    numpy<=1.0.0,>=1.0.0
-
-[options.extras_require]
-tests =
-    pytest<=1.0.0,>=1.0.0
-"""
-
 TOML_REQS_UPGRADE = """
 [project]
 dependencies = [
@@ -291,155 +207,6 @@ def test_parse_reqs(mock_pathlib):
         ]
     }
     validator = EdgetestValidator(schema=BASE_SCHEMA)
-
-    assert validator.validate(cfg)
-
-
-def test_parse_cfg(tmpdir):
-    """Test parsing a config with no install requirements."""
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "myconfig.ini")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_NOREQS)
-
-    cfg = parse_cfg(filename=conf_loc)
-
-    assert cfg == {
-        "envs": [
-            {
-                "name": "myenv",
-                "upgrade": "\nmyupgrade",
-                "command": "\npytest tests -m 'not integration'",
-            },
-            {
-                "name": "myenv_lower",
-                "lower": "\nmylower",
-                "command": "\npytest tests -m 'not integration'",
-            },
-        ]
-    }
-
-    validator = EdgetestValidator(schema=BASE_SCHEMA)
-
-    assert validator.validate(cfg)
-
-
-def test_parse_cfg_default(tmpdir):
-    """Test parsing a config with no install requirements and defaults."""
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "myconfig.ini")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_NOREQS_DEFAULTS)
-
-    cfg = parse_cfg(filename=conf_loc)
-
-    assert cfg == {
-        "envs": [
-            {
-                "name": "myenv",
-                "upgrade": "\nmyupgrade",
-                "extras": "\ntests",
-                "command": "\npytest tests",
-            },
-            {
-                "name": "myenv_lower",
-                "lower": "\nmylower",
-                "extras": "\ntests",
-                "command": "\npytest tests",
-            },
-        ]
-    }
-
-    validator = EdgetestValidator(schema=BASE_SCHEMA)
-
-    assert validator.validate(cfg)
-
-
-def test_parse_cfg_reqs(tmpdir):
-    """Test parsing a PEP-517 style config."""
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "setup.cfg")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_REQS)
-
-    cfg = parse_cfg(filename=conf_loc)
-
-    assert cfg == {
-        "envs": [
-            {"name": "myupgrade", "upgrade": "myupgrade"},
-            {"name": "all-requirements", "upgrade": "myupgrade"},
-        ]
-    }
-
-    validator = EdgetestValidator(schema=BASE_SCHEMA)
-
-    assert validator.validate(cfg)
-
-
-def test_parse_cfg_reqs_default(tmpdir):
-    """Test parsing a PEP-517 style config with default arguments."""
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "setup.cfg")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_REQS_DEFAULTS)
-
-    cfg = parse_cfg(filename=conf_loc)
-
-    assert cfg == {
-        "envs": [
-            {
-                "name": "myupgrade",
-                "upgrade": "myupgrade",
-                "extras": "\ntests",
-                "command": "\npytest tests -m 'not integration'",
-            },
-            {
-                "name": "all-requirements",
-                "upgrade": "myupgrade",
-                "extras": "\ntests",
-                "command": "\npytest tests -m 'not integration'",
-            },
-        ]
-    }
-
-    validator = EdgetestValidator(schema=BASE_SCHEMA)
-
-    assert validator.validate(cfg)
-
-
-def test_parse_custom_cfg(tmpdir):
-    """Test parsing a custom configuration."""
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "setup.cfg")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_CUSTOM)
-
-    cfg = parse_cfg(filename=conf_loc)
-
-    assert cfg == {
-        "custom": {"mycustom": "mykey"},
-        "envs": [
-            {
-                "name": "myenv",
-                "upgrade": "\nmyupgrade",
-                "extras": "\ntests",
-                "command": "\npytest tests -m 'not integration'",
-            },
-            {
-                "name": "myenv_lower",
-                "lower": "\nmylower",
-                "extras": "\ntests",
-                "command": "\npytest tests -m 'not integration'",
-            },
-        ],
-    }
-
-    schema = Schema()
-    schema.add_globaloption(
-        "custom", {"type": "dict", "schema": {"mycustom": {"type": "string"}}}
-    )
-
-    validator = EdgetestValidator(schema=schema.schema)
 
     assert validator.validate(cfg)
 
@@ -627,28 +394,6 @@ def test_parse_custom_toml(tmpdir, toml_source):
     validator = EdgetestValidator(schema=schema.schema)
 
     assert validator.validate(toml)
-
-
-def test_upgrade_setup_cfg(tmpdir):
-    location = tmpdir.mkdir("mylocation")
-    conf_loc = Path(str(location), "setup.cfg")
-    with open(conf_loc, "w") as outfile:
-        outfile.write(CFG_REQS_UPGRADE)
-
-    upgrade_cfg = upgrade_setup_cfg(
-        upgraded_packages=[
-            {"name": "pandas", "version": "2.0.0"},
-            {"name": "numpy", "version": "3.0.0"},
-            {"name": "pytest", "version": "4.0.0"},
-        ],
-        filename=conf_loc,
-    )
-
-    assert (
-        upgrade_cfg["options"]["install_requires"]
-        == "\npandas<=2.0.0,>=1.0.0\nnumpy<=3.0.0,>=1.0.0"
-    )
-    assert upgrade_cfg["options.extras_require"]["tests"] == "\npytest<=4.0.0,>=1.0.0"
 
 
 def test_upgrade_pyproject_toml(tmpdir):

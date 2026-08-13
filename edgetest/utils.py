@@ -2,11 +2,9 @@
 
 import os
 import warnings
-from configparser import ConfigParser
 from contextlib import contextmanager
 from pathlib import Path
 from subprocess import PIPE, Popen
-from typing import Dict, List, Tuple
 
 import tomlkit
 from packaging.requirements import Requirement
@@ -18,13 +16,15 @@ from edgetest.logger import get_logger
 LOG = get_logger(__name__)
 
 
-def _run_command(*args) -> Tuple[str, int]:
+def _run_command(*args, env: dict[str, str] | None = None) -> tuple[str, int]:
     """Run a command using ``subprocess.Popen``.
 
     Parameters
     ----------
     *args
         Arguments for the command.
+    env : dict, optional (default None)
+        Environment variables for the subprocess call.
 
     Returns
     -------
@@ -39,7 +39,7 @@ def _run_command(*args) -> Tuple[str, int]:
         Error raised when the command is not successfully executed.
     """
     LOG.debug(f"Running the following command: \n\n {' '.join(args)}")
-    popen = Popen(args, stdout=PIPE, stderr=PIPE, universal_newlines=True)
+    popen = Popen(args, stdout=PIPE, stderr=PIPE, env=env, universal_newlines=True)
     out, err = popen.communicate()
     if popen.returncode:
         raise RuntimeError(
@@ -68,7 +68,7 @@ def pushd(new_dir: str):
         os.chdir(curr_dir)
 
 
-def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
+def convert_requirements(requirements: str, conf: dict | None = None) -> dict:
     """Generate environments for a newline-separate list of package requirements.
 
     This function will generate one environment per entry with an additional environment
@@ -83,7 +83,7 @@ def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary.
     """
     conf = {"envs": []} if conf is None else conf
@@ -104,7 +104,7 @@ def convert_requirements(requirements: str, conf: Dict | None = None) -> Dict:
     return conf
 
 
-def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
+def gen_requirements_config(fname_or_buf: str, **options) -> dict:
     """Generate a configuration file from package requirements.
 
     This function will convert the package installation requirements to a configuration
@@ -120,7 +120,7 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
 
     Returns
     -------
-    Dict
+    dict
         The configuration file.
     """
     # First, get the requirements
@@ -136,114 +136,9 @@ def gen_requirements_config(fname_or_buf: str, **options) -> Dict:
     return output
 
 
-def parse_cfg(filename: str = "setup.cfg", requirements: str | None = None) -> Dict:
-    """Generate a configuration from a ``.ini`` style file.
-
-    This function can operate in two ways. First, it can look for sections that
-    start with ``edgetest`` and build a configuration. Suppose
-    you have ``setup.cfg`` as follows:
-
-    .. code-block:: ini
-
-        [edgetest.envs.pandas]
-        upgrade =
-            pandas
-
-    This will result in a configuration that has one testing environment, named
-    ``pandas``, that upgrades the ``pandas`` package.
-
-    If you don't have any sections that start with ``edgetest.envs``, we will look for
-    the PEP 517-style ``setup.cfg`` install requirements (the ``install_requires`` key
-    within the ``options`` section). To set global defaults for you environments, use
-    the ``edgetest`` section:
-
-    .. code-block:: ini
-
-        [edgetest]
-        extras =
-            tests
-        command =
-            pytest tests -m "not integration"
-
-        [edgetest.envs.pandas]
-        upgrade =
-            pandas
-
-    For this single environment file, the above configuration is equivalent to
-
-    .. code-block:: ini
-
-        [edgetest.envs.pandas]
-        extras =
-            tests
-        command =
-            pytest tests -m "not integration"
-        upgrade =
-            pandas
-
-    Parameters
-    ----------
-    filename : str, optional (default "setup.cfg")
-        The name of the configuration file to read. Defaults to ``setup.cfg``.
-    requirements : str, optional (default None)
-        An optional path to the requirements text file. If there are no PEP-517
-        style dependencies or coded environments in the edgetest configuration, this
-        function will look for dependencies in the requirements file.
-
-    Returns
-    -------
-    Dict
-        A configuration dictionary for ``edgetest``.
-    """
-    # Read in the configuration file
-    config = ConfigParser()
-    config.read(filename)
-    # Parse
-    output: Dict = {"envs": []}
-    # Get any global options if necessary
-    options = dict(config["edgetest"]) if "edgetest" in config else {}
-    # Next, create the sections
-    for section in config.sections():
-        if not section.startswith("edgetest."):
-            continue
-        # Look for the special ``envs`` key
-        section_name = section.split(".")
-        if section_name[1] == "envs":
-            output["envs"].append(dict(config[section]))
-            output["envs"][-1]["name"] = section_name[2]
-            if (
-                "lower" in output["envs"][-1]
-                and "options" in config
-                and "install_requires" in config["options"]
-            ):
-                output["envs"][-1]["lower"] = get_lower_bounds(
-                    config.get("options", "install_requires"),
-                    output["envs"][-1]["lower"],
-                )
-        else:
-            output[section_name[1]] = dict(config[section])
-    if len(output["envs"]) == 0:
-        if config.get("options", "install_requires"):
-            output = convert_requirements(
-                requirements=config["options"]["install_requires"], conf=output
-            )
-        elif requirements:
-            req_conf = gen_requirements_config(fname_or_buf=requirements)
-            output["envs"] = req_conf["envs"]
-        else:
-            raise ValueError("Please supply a valid list of environments to create.")
-    # Apply global environment options (without overwriting)
-    for idx in range(len(output["envs"])):
-        output["envs"][idx] = dict(
-            list(options.items()) + list(output["envs"][idx].items())
-        )
-
-    return output
-
-
 def parse_toml(
     filename: str = "pyproject.toml", requirements: str | None = None
-) -> Dict:
+) -> dict:
     """Generate a configuration from a ``.toml`` style file.
 
     This function will look for a table that starts with either ``edgetest``
@@ -335,7 +230,7 @@ def parse_toml(
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary for ``edgetest``.
     """
     options: dict
@@ -395,7 +290,7 @@ def parse_toml(
     return output
 
 
-def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
+def _parse_toml_classic(config: Table) -> tuple[dict, dict]:
     """Generate a configuration from a ``.toml`` style file.
 
     This function is used to parse the classic ``edgetest`` table format.
@@ -407,9 +302,9 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
 
     Returns
     -------
-    Dict
+    dict
         A configuration dictionary for ``edgetest``.
-    Dict
+    dict
         Global configuration options for ``edgetest``.
     """
     options = {
@@ -418,7 +313,7 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
         if not isinstance(value, Table)
     }
 
-    output: Dict = {"envs": []}
+    output: dict = {"envs": []}
     for section in config:
         if section == "envs":
             for name, env in config.get("envs", tomlkit.table()).unwrap().items():
@@ -429,7 +324,7 @@ def _parse_toml_classic(config: Table) -> Tuple[Dict, Dict]:
     return output, options
 
 
-def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
+def _parse_toml_tool(config: Table) -> tuple[dict, dict]:
     """Generate a configuration from a ``.toml`` style configuration.
 
     This function is used to parse the newer ``tool.edgetest`` table format.
@@ -453,7 +348,7 @@ def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
         if key != "env" and not isinstance(value, Table)
     }
 
-    output: Dict = {"envs": []}
+    output: dict = {"envs": []}
     for section in config:
         if section == "env":
             output["envs"] = config["env"].unwrap()
@@ -464,7 +359,7 @@ def _parse_toml_tool(config: Table) -> Tuple[Dict, Dict]:
 
 
 def upgrade_requirements(
-    fname_or_buf: str, upgraded_packages: List[Dict[str, str]]
+    fname_or_buf: str, upgraded_packages: list[dict[str, str]]
 ) -> str:
     """Create an upgraded requirements file.
 
@@ -521,52 +416,14 @@ def upgrade_requirements(
     return "\n".join(str(pkg) for pkg in pkgs)
 
 
-def upgrade_setup_cfg(
-    upgraded_packages: List[Dict[str, str]], filename: str = "setup.cfg"
-) -> ConfigParser:
-    """Upgrade the ``setup.cfg`` file.
-
-    Parameters
-    ----------
-    upgraded_packages : List[Dict[str, str]]
-        A list of packages upgraded in the testing procedure.
-    filename : str, optional (default "setup.cfg")
-        The name of the configuration file to read. Defaults to ``setup.cfg``.
-
-    Returns
-    -------
-    ConfigParser
-        The updated configuration file.
-    """
-    parser = ConfigParser()
-    parser.read(filename)
-    if "options" in parser and parser.get("options", "install_requires"):
-        LOG.info(f"Updating the requirements in {filename}")
-        upgraded = upgrade_requirements(
-            fname_or_buf=parser["options"]["install_requires"].lstrip(),
-            upgraded_packages=upgraded_packages,
-        )
-        parser["options"]["install_requires"] = "\n" + upgraded
-    # Update the extras, if necessary
-    if "options.extras_require" in parser:
-        for extra, dependencies in parser.items("options.extras_require"):
-            upgraded = upgrade_requirements(
-                fname_or_buf=dependencies,
-                upgraded_packages=upgraded_packages,
-            )
-            parser["options.extras_require"][extra] = "\n" + upgraded
-
-    return parser
-
-
 def upgrade_pyproject_toml(
-    upgraded_packages: List[Dict[str, str]], filename: str = "pyproject.toml"
+    upgraded_packages: list[dict[str, str]], filename: str = "pyproject.toml"
 ) -> tomlkit.TOMLDocument:
     """Upgrade the ``pyproject.toml`` file.
 
     Parameters
     ----------
-    upgraded_packages : List[Dict[str, str]]
+    upgraded_packages : list[dict[str, str]]
         A list of packages upgraded in the testing procedure.
     filename : str, optional (default "pyproject.toml")
         The name of the configuration file to read. Defaults to ``pyproject.toml``.
@@ -597,7 +454,7 @@ def upgrade_pyproject_toml(
     return parser
 
 
-def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
+def _isin_case_dashhyphen_ins(a: str, vals: list[str]) -> bool:
     """Run isin check that is case and dash/hyphen insensitive.
 
     Paramaters
@@ -615,7 +472,7 @@ def _isin_case_dashhyphen_ins(a: str, vals: List[str]) -> bool:
     return any(a.replace("_", "-").lower() == b.replace("_", "-").lower() for b in vals)
 
 
-def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> str:
+def get_lower_bounds(requirements: str | list[str], lower: str | list[str]) -> str:
     r"""Get lower bounds of requested packages from installation requirements.
 
     Parses through the project ``requirements`` and the newline-delimited
@@ -626,7 +483,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> s
     requirements : str or list
         Project setup requirements,
         e.g. ``"pandas>=1.5.1,<=1.4.2\nnumpy>=1.22.1,<=1.25.4"``
-    lower : str | List[str]
+    lower : str | list[str]
         Newline-delimited packages requested,
          e.g. ``"pandas\nnumpy"``.
 
@@ -643,7 +500,7 @@ def get_lower_bounds(requirements: str | List[str], lower: str | List[str]) -> s
         ]
     elif isinstance(requirements, list):
         pkgs = [Requirement(val) for val in requirements]
-    all_lower_bounds: Dict[str, str] = {}
+    all_lower_bounds: dict[str, str] = {}
     for pkg in pkgs:
         full_name = pkg.name + (f"[{','.join(pkg.extras)}]" if pkg.extras else "")
         for spec in pkg.specifier:
