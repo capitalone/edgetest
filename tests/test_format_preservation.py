@@ -5,13 +5,17 @@ a tested version that already satisfies a bound leaves the file untouched;
 only violated bounds are widened, and never with a synthesized ``!=``.
 """
 
+from pathlib import Path
+
 import pytest
+from tomlkit import dumps
 
 from edgetest.utils import (
     _split_inline_comment,
     _split_marker,
     _upgrade_requirement_line,
     _widen_specifier,
+    upgrade_pyproject_toml,
     upgrade_requirements,
 )
 
@@ -267,3 +271,96 @@ class TestUpgradeRequirements:
             if a != b
         ]
         assert changed == [1]  # only the pandas line changed
+
+
+class TestUpgradePyprojectToml:
+    TOML_MULTI = """[project]
+dependencies = [
+    "numpy>=1.26.4,<2.6",  # scientific stack
+    "pandas>=2.2,<3.1",
+]
+
+[project.optional-dependencies]
+tests = [
+    "pytest>=7.0,<9",  # test runner
+]
+"""
+
+    def test_satisfied_upgrades_leave_file_identical(self, tmpdir):
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(self.TOML_MULTI)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [
+                    {"name": "numpy", "version": "2.5.3"},
+                    {"name": "pandas", "version": "3.0.6"},
+                ],
+                filename=str(loc),
+            )
+        )
+        assert out == self.TOML_MULTI
+
+    def test_violated_bound_changes_only_that_element(self, tmpdir):
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(self.TOML_MULTI)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [{"name": "numpy", "version": "2.6.1"}], filename=str(loc)
+            )
+        )
+        expected = self.TOML_MULTI.replace(
+            '"numpy>=1.26.4,<2.6"', '"numpy>=1.26.4,<=2.6.1"'
+        )
+        assert out == expected
+
+    def test_multiline_layout_and_comments_preserved(self, tmpdir):
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(self.TOML_MULTI)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [{"name": "pytest", "version": "9.1"}], filename=str(loc)
+            )
+        )
+        assert "# scientific stack" in out
+        assert "# test runner" in out
+        assert out.count("\n") == self.TOML_MULTI.count("\n")
+
+    def test_no_trailing_comma_preserved(self, tmpdir):
+        src = '[project]\ndependencies = [\n    "numpy>=1.0,<2.0"\n]\n'
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(src)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [{"name": "numpy", "version": "2.5"}], filename=str(loc)
+            )
+        )
+        assert out == src.replace("<2.0", "<=2.5")
+
+    def test_inline_array_preserved(self, tmpdir):
+        src = '[project]\ndependencies = ["numpy>=1.0,<2.0", "pandas>=2.0"]\n'
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(src)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [{"name": "numpy", "version": "2.5"}], filename=str(loc)
+            )
+        )
+        assert out == src.replace("<2.0", "<=2.5")
+
+    def test_own_line_comment_inside_array_preserved(self, tmpdir):
+        src = (
+            "[project]\n"
+            "dependencies = [\n"
+            "    # pinned for pyspark\n"
+            '    "numpy>=1.0,<2.0",\n'
+            "]\n"
+        )
+        loc = Path(str(tmpdir), "pyproject.toml")
+        loc.write_text(src)
+        out = dumps(
+            upgrade_pyproject_toml(
+                [{"name": "numpy", "version": "2.5"}], filename=str(loc)
+            )
+        )
+        assert "# pinned for pyspark" in out
+        assert '"numpy>=1.0,<=2.5"' in out
