@@ -1,6 +1,7 @@
 """Utility functions."""
 
 import os
+import re
 import warnings
 from contextlib import contextmanager
 from pathlib import Path
@@ -8,7 +9,7 @@ from subprocess import PIPE, Popen
 
 import tomlkit
 from packaging.requirements import Requirement
-from packaging.specifiers import Specifier, SpecifierSet
+from packaging.specifiers import Specifier
 from tomlkit.items import Table
 
 from edgetest.logger import get_logger
@@ -363,6 +364,156 @@ def _parse_toml_tool(config: Table) -> tuple[dict, dict]:
     return output, options
 
 
+def _split_inline_comment(line: str) -> tuple[str, str]:
+    """Split a line into its code part and its trailing comment.
+
+    Quote-aware: a ``#`` inside a quoted string is not a comment. The returned
+    comment includes the ``#`` and any whitespace preceding it, so
+    ``code + comment == line`` exactly.
+
+    Parameters
+    ----------
+    line : str
+        A single line from a requirements-style file.
+
+    Returns
+    -------
+    tuple[str, str]
+        ``(code, comment)``; ``comment`` is ``""`` when there is no comment.
+    """
+    in_single = in_double = False
+    for index, char in enumerate(line):
+        if char == '"' and not in_single:
+            in_double = not in_double
+        elif char == "'" and not in_double:
+            in_single = not in_single
+        elif char == "#" and not in_single and not in_double:
+            return line[:index], line[index:]
+    return line, ""
+
+
+def _split_marker(text: str) -> tuple[str, str]:
+    """Split requirement text into specifiers and environment marker.
+
+    Quote-aware: a ``;`` inside a quoted string is not a marker separator.
+
+    Parameters
+    ----------
+    text : str
+        Requirement text after the name and extras.
+
+    Returns
+    -------
+    tuple[str, str]
+        ``(specs, marker)`` where ``marker`` starts with ``;`` or is ``""``.
+    """
+    in_single = in_double = False
+    for index, char in enumerate(text):
+        if char == '"' and not in_single:
+            in_double = not in_double
+        elif char == "'" and not in_double:
+            in_single = not in_single
+        elif char == ";" and not in_single and not in_double:
+            return text[:index], text[index:]
+    return text, ""
+
+
+def _widen_specifier(spec: str, tested: str) -> list[str]:
+    """Widen a single specifier so it admits ``tested``, never tighten it.
+
+    A specifier already satisfied by ``tested`` is returned unchanged. Only
+    violated bounds are widened, preserving the operator's intent:
+
+    - ``<X`` / ``<=X`` violated -> ``<=tested`` (no synthesized ``!=``)
+    - ``==X`` / ``===X`` / ``~=X`` violated -> ``>=X,<=tested``
+    - ``>X`` / ``>=X`` violated -> ``>=tested``
+    - ``!=`` is a user-authored exclusion and is never modified.
+
+    Parameters
+    ----------
+    spec : str
+        A single specifier, e.g. ``"<2.6"``.
+    tested : str
+        The version that was tested and passed.
+
+    Returns
+    -------
+    list[str]
+        One or more specifiers replacing ``spec``.
+    """
+    specifier = Specifier(spec)
+    if specifier.contains(tested):
+        return [spec]
+    operator, version = specifier.operator, specifier.version
+    if operator in ("<", "<="):
+        return [f"<={tested}"]
+    if operator in ("==", "===", "~="):
+        return [f">={version}", f"<={tested}"]
+    if operator in (">", ">="):
+        return [f">={tested}"]
+    return [spec]
+
+
+def _upgrade_requirement_line(line: str, new_version: str) -> str:
+    """Rewrite one requirement line, touching only the violated specifier span.
+
+    Preserves the line's leading indentation, the original order and spacing of
+    specifiers, extras, the environment marker, and any trailing inline comment.
+    If no specifier needs widening the original line is returned byte-identical.
+
+    Parameters
+    ----------
+    line : str
+        A single requirement line (may carry a trailing comment).
+    new_version : str
+        The version that was tested and passed.
+
+    Returns
+    -------
+    str
+        The rewritten line, or the original line when nothing needs to change.
+    """
+    code, comment = _split_inline_comment(line)
+    leading = code[: len(code) - len(code.lstrip())]
+    trailing_ws = code[len(code.rstrip()) :]
+    stripped = code.strip()
+    if not stripped:
+        return line
+    requirement = Requirement(stripped)
+    if requirement.url is not None:
+        # Direct references (pkg @ url) have no specifier span to widen.
+        return line
+    head_match = re.match(
+        r"^(?P<name>[A-Za-z0-9][A-Za-z0-9._-]*)"
+        r"(?P<ws>\s*)"
+        r"(?P<extras>\[[^\]]*\])?",
+        stripped,
+    )
+    if head_match is None:  # pragma: no cover - Requirement already validated
+        return line
+    head = head_match.group(0)
+    specs_str, marker = _split_marker(stripped[len(head) :])
+    if not specs_str.strip():
+        return line
+
+    out_parts: list[str] = []
+    changed = False
+    for element in specs_str.split(","):
+        lead_ws = element[: len(element) - len(element.lstrip())]
+        trail_ws = element[len(element.rstrip()) :]
+        spec = element.strip()
+        if not spec:
+            out_parts.append(element)
+            continue
+        new_specs = _widen_specifier(spec, new_version)
+        if new_specs != [spec]:
+            changed = True
+        out_parts.append(lead_ws + ",".join(new_specs) + trail_ws)
+    if not changed:
+        return line
+    return leading + head + ",".join(out_parts) + marker + trailing_ws + comment
+
+
 def upgrade_requirements(
     fname_or_buf: str, upgraded_packages: list[dict[str, str]]
 ) -> str:
@@ -391,34 +542,66 @@ def upgrade_requirements(
     except OSError:
         # Filename too long for the is_file() function
         cfg = fname_or_buf
-    pkgs = [
-        Requirement(val)
-        for val in cfg.splitlines()
-        if not (val.strip().startswith("#") or val.strip() == "")
-    ]
     upgrades = {pkg["name"]: pkg["version"] for pkg in upgraded_packages}
 
-    for pkg in pkgs:
-        if pkg.name not in upgrades:
+    out_lines: list[str] = []
+    for raw_line in cfg.splitlines(keepends=True):
+        eol = raw_line[len(raw_line.rstrip("\r\n")) :]
+        line = raw_line.rstrip("\r\n")
+        code, _ = _split_inline_comment(line)
+        stripped = code.strip()
+        if stripped.startswith("#") or stripped == "":
+            out_lines.append(raw_line)
             continue
-        # Replace the spec
-        specs = list(pkg.specifier)
-        new_spec = list(pkg.specifier)
-        for index, value in enumerate(specs):
-            if value.operator == "<=":
-                new_spec[index] = Specifier(f"<={upgrades[pkg.name]}")
-            elif value.operator == "<":
-                new_spec[index] = Specifier(f"!={value.version}")
-                new_spec.append(Specifier(f"<={upgrades[pkg.name]}"))
-            elif value.operator == "==":
-                new_spec = Specifier(f">={value.version}") & Specifier(
-                    f"<={upgrades[pkg.name]}"
-                )  # type: ignore
-                # End the loop
-                break
-        pkg.specifier = SpecifierSet(",".join(str(spec) for spec in new_spec))
+        try:
+            name = Requirement(stripped).name
+        except Exception:
+            # Option lines (-r, --hash, ...) and anything unparseable pass through
+            out_lines.append(raw_line)
+            continue
+        # Match case- and dash/underscore-insensitively, like the rest of edgetest
+        match = next(
+            (pkg for pkg in upgrades if _isin_case_dashhyphen_ins(name, [pkg])),
+            None,
+        )
+        if match is None:
+            out_lines.append(raw_line)
+            continue
+        out_lines.append(_upgrade_requirement_line(line, upgrades[match]) + eol)
 
-    return "\n".join(str(pkg) for pkg in pkgs)
+    return "".join(out_lines)
+
+
+def _upgrade_toml_array(array: tomlkit.items.Array, upgrades: dict[str, str]) -> None:
+    """Upgrade requirement strings inside a tomlkit array, in place.
+
+    Each element is rewritten only if its bound needs widening; untouched
+    elements keep their tomlkit trivia (layout, comments, trailing commas).
+    Single-quoted elements are normalized to double quotes by tomlkit on
+    replacement.
+
+    Parameters
+    ----------
+    array : tomlkit.items.Array
+        The array of requirement strings to upgrade in place.
+    upgrades : dict[str, str]
+        Mapping of package name to the tested version.
+    """
+    for index, element in enumerate(array):
+        text = str(element)
+        try:
+            name = Requirement(text.strip()).name
+        except Exception:
+            continue
+        match = next(
+            (pkg for pkg in upgrades if _isin_case_dashhyphen_ins(name, [pkg])),
+            None,
+        )
+        if match is None:
+            continue
+        new_line = _upgrade_requirement_line(text, upgrades[match])
+        if new_line != text:
+            array[index] = new_line
 
 
 def upgrade_pyproject_toml(
@@ -431,7 +614,7 @@ def upgrade_pyproject_toml(
     upgraded_packages : list[dict[str, str]]
         A list of packages upgraded in the testing procedure.
     filename : str, optional (default "pyproject.toml")
-        The name of the configuration file to read. Defaults to ``pyproject.toml``.
+        The name of the toml file to read. Defaults to ``pyproject.toml``.
 
     Returns
     -------
@@ -440,21 +623,14 @@ def upgrade_pyproject_toml(
     """
     with open(filename) as buf:
         parser: tomlkit.TOMLDocument = tomlkit.load(buf)
+    upgrades = {pkg["name"]: pkg["version"] for pkg in upgraded_packages}
     if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
         LOG.info(f"Updating the requirements in {filename}")
-        upgraded = upgrade_requirements(
-            fname_or_buf="\n".join(parser["project"]["dependencies"]),  # type: ignore
-            upgraded_packages=upgraded_packages,
-        )
-        parser["project"]["dependencies"] = upgraded.split("\n")  # type: ignore
+        _upgrade_toml_array(parser["project"]["dependencies"], upgrades)  # type: ignore
     # Update the extras, if necessary
     if parser.get("project").get("optional-dependencies"):  # type: ignore
-        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
-            upgraded = upgrade_requirements(
-                fname_or_buf="\n".join(dependencies),
-                upgraded_packages=upgraded_packages,
-            )
-            parser["project"]["optional-dependencies"][extra] = upgraded.split("\n")  # type: ignore
+        for _extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
+            _upgrade_toml_array(dependencies, upgrades)
 
     return parser
 
