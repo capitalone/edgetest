@@ -24,7 +24,10 @@ def _run_command(*args, env: dict[str, str] | None = None) -> tuple[str, int]:
     *args
         Arguments for the command.
     env : dict, optional (default None)
-        Environment variables for the subprocess call.
+        Additional environment variables to set on top of the current
+        environment. Passed to ``Popen`` merged with ``os.environ``;
+        replacing the whole environment breaks subprocesses on Windows
+        (e.g. ``python.exe`` fails to boot without ``SystemRoot``/``PATH``).
 
     Returns
     -------
@@ -39,6 +42,8 @@ def _run_command(*args, env: dict[str, str] | None = None) -> tuple[str, int]:
         Error raised when the command is not successfully executed.
     """
     LOG.debug(f"Running the following command: \n\n {' '.join(args)}")
+    if env is not None:
+        env = {**os.environ, **env}
     popen = Popen(args, stdout=PIPE, stderr=PIPE, env=env, universal_newlines=True)
     out, err = popen.communicate()
     if popen.returncode:

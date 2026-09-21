@@ -1,5 +1,6 @@
 """Testing the core module."""
 
+import os
 import platform
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
@@ -75,7 +76,7 @@ def test_basic_setup(mock_popen, mock_path, tmpdir, plugin_manager):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]
@@ -187,7 +188,7 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
             ),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]
@@ -240,7 +241,7 @@ def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
     ]

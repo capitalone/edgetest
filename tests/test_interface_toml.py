@@ -1,5 +1,6 @@
 """Test the CLI."""
 
+import os
 import platform
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
@@ -198,7 +199,7 @@ def test_cli_basic(mock_popen, mock_cpopen, toml_source):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
@@ -296,7 +297,7 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
@@ -370,7 +371,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, toml_source):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
@@ -447,7 +448,10 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             (uv_, "sync", "--inexact", f"--python={py_myupgrade_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(Path(loc) / ".edgetest" / "myupgrade")},
+            env={
+                **os.environ,
+                "UV_PROJECT_ENVIRONMENT": str(Path(loc) / ".edgetest" / "myupgrade"),
+            },
             universal_newlines=True,
         ),
         call(
@@ -481,9 +485,10 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             stdout=-1,
             stderr=-1,
             env={
+                **os.environ,
                 "UV_PROJECT_ENVIRONMENT": str(
                     Path(loc) / ".edgetest" / "all-requirements"
-                )
+                ),
             },
             universal_newlines=True,
         ),
@@ -721,7 +726,7 @@ def test_cli_notest(mock_popen):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
@@ -785,7 +790,7 @@ def test_cli_notest_lower(mock_popen):
             (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
-            env={"UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
