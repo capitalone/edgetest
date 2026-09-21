@@ -22,9 +22,8 @@ Project support type
 
 ``edgetest`` works with the following types of projects:
 
-- ``pyproject.toml``
-- ``setup.cfg``
-- and ``requirements.txt``
+- ``pyproject.toml``, and
+- ``requirements.txt``
 
 
 Usage

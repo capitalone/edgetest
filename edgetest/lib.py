@@ -3,10 +3,10 @@
 import logging
 import platform
 from pathlib import Path
-from typing import Dict, List
 
 import click
 import pluggy
+from uv import find_uv_bin
 
 from edgetest.utils import _run_command
 
@@ -25,7 +25,7 @@ def path_to_python(basedir: str, envname: str) -> str:
 
 
 @hookimpl(trylast=True)
-def create_environment(basedir: str, envname: str, conf: Dict):
+def create_environment(basedir: str, envname: str, conf: dict):
     """Create the virtual environment for testing.
 
     Creates an environment using ``uv``.
@@ -45,7 +45,8 @@ def create_environment(basedir: str, envname: str, conf: Dict):
         Error raised if the environment cannot be created.
     """
     try:
-        callargs_ = ["uv", "venv", str(Path(basedir, envname))]
+        uv_ = find_uv_bin()
+        callargs_ = [uv_, "venv", str(Path(basedir, envname))]
         if (py_version := conf.get("python_version")) is not None:
             callargs_.append(f"--python={py_version}")
         if Path(basedir, envname).is_dir():
@@ -56,7 +57,7 @@ def create_environment(basedir: str, envname: str, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
+def run_update(basedir: str, envname: str, upgrade: list, conf: dict):
     """Update packages from upgrade list.
 
     Parameters
@@ -77,8 +78,9 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
         Error raised if the packages cannot be updated.
     """
     python_path = path_to_python(basedir, envname)
+    uv_ = find_uv_bin()
     callargs_ = [
-        "uv",
+        uv_,
         "pip",
         "install",
         f"--python={python_path}",
@@ -97,7 +99,7 @@ def run_update(basedir: str, envname: str, upgrade: List, conf: Dict):
 
 
 @hookimpl(trylast=True)
-def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
+def run_install_lower(basedir: str, envname: str, lower: list[str], conf: dict):
     """Install lower bounds of packages provided.
 
     Parameters
@@ -106,22 +108,23 @@ def run_install_lower(basedir: str, envname: str, lower: List[str], conf: Dict):
         The base directory location for the environment.
     envname : str
         Environment to install into.
-    lower : List[str]
+    lower : list[str]
         Lower bounds of packages to install.
-    conf : Dict
+    conf : dict
         The configuration dictionary for the environment. This is useful if you
         want to add configuration arguments for additional dependencies that can
         only be installed through the environment manager (e.g. Conda).
     """
     python_path = path_to_python(basedir, envname)
     try:
-        _run_command("uv", "pip", "install", f"--python={python_path}", *lower)
+        uv_ = find_uv_bin()
+        _run_command(uv_, "pip", "install", f"--python={python_path}", *lower)
     except Exception as err:
         raise RuntimeError(f"Unable to pip install: {lower}") from err
 
 
 @hookimpl(tryfirst=True)
-def post_run_hook(testers: List, conf: Dict):
+def post_run_hook(testers: list, conf: dict):
     """Refresh ``uv.lock`` based on the test output."""
     ctx = click.get_current_context()
     if not ctx.params["export"]:
@@ -133,7 +136,8 @@ def post_run_hook(testers: List, conf: Dict):
     ):
         # uv.lock exists already and the last tester passed
         try:
-            _run_command("uv", "lock", "--upgrade")
+            uv_ = find_uv_bin()
+            _run_command(uv_, "lock", "--upgrade")
         except RuntimeError:
             LOG.info("Unable to update the ``uv.lock`` file.")
     else:

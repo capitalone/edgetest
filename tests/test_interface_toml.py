@@ -1,11 +1,13 @@
 """Test the CLI."""
 
+import os
 import platform
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
 
 import pytest
 from click.testing import CliRunner
+from uv import find_uv_bin
 
 from edgetest.interface import cli
 
@@ -184,22 +186,25 @@ def test_cli_basic(mock_popen, mock_cpopen, toml_source):
     else:
         py_loc = env_loc / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc)),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -208,12 +213,14 @@ def test_cli_basic(mock_popen, mock_cpopen, toml_source):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
+            (uv_, "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -266,8 +273,9 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
         py_loc = env_loc / "bin" / "python"
 
     # Upgrade installation argument depends on the parameterization
+    uv_ = find_uv_bin()
     upgrade_callargs_ = [
-        "uv",
+        uv_,
         "pip",
         "install",
         f"--python={py_loc!s}",
@@ -279,27 +287,31 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
 
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc)),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
             tuple(upgrade_callargs_),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
+            (uv_, "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -346,22 +358,25 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, toml_source):
     else:
         py_loc = env_loc / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc)),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -369,6 +384,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, toml_source):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -419,22 +435,28 @@ def test_cli_reqs(mock_popen, mock_cpopen):
 
     assert result.exit_code == 0
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(Path(loc) / ".edgetest" / "myupgrade")),
+            (uv_, "venv", str(Path(loc) / ".edgetest" / "myupgrade")),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_myupgrade_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_myupgrade_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={
+                **os.environ,
+                "UV_PROJECT_ENVIRONMENT": str(Path(loc) / ".edgetest" / "myupgrade"),
+            },
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_myupgrade_loc!s}",
@@ -443,29 +465,36 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "venv", str(Path(loc) / ".edgetest" / "all-requirements")),
+            (uv_, "venv", str(Path(loc) / ".edgetest" / "all-requirements")),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
-                "pip",
-                "install",
+                uv_,
+                "sync",
+                "--inexact",
                 f"--python={py_allreq_loc!s}",
-                ".",
             ),
             stdout=-1,
             stderr=-1,
+            env={
+                **os.environ,
+                "UV_PROJECT_ENVIRONMENT": str(
+                    Path(loc) / ".edgetest" / "all-requirements"
+                ),
+            },
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_allreq_loc!s}",
@@ -474,11 +503,12 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "list",
                 f"--python={py_myupgrade_loc!s}",
@@ -487,11 +517,12 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "list",
                 f"--python={py_allreq_loc!s}",
@@ -500,6 +531,7 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -599,11 +631,13 @@ def test_cli_nosetup(mock_popen, mock_cpopen):
     else:
         py_loc = Path(env_loc) / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "pip", "list", f"--python={py_loc}", "--format", "json"),
+            (uv_, "pip", "list", f"--python={py_loc}", "--format", "json"),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -679,22 +713,25 @@ def test_cli_notest(mock_popen):
     else:
         py_loc = env_loc / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc)),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -703,12 +740,14 @@ def test_cli_notest(mock_popen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "list", f"--python={py_loc!s}", "--format", "json"),
+            (uv_, "pip", "list", f"--python={py_loc!s}", "--format", "json"),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]
@@ -738,22 +777,25 @@ def test_cli_notest_lower(mock_popen):
     else:
         py_loc = env_loc / "bin" / "python"
 
+    uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            ("uv", "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc)),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
         call(
-            ("uv", "pip", "install", f"--python={py_loc!s}", "."),
+            (uv_, "sync", "--inexact", f"--python={py_loc!s}"),
             stdout=-1,
             stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
             universal_newlines=True,
         ),
         call(
             (
-                "uv",
+                uv_,
                 "pip",
                 "install",
                 f"--python={py_loc!s}",
@@ -761,6 +803,7 @@ def test_cli_notest_lower(mock_popen):
             ),
             stdout=-1,
             stderr=-1,
+            env=None,
             universal_newlines=True,
         ),
     ]

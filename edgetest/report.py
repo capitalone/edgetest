@@ -1,6 +1,6 @@
 """Generate rST reports."""
 
-from typing import Any, List
+from typing import Any
 
 from tabulate import tabulate
 
@@ -9,7 +9,7 @@ from edgetest.core import TestPackage
 VALID_OUTPUTS = ["rst", "github"]
 
 
-def gen_report(testers: List[TestPackage], output_type: str = "rst") -> Any:
+def gen_report(testers: list[TestPackage], output_type: str = "rst") -> Any:
     """Generate a rST report.
 
     Parameters
@@ -36,7 +36,7 @@ def gen_report(testers: List[TestPackage], output_type: str = "rst") -> Any:
         "Lowered packages",
         "Package version",
     ]
-    rows: List[List] = []
+    rows: list[list] = []
     for env in testers:
         upgraded = env.upgraded_packages()
         lowered = env.lowered_packages()

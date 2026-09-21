@@ -59,7 +59,7 @@ optional-dependencies.qa = [
     "mypy",
     "pre-commit",
     "pre-commit-uv",
-    "ruff~=0.5",
+    "ruff",
     "types-click",
     "types-setuptools",
     "types-tabulate",

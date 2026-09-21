@@ -1,7 +1,5 @@
 """Define the Cerberus schema for the testing configuration."""
 
-from typing import Dict, List
-
 from cerberus import Validator
 
 BASE_SCHEMA = {
@@ -66,7 +64,7 @@ class Schema:
 
     schema = BASE_SCHEMA
 
-    def add_envoption(self, option: str, schema: Dict):
+    def add_envoption(self, option: str, schema: dict):
         """Add an environment-level option.
 
         Parameters
@@ -82,7 +80,7 @@ class Schema:
         """
         self.schema["envs"]["schema"]["schema"][option] = schema  # type: ignore
 
-    def add_globaloption(self, option: str, schema: Dict):
+    def add_globaloption(self, option: str, schema: dict):
         """Add a global option.
 
         Parameters
@@ -102,7 +100,7 @@ class Schema:
 class EdgetestValidator(Validator):
     """Custom validator for coercing lists from ``.ini`` style files."""
 
-    def _normalize_coerce_listify(self, value: str) -> List:
+    def _normalize_coerce_listify(self, value: str) -> list:
         """Coerce a value into a list.
 
         Parameters
