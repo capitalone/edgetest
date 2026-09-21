@@ -572,6 +572,38 @@ def upgrade_requirements(
     return "".join(out_lines)
 
 
+def _upgrade_toml_array(array: tomlkit.items.Array, upgrades: dict[str, str]) -> None:
+    """Upgrade requirement strings inside a tomlkit array, in place.
+
+    Each element is rewritten only if its bound needs widening; untouched
+    elements keep their tomlkit trivia (layout, comments, trailing commas).
+    Single-quoted elements are normalized to double quotes by tomlkit on
+    replacement.
+
+    Parameters
+    ----------
+    array : tomlkit.items.Array
+        The array of requirement strings to upgrade in place.
+    upgrades : dict[str, str]
+        Mapping of package name to the tested version.
+    """
+    for index, element in enumerate(array):
+        text = str(element)
+        try:
+            name = Requirement(text.strip()).name
+        except Exception:
+            continue
+        match = next(
+            (pkg for pkg in upgrades if _isin_case_dashhyphen_ins(name, [pkg])),
+            None,
+        )
+        if match is None:
+            continue
+        new_line = _upgrade_requirement_line(text, upgrades[match])
+        if new_line != text:
+            array[index] = new_line
+
+
 def upgrade_pyproject_toml(
     upgraded_packages: list[dict[str, str]], filename: str = "pyproject.toml"
 ) -> tomlkit.TOMLDocument:
@@ -582,7 +614,7 @@ def upgrade_pyproject_toml(
     upgraded_packages : list[dict[str, str]]
         A list of packages upgraded in the testing procedure.
     filename : str, optional (default "pyproject.toml")
-        The name of the configuration file to read. Defaults to ``pyproject.toml``.
+        The name of the toml file to read. Defaults to ``pyproject.toml``.
 
     Returns
     -------
@@ -591,21 +623,14 @@ def upgrade_pyproject_toml(
     """
     with open(filename) as buf:
         parser: tomlkit.TOMLDocument = tomlkit.load(buf)
+    upgrades = {pkg["name"]: pkg["version"] for pkg in upgraded_packages}
     if "project" in parser and parser.get("project").get("dependencies"):  # type: ignore
         LOG.info(f"Updating the requirements in {filename}")
-        upgraded = upgrade_requirements(
-            fname_or_buf="\n".join(parser["project"]["dependencies"]),  # type: ignore
-            upgraded_packages=upgraded_packages,
-        )
-        parser["project"]["dependencies"] = upgraded.split("\n")  # type: ignore
+        _upgrade_toml_array(parser["project"]["dependencies"], upgrades)  # type: ignore
     # Update the extras, if necessary
     if parser.get("project").get("optional-dependencies"):  # type: ignore
-        for extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
-            upgraded = upgrade_requirements(
-                fname_or_buf="\n".join(dependencies),
-                upgraded_packages=upgraded_packages,
-            )
-            parser["project"]["optional-dependencies"][extra] = upgraded.split("\n")  # type: ignore
+        for _extra, dependencies in parser["project"]["optional-dependencies"].items():  # type: ignore
+            _upgrade_toml_array(dependencies, upgrades)
 
     return parser
 
