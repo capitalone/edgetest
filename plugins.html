@@ -401,22 +401,15 @@ creation.</p>
 </pre></div>
 </div>
 </section>
-<section id="edgetest-conda-setup-cfg">
-<h3><code class="docutils literal notranslate"><span class="pre">edgetest-conda/setup.cfg</span></code><a class="headerlink" href="#edgetest-conda-setup-cfg" title="Link to this heading">¶</a></h3>
-<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[metadata]</span>
-<span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">edgetest-conda</span>
-<span class="na">...</span>
+<section id="edgetest-conda-pyproject-toml">
+<h3><code class="docutils literal notranslate"><span class="pre">edgetest-conda/pyproject.toml</span></code><a class="headerlink" href="#edgetest-conda-pyproject-toml" title="Link to this heading">¶</a></h3>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[project]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">edgetest-conda</span>
+<span class="p">...</span>
+<span class="n">dependencies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;edgetest&gt;=2021.11.0&quot;</span><span class="w"> </span><span class="p">]</span>
 
-<span class="k">[options]</span>
-<span class="na">packages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">find:</span>
-<span class="na">...</span>
-<span class="na">install_requires</span><span class="w"> </span><span class="o">=</span>
-<span class="w">    </span><span class="na">edgetest&gt;</span><span class="o">=</span><span class="s">2021.11.0</span>
-
-<span class="hll"><span class="k">[options.entry_points]</span>
-</span><span class="hll"><span class="na">edgetest</span><span class="w"> </span><span class="o">=</span>
-</span><span class="hll"><span class="w">    </span><span class="na">conda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">edgetest_conda.plugin</span>
-</span></pre></div>
+<span class="n">entry-points</span><span class="p">.</span><span class="s2">&quot;edgetest&quot;</span><span class="p">.</span><span class="s2">&quot;conda&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;edgetest_conda.plugin&quot;</span>
+</pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">options.entry_points</span></code> section here creates the link between <code class="docutils literal notranslate"><span class="pre">edgetest</span></code> and your plugin.</p>
 </section>
@@ -481,7 +474,7 @@ creation.</p>
 <li><a class="reference internal" href="#">Extending edgetest through plugins</a><ul>
 <li><a class="reference internal" href="#example">Example</a><ul>
 <li><a class="reference internal" href="#edgetest-conda-edgetest-conda-plugin-py"><code class="docutils literal notranslate"><span class="pre">edgetest-conda/edgetest_conda/plugin.py</span></code></a></li>
-<li><a class="reference internal" href="#edgetest-conda-setup-cfg"><code class="docutils literal notranslate"><span class="pre">edgetest-conda/setup.cfg</span></code></a></li>
+<li><a class="reference internal" href="#edgetest-conda-pyproject-toml"><code class="docutils literal notranslate"><span class="pre">edgetest-conda/pyproject.toml</span></code></a></li>
 </ul>
 </li>
 </ul>

@@ -241,7 +241,7 @@
           <h1>Source code for edgetest.report</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Generate rST reports.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">tabulate</span><span class="w"> </span><span class="kn">import</span> <span class="n">tabulate</span>
 
@@ -252,7 +252,7 @@
 
 <div class="viewcode-block" id="gen_report">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.report.gen_report">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">gen_report</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TestPackage</span><span class="p">],</span> <span class="n">output_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;rst&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gen_report</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TestPackage</span><span class="p">],</span> <span class="n">output_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;rst&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a rST report.</span>
 
 <span class="sd">    Parameters</span>
@@ -279,7 +279,7 @@
         <span class="s2">&quot;Lowered packages&quot;</span><span class="p">,</span>
         <span class="s2">&quot;Package version&quot;</span><span class="p">,</span>
     <span class="p">]</span>
-    <span class="n">rows</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">testers</span><span class="p">:</span>
         <span class="n">upgraded</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">()</span>
         <span class="n">lowered</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">lowered_packages</span><span class="p">()</span>

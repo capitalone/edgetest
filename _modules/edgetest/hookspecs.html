@@ -241,8 +241,6 @@
           <h1>Source code for edgetest.hookspecs</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Hook specifications for edgetest.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">pluggy</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">Schema</span>
@@ -265,12 +263,12 @@
 <div class="viewcode-block" id="pre_run_hook">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.pre_run_hook">[docs]</a>
 <span class="nd">@hookspec</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">pre_run_hook</span><span class="p">(</span><span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">pre_run_hook</span><span class="p">(</span><span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Pre-setup and test hook.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    conf : Dict</span>
+<span class="sd">    conf : dict</span>
 <span class="sd">        The entire configuration dictionary.</span>
 <span class="sd">    &quot;&quot;&quot;</span></div>
 
@@ -302,7 +300,7 @@
 <div class="viewcode-block" id="create_environment">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.create_environment">[docs]</a>
 <span class="nd">@hookspec</span><span class="p">(</span><span class="n">firstresult</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_environment</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Create the virtual environment for testing.</span>
 
 <span class="sd">    Parameters</span>
@@ -327,7 +325,7 @@
 <div class="viewcode-block" id="run_update">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.run_update">[docs]</a>
 <span class="nd">@hookspec</span><span class="p">(</span><span class="n">firstresult</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_update</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgrade</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Update packages from upgrade list.</span>
 
 <span class="sd">    Parameters</span>
@@ -354,7 +352,7 @@
 <div class="viewcode-block" id="run_install_lower">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.run_install_lower">[docs]</a>
 <span class="nd">@hookspec</span><span class="p">(</span><span class="n">firstresult</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">run_install_lower</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_install_lower</span><span class="p">(</span><span class="n">basedir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">envname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> <span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Install lower bounds of packages provided.</span>
 
 <span class="sd">    Parameters</span>
@@ -365,7 +363,7 @@
 <span class="sd">        Environment to install into.</span>
 <span class="sd">    lower_bounds : Dict[str, str]</span>
 <span class="sd">        Lower bounds of packages to install.</span>
-<span class="sd">    conf : Dict</span>
+<span class="sd">    conf : dict</span>
 <span class="sd">        The configuration dictionary for the environment. This is useful if you</span>
 <span class="sd">        want to add configuration arguments for additional dependencies that can</span>
 <span class="sd">        only be installed through the environment manager (e.g. Conda).</span>
@@ -376,7 +374,7 @@
 <div class="viewcode-block" id="post_run_hook">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.hookspecs.post_run_hook">[docs]</a>
 <span class="nd">@hookspec</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">post_run_hook</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">post_run_hook</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Post testing hook.</span>
 
 <span class="sd">    For executing code after the environment set up and testing.</span>

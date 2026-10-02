@@ -133,24 +133,17 @@ creation.
             )
             LOG.info(f"Successfully installed conda packages for {envname}")
 
-``edgetest-conda/setup.cfg``
+``edgetest-conda/pyproject.toml``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: ini
+.. code-block:: toml
     :emphasize-lines: 11-13
 
-    [metadata]
+    [project]
     name = edgetest-conda
     ...
+    dependencies = [ "edgetest>=2021.11.0" ]
 
-    [options]
-    packages = find:
-    ...
-    install_requires =
-        edgetest>=2021.11.0
-
-    [options.entry_points]
-    edgetest =
-        conda = edgetest_conda.plugin
+    entry-points."edgetest"."conda" = "edgetest_conda.plugin"
 
 The ``options.entry_points`` section here creates the link between ``edgetest`` and your plugin.
