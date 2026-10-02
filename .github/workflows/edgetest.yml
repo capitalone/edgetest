@@ -14,7 +14,7 @@ jobs:
         with:
           ref: main
       - id: run-edgetest
-        uses: edgetest-dev/run-edgetest-action@8ceeac94abe951d6b51305454bc6d0ff2096e2ec # pin@v1.7
+        uses: edgetest-dev/run-edgetest-action@2d1f2f3d924daf633648dcbea6fae2878af95176 # pin@v1.8
         with:
           edgetest-flags: '-c pyproject.toml --export'
           base-branch: 'main'
