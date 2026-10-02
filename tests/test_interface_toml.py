@@ -91,7 +91,7 @@ command = "pytest tests -m 'not integration'"
 
 
 SETUP_TOML_EXTRAS_UPGRADE = """[project]
-optional-dependencies.myextra = ["myupgrade<=0.2.0"]
+optional-dependencies.myextra = [ "myupgrade<=0.2.0" ]
 
 [edgetest.envs.myenv]
 upgrade = [ "myupgrade" ]
@@ -100,7 +100,7 @@ command = "pytest tests -m 'not integration'"
 """
 
 SETUP_TOML_EXTRAS_UPGRADE_TOOL = """[project]
-optional-dependencies.myextra = ["myupgrade<=0.2.0"]
+optional-dependencies.myextra = [ "myupgrade<=0.2.0" ]
 
 [[tool.edgetest.env]]
 name = "myenv"
