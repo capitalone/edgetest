@@ -367,8 +367,8 @@ def _parse_toml_tool(config: Table) -> tuple[dict, dict]:
 def _split_inline_comment(line: str) -> tuple[str, str]:
     """Split a line into its code part and its trailing comment.
 
-    Quote-aware: a ``#`` inside a quoted string is not a comment. The returned
-    comment includes the ``#`` and any whitespace preceding it, so
+    Quote-aware: a ``#`` inside a quoted string is not a comment. The whitespace
+    preceding the ``#`` stays with the code part, so
     ``code + comment == line`` exactly.
 
     Parameters
