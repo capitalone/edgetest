@@ -131,10 +131,10 @@ def post_run_hook(testers: list, conf: dict):
         LOG.info(
             "Skipping ``uv lock --upgrade`` as the requirements have not been updated."
         )
-    elif (
-        testers[-1].status and (Path(ctx.params["config"]).parent / "uv.lock").is_file()
-    ):
-        # uv.lock exists already and the last tester passed
+    elif not all(tester.status for tester in testers):
+        LOG.info("Skipping ``uv.lock`` refresh as not every environment passed.")
+    elif (Path(ctx.params["config"]).parent / "uv.lock").is_file():
+        # uv.lock exists already and the whole matrix is green
         try:
             uv_ = find_uv_bin()
             _run_command(uv_, "lock", "--upgrade")
@@ -142,5 +142,5 @@ def post_run_hook(testers: list, conf: dict):
             LOG.info("Unable to update the ``uv.lock`` file.")
     else:
         LOG.info(
-            "Skpping ``uv.lock`` refresh as the tests didn't pass and/or we couldn't find an existing ``uv.lock`` file."
+            "Skpping ``uv.lock`` refresh as we couldn't find an existing ``uv.lock`` file."
         )

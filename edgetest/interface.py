@@ -13,6 +13,7 @@ from edgetest.logger import get_logger
 from edgetest.report import gen_report
 from edgetest.schema import EdgetestValidator, Schema
 from edgetest.utils import (
+    aggregate_upgrades,
     gen_requirements_config,
     parse_toml,
     upgrade_pyproject_toml,
@@ -171,16 +172,17 @@ def cli(
     report = gen_report(testers)
     click.echo(f"\n\n{report}")
 
-    if export and testers[-1].status:
+    upgraded_packages: list[dict[str, str]] = []
+    if export and all(tester.status for tester in testers):
         # Aggregate upgrades across every environment that passed. Reading only
         # the last tester drops upgrades whenever a ``lower`` env runs after the
         # upgrade env, since a lower-bound env reports no upgrades of its own.
-        upgrades: dict[str, str] = {}
-        for tester in testers:
-            if tester.status:
-                for pkg in tester.upgraded_packages():
-                    upgrades[pkg["name"]] = pkg["version"]
-        upgraded_packages = [{"name": n, "version": v} for n, v in upgrades.items()]
+        #
+        # Every env must pass before anything is written. A widened upper bound
+        # claims the package works at that version across the whole configured
+        # matrix, so one red env makes the claim unproven even if another env
+        # is green.
+        upgraded_packages = aggregate_upgrades(testers)
         if config is not None and Path(config).name == "pyproject.toml":
             parser = upgrade_pyproject_toml(
                 upgraded_packages=upgraded_packages,
