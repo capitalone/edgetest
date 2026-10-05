@@ -142,5 +142,5 @@ def post_run_hook(testers: list, conf: dict):
             LOG.info("Unable to update the ``uv.lock`` file.")
     else:
         LOG.info(
-            "Skpping ``uv.lock`` refresh as we couldn't find an existing ``uv.lock`` file."
+            "Skipping ``uv.lock`` refresh as we couldn't find an existing ``uv.lock`` file."
         )
