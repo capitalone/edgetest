@@ -172,9 +172,18 @@ def cli(
     click.echo(f"\n\n{report}")
 
     if export and testers[-1].status:
+        # Aggregate upgrades across every environment that passed. Reading only
+        # the last tester drops upgrades whenever a ``lower`` env runs after the
+        # upgrade env, since a lower-bound env reports no upgrades of its own.
+        upgrades: dict[str, str] = {}
+        for tester in testers:
+            if tester.status:
+                for pkg in tester.upgraded_packages():
+                    upgrades[pkg["name"]] = pkg["version"]
+        upgraded_packages = [{"name": n, "version": v} for n, v in upgrades.items()]
         if config is not None and Path(config).name == "pyproject.toml":
             parser = upgrade_pyproject_toml(
-                upgraded_packages=testers[-1].upgraded_packages(),
+                upgraded_packages=upgraded_packages,
                 filename=config,
             )
             with open(config, "w") as outfile:
@@ -186,7 +195,7 @@ def cli(
                 )
                 upgraded = upgrade_requirements(
                     fname_or_buf=requirements,
-                    upgraded_packages=testers[-1].upgraded_packages(),
+                    upgraded_packages=upgraded_packages,
                 )
                 with open(requirements, "w") as outfile:
                     outfile.write(upgraded)
@@ -197,7 +206,7 @@ def cli(
             click.echo(f"Overwriting the requirements file {requirements}...")
             upgraded = upgrade_requirements(
                 fname_or_buf=requirements,
-                upgraded_packages=testers[-1].upgraded_packages(),
+                upgraded_packages=upgraded_packages,
             )
             with open(requirements, "w") as outfile:
                 outfile.write(upgraded)

@@ -62,6 +62,45 @@ lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
+SETUP_TOML_UPGRADE_THEN_LOWER = """[project]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
+
+[edgetest.envs.myenv]
+upgrade = [ "myupgrade" ]
+command = "pytest tests -m 'not integration'"
+
+[edgetest.envs.myenv_lower]
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+SETUP_TOML_UPGRADE_THEN_LOWER_TOOL = """[project]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
+
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+command = "pytest tests -m 'not integration'"
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+SETUP_TOML_UPGRADE_THEN_LOWER_UPGRADE = """[project]
+dependencies = [
+  "myupgrade<=0.2.0",
+  "mylower<=0.1,>=0.0.1"
+]
+"""
+
 SETUP_TOML_REQS = """[project]
 dependencies = ["myupgrade<=0.1.5"]
 """
@@ -604,6 +643,42 @@ def test_cli_setup_extras_update(mock_popen, mock_cpopen, toml_source, toml_outp
     assert result.exit_code == 0
 
     assert out == toml_output
+
+
+@pytest.mark.parametrize(
+    "toml_source",
+    [SETUP_TOML_UPGRADE_THEN_LOWER, SETUP_TOML_UPGRADE_THEN_LOWER_TOOL],
+)
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_export_with_lower_env_after_upgrade_env(
+    mock_popen, mock_cpopen, toml_source
+):
+    """Upgrades must survive when a ``lower`` env is declared after the upgrade env.
+
+    A lower-bound env reports no upgrades of its own, so exporting from only the
+    last tester silently dropped every widened pin.
+    """
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    type(mock_cpopen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem():
+        with open("pyproject.toml", "w") as outfile:
+            outfile.write(toml_source)
+
+        result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
+
+        with open("pyproject.toml") as infile:
+            out = infile.read()
+
+    assert result.exit_code == 0
+    assert '"myupgrade<=0.2.0"' in out
+    assert '"myupgrade<=0.1.5"' not in out
+    assert '"mylower<=0.1,>=0.0.1"' in out
 
 
 @patch("edgetest.core.Popen", autospec=True)
