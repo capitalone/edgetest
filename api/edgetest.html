@@ -726,6 +726,30 @@ which maps to the parameter of the same name in <code class="docutils literal no
 
 <p id="module-edgetest.utils">Utility functions.</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="edgetest.utils.aggregate_upgrades">
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">aggregate_upgrades</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">testers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#aggregate_upgrades"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.aggregate_upgrades" title="Link to this definition">¶</a></dt>
+<dd><p>Aggregate upgraded packages across every passing environment.</p>
+<p>Reading only the last tester drops upgrades whenever a <code class="docutils literal notranslate"><span class="pre">lower</span></code> env runs
+after the upgrade env, since a lower-bound env reports no upgrades of its
+own. When two passing envs upgraded the same package to different
+versions, the lower tested version wins: every env has seen that version
+or something below it, so the pin never moves to a version some env
+never installed. Disagreements are logged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>testers</strong> (<em>list</em>) – The list of <code class="docutils literal notranslate"><span class="pre">TestPackage</span></code> objects.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">[{&quot;name&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;version&quot;:</span> <span class="pre">...},</span> <span class="pre">...]</span></code> for every package upgraded
+in a passing environment.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.convert_requirements">
 <span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">convert_requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">requirements</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#convert_requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.convert_requirements" title="Link to this definition">¶</a></dt>
 <dd><p>Generate environments for a newline-separate list of package requirements.</p>
@@ -1024,6 +1048,7 @@ or the string representing the requirements file.</p></li>
 <li><a class="reference internal" href="#edgetest.schema.Schema.schema"><code class="docutils literal notranslate"><span class="pre">Schema.schema</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#edgetest.utils.aggregate_upgrades"><code class="docutils literal notranslate"><span class="pre">aggregate_upgrades()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.convert_requirements"><code class="docutils literal notranslate"><span class="pre">convert_requirements()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.gen_requirements_config"><code class="docutils literal notranslate"><span class="pre">gen_requirements_config()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.get_lower_bounds"><code class="docutils literal notranslate"><span class="pre">get_lower_bounds()</span></code></a></li>

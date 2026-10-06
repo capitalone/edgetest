@@ -386,10 +386,10 @@
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
             <span class="s2">&quot;Skipping ``uv lock --upgrade`` as the requirements have not been updated.&quot;</span>
         <span class="p">)</span>
-    <span class="k">elif</span> <span class="p">(</span>
-        <span class="n">testers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">status</span> <span class="ow">and</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;uv.lock&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
-    <span class="p">):</span>
-        <span class="c1"># uv.lock exists already and the last tester passed</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">tester</span><span class="o">.</span><span class="n">status</span> <span class="k">for</span> <span class="n">tester</span> <span class="ow">in</span> <span class="n">testers</span><span class="p">):</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping ``uv.lock`` refresh as not every environment passed.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;uv.lock&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="c1"># uv.lock exists already and the whole matrix is green</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">uv_</span> <span class="o">=</span> <span class="n">find_uv_bin</span><span class="p">()</span>
             <span class="n">_run_command</span><span class="p">(</span><span class="n">uv_</span><span class="p">,</span> <span class="s2">&quot;lock&quot;</span><span class="p">,</span> <span class="s2">&quot;--upgrade&quot;</span><span class="p">)</span>
@@ -397,7 +397,7 @@
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unable to update the ``uv.lock`` file.&quot;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-            <span class="s2">&quot;Skpping ``uv.lock`` refresh as the tests didn&#39;t pass and/or we couldn&#39;t find an existing ``uv.lock`` file.&quot;</span>
+            <span class="s2">&quot;Skipping ``uv.lock`` refresh as we couldn&#39;t find an existing ``uv.lock`` file.&quot;</span>
         <span class="p">)</span></div>
 
 </pre></div>

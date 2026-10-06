@@ -251,6 +251,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">tomlkit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">packaging.requirements</span><span class="w"> </span><span class="kn">import</span> <span class="n">Requirement</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">packaging.specifiers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Specifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">packaging.version</span><span class="w"> </span><span class="kn">import</span> <span class="n">InvalidVersion</span><span class="p">,</span> <span class="n">Version</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tomlkit.items</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
@@ -615,6 +616,60 @@
             <span class="n">output</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">options</span>
+
+
+<div class="viewcode-block" id="aggregate_upgrades">
+<a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.aggregate_upgrades">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">aggregate_upgrades</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregate upgraded packages across every passing environment.</span>
+
+<span class="sd">    Reading only the last tester drops upgrades whenever a ``lower`` env runs</span>
+<span class="sd">    after the upgrade env, since a lower-bound env reports no upgrades of its</span>
+<span class="sd">    own. When two passing envs upgraded the same package to different</span>
+<span class="sd">    versions, the lower tested version wins: every env has seen that version</span>
+<span class="sd">    or something below it, so the pin never moves to a version some env</span>
+<span class="sd">    never installed. Disagreements are logged.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    testers : list</span>
+<span class="sd">        The list of ``TestPackage`` objects.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of dict</span>
+<span class="sd">        ``[{&quot;name&quot;: ..., &quot;version&quot;: ...}, ...]`` for every package upgraded</span>
+<span class="sd">        in a passing environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">upgrades</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">tester</span> <span class="ow">in</span> <span class="n">testers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tester</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">tester</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">():</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+            <span class="n">existing</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">upgrades</span> <span class="k">if</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">])),</span>
+                <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">existing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">upgrades</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">current</span> <span class="o">=</span> <span class="n">Version</span><span class="p">(</span><span class="n">upgrades</span><span class="p">[</span><span class="n">existing</span><span class="p">])</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="n">Version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">InvalidVersion</span><span class="p">:</span>  <span class="c1"># pragma: no cover - pip reports PEP 440</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: environments disagree on the tested version &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">candidate</span><span class="si">}</span><span class="s2">); pinning the lower.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">candidate</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">:</span>
+                <span class="n">upgrades</span><span class="p">[</span><span class="n">existing</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">upgrades</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_split_inline_comment</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
