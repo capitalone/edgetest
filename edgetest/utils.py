@@ -10,6 +10,7 @@ from subprocess import PIPE, Popen
 import tomlkit
 from packaging.requirements import Requirement
 from packaging.specifiers import Specifier
+from packaging.version import InvalidVersion, Version
 from tomlkit.items import Table
 
 from edgetest.logger import get_logger
@@ -362,6 +363,57 @@ def _parse_toml_tool(config: Table) -> tuple[dict, dict]:
             output[section] = config[section].unwrap()
 
     return output, options
+
+
+def aggregate_upgrades(testers: list) -> list[dict[str, str]]:
+    """Aggregate upgraded packages across every passing environment.
+
+    Reading only the last tester drops upgrades whenever a ``lower`` env runs
+    after the upgrade env, since a lower-bound env reports no upgrades of its
+    own. When two passing envs upgraded the same package to different
+    versions, the lower tested version wins: every env has seen that version
+    or something below it, so the pin never moves to a version some env
+    never installed. Disagreements are logged.
+
+    Parameters
+    ----------
+    testers : list
+        The list of ``TestPackage`` objects.
+
+    Returns
+    -------
+    list of dict
+        ``[{"name": ..., "version": ...}, ...]`` for every package upgraded
+        in a passing environment.
+    """
+    upgrades: dict[str, str] = {}
+    for tester in testers:
+        if not tester.status:
+            continue
+        for pkg in tester.upgraded_packages():
+            name = pkg["name"]
+            version = pkg["version"]
+            existing = next(
+                (key for key in upgrades if _isin_case_dashhyphen_ins(key, [name])),
+                None,
+            )
+            if existing is None:
+                upgrades[name] = version
+                continue
+            try:
+                current = Version(upgrades[existing])
+                candidate = Version(version)
+            except InvalidVersion:  # pragma: no cover - pip reports PEP 440
+                continue
+            if current == candidate:
+                continue
+            LOG.warning(
+                f"{name}: environments disagree on the tested version "
+                f"({current} vs {candidate}); pinning the lower."
+            )
+            if candidate < current:
+                upgrades[existing] = version
+    return [{"name": n, "version": v} for n, v in upgrades.items()]
 
 
 def _split_inline_comment(line: str) -> tuple[str, str]:

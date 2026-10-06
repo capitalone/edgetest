@@ -94,11 +94,36 @@ lower = [ "mylower" ]
 command = "pytest tests -m 'not integration'"
 """
 
-SETUP_TOML_UPGRADE_THEN_LOWER_UPGRADE = """[project]
+SETUP_TOML_LOWER_THEN_UPGRADE = """[project]
 dependencies = [
-  "myupgrade<=0.2.0",
+  "myupgrade<=0.1.5",
   "mylower<=0.1,>=0.0.1"
 ]
+
+[edgetest.envs.myenv_lower]
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+
+[edgetest.envs.myenv]
+upgrade = [ "myupgrade" ]
+command = "pytest tests -m 'not integration'"
+"""
+
+SETUP_TOML_LOWER_THEN_UPGRADE_TOOL = """[project]
+dependencies = [
+  "myupgrade<=0.1.5",
+  "mylower<=0.1,>=0.0.1"
+]
+
+[[tool.edgetest.env]]
+name = "myenv_lower"
+lower = [ "mylower" ]
+command = "pytest tests -m 'not integration'"
+
+[[tool.edgetest.env]]
+name = "myenv"
+upgrade = [ "myupgrade" ]
+command = "pytest tests -m 'not integration'"
 """
 
 SETUP_TOML_REQS = """[project]
@@ -679,6 +704,117 @@ def test_cli_export_with_lower_env_after_upgrade_env(
     assert '"myupgrade<=0.2.0"' in out
     assert '"myupgrade<=0.1.5"' not in out
     assert '"mylower<=0.1,>=0.0.1"' in out
+
+
+@pytest.mark.parametrize(
+    "toml_source",
+    [SETUP_TOML_UPGRADE_THEN_LOWER, SETUP_TOML_UPGRADE_THEN_LOWER_TOOL],
+)
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_export_blocked_when_any_env_fails(mock_popen, mock_cpopen, toml_source):
+    """No pin may be widened while any environment is red.
+
+    A widened upper bound claims the package works at that version across the
+    whole configured matrix. If one env fails, the claim is unproven, so the
+    export must not happen regardless of which env failed or whether another
+    env produced upgrades.
+    """
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    # First env (upgrade) passes, second env (lower) fails.
+    type(mock_cpopen.return_value).returncode = PropertyMock(side_effect=[0, 0, 1, 1])
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem():
+        with open("pyproject.toml", "w") as outfile:
+            outfile.write(toml_source)
+
+        result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
+
+        with open("pyproject.toml") as infile:
+            out = infile.read()
+
+    assert result.exit_code == 0
+    assert '"myupgrade<=0.1.5"' in out
+    assert '"myupgrade<=0.2.0"' not in out
+
+
+@pytest.mark.parametrize(
+    "toml_source",
+    [SETUP_TOML_UPGRADE_THEN_LOWER, SETUP_TOML_UPGRADE_THEN_LOWER_TOOL],
+)
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_export_blocked_when_first_env_fails(mock_popen, mock_cpopen, toml_source):
+    """A failure in the first env must block export even when the last env passes.
+
+    ``testers[-1].status`` alone lets a partially verified matrix through when
+    the failure is not in the last env.
+    """
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    # First env (upgrade) fails, second env (lower) passes.
+    type(mock_cpopen.return_value).returncode = PropertyMock(side_effect=[1, 1, 0, 0])
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem():
+        with open("pyproject.toml", "w") as outfile:
+            outfile.write(toml_source)
+
+        result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
+
+        with open("pyproject.toml") as infile:
+            out = infile.read()
+
+    assert result.exit_code == 0
+    assert '"myupgrade<=0.1.5"' in out
+    assert '"myupgrade<=0.2.0"' not in out
+
+
+@pytest.mark.parametrize(
+    "toml_source",
+    [SETUP_TOML_LOWER_THEN_UPGRADE, SETUP_TOML_LOWER_THEN_UPGRADE_TOOL],
+)
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_export_blocked_when_upgrade_env_passes_last(
+    mock_popen, mock_cpopen, toml_source
+):
+    """The scenario the old ``testers[-1]`` gate actually got wrong.
+
+    The lower env fails FIRST and the passing upgrade env runs LAST, so
+    ``testers[-1].status`` is ``True`` and the old gate widens the pin while
+    an earlier env is red. The ``all()`` gate must block the export.
+
+    Unlike the other ``blocked_when`` tests, this one fails under the old
+    gate: the last tester is green and *does* carry an upgrade, so the old
+    code writes ``myupgrade<=0.2.0``.
+    """
+    mock_popen.return_value.communicate.return_value = (PIP_LIST, "error")
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    # First env (lower) fails, second env (upgrade) passes.
+    type(mock_cpopen.return_value).returncode = PropertyMock(side_effect=[1, 1, 0, 0])
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem():
+        with open("pyproject.toml", "w") as outfile:
+            outfile.write(toml_source)
+
+        result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
+
+        with open("pyproject.toml") as infile:
+            out = infile.read()
+
+    assert result.exit_code == 0
+    assert '"myupgrade<=0.1.5"' in out
+    assert '"myupgrade<=0.2.0"' not in out
 
 
 @patch("edgetest.core.Popen", autospec=True)
