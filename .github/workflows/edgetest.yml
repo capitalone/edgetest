@@ -23,4 +23,5 @@ jobs:
           edgetest-flags: '-c pyproject.toml --export'
           base-branch: 'main'
           skip-pr: 'false'
+          python-version: '3.12'
           add-paths: 'pyproject.toml, uv.lock'
