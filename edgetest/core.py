@@ -6,10 +6,9 @@ from pathlib import Path
 from subprocess import Popen
 
 from pluggy._hooks import _HookRelay
-from uv import find_uv_bin
 
 from edgetest.logger import get_logger
-from edgetest.utils import _isin_case_dashhyphen_ins, _run_command, pushd
+from edgetest.utils import _isin_case_dashhyphen_ins, _run_command, find_uv_bin, pushd
 
 LOG = get_logger(__name__)
 
