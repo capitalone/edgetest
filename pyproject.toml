@@ -45,7 +45,7 @@ optional-dependencies.dev = [
     "edgetest[build]",
     "edgetest[docs]",
     "edgetest[qa]",
-    "edgetest[tests]",
+    "edgetest[tests]"
 ]
 optional-dependencies.docs = [
     "furo",
@@ -53,7 +53,7 @@ optional-dependencies.docs = [
     "recommonmark",
     "sphinx",
     "sphinx-copybutton",
-    "sphinx-tabs",
+    "sphinx-tabs"
 ]
 optional-dependencies.qa = [
     "mypy",
@@ -66,8 +66,8 @@ optional-dependencies.qa = [
 ]
 optional-dependencies.tests = [ "coverage", "pytest", "pytest-cov" ]
 urls."Bug Tracker" = "https://github.com/capitalone/edgetest/issues"
-urls."Documentation" = "https://capitalone.github.io/edgetest/"
 urls."Source Code" = "https://github.com/capitalone/edgetest"
+urls.Documentation = "https://capitalone.github.io/edgetest/"
 scripts.edgetest = "edgetest.interface:cli"
 
 [tool.setuptools]
@@ -132,13 +132,6 @@ indent = 4
 keep_full_version = true
 max_supported_python = "3.14"
 
-[tool.pytest]
-ini_options.markers = [
-    "unit: mark unit tests that do not require external interfaces and use mocking",
-    "integration: mark test that interact with an external system",
-]
-ini_options.addopts = "--verbose"
-
 [tool.mypy]
 python_version = "3.12"
 warn_return_any = true
@@ -146,6 +139,13 @@ warn_unused_configs = true
 ignore_missing_imports = true
 allow_redefinition = true
 disable_error_code = "empty-body"
+
+[tool.pytest]
+ini_options.markers = [
+    "unit: mark unit tests that do not require external interfaces and use mocking",
+    "integration: mark test that interact with an external system",
+]
+ini_options.addopts = "--verbose"
 
 [tool.edgetest]
 exclude_newer = "3 days"
