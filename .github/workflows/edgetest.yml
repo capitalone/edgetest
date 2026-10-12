@@ -3,6 +3,7 @@
 
 name: Run edgetest
 on:
+  workflow_dispatch:
   schedule:
     - cron: '35 17 * * 5'
 jobs:
