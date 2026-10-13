@@ -2,6 +2,7 @@
 
 import os
 import re
+import shutil
 import warnings
 from contextlib import contextmanager
 from pathlib import Path
@@ -16,6 +17,35 @@ from tomlkit.items import Table
 from edgetest.logger import get_logger
 
 LOG = get_logger(__name__)
+
+
+def find_uv_bin() -> str:
+    """Locate the ``uv`` executable.
+
+    Uses the Python bindings shipped with the PyPI ``uv`` wheel when
+    available and falls back to the ``uv`` binary on ``PATH``. Conda-forge
+    packages ``uv`` as a standalone binary without the Python module.
+
+    Returns
+    -------
+    str
+        Path to the ``uv`` executable.
+
+    Raises
+    ------
+    ModuleNotFoundError
+        If neither the ``uv`` module nor a ``uv`` binary on ``PATH`` exists.
+    """
+    try:
+        from uv import find_uv_bin as _find_uv_bin
+    except ModuleNotFoundError:
+        uv_bin = shutil.which("uv")
+        if uv_bin is None:
+            raise ModuleNotFoundError(
+                "uv is not available: install the 'uv' Python package or place the uv binary on PATH"
+            ) from None
+        return uv_bin
+    return _find_uv_bin()
 
 
 def _run_command(*args, env: dict[str, str] | None = None) -> tuple[str, int]:

@@ -6,9 +6,8 @@ from pathlib import Path
 
 import click
 import pluggy
-from uv import find_uv_bin
 
-from edgetest.utils import _run_command
+from edgetest.utils import _run_command, find_uv_bin
 
 LOG = logging.getLogger(__name__)
 
