@@ -243,6 +243,7 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
@@ -257,6 +258,38 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">edgetest.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
 
 <span class="n">LOG</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="find_uv_bin">
+<a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.find_uv_bin">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">find_uv_bin</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Locate the ``uv`` executable.</span>
+
+<span class="sd">    Uses the Python bindings shipped with the PyPI ``uv`` wheel when</span>
+<span class="sd">    available and falls back to the ``uv`` binary on ``PATH``. Conda-forge</span>
+<span class="sd">    packages ``uv`` as a standalone binary without the Python module.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Path to the ``uv`` executable.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ModuleNotFoundError</span>
+<span class="sd">        If neither the ``uv`` module nor a ``uv`` binary on ``PATH`` exists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">uv</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_uv_bin</span> <span class="k">as</span> <span class="n">_find_uv_bin</span>
+    <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
+        <span class="n">uv_bin</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;uv&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">uv_bin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
+                <span class="s2">&quot;uv is not available: install the &#39;uv&#39; Python package or place the uv binary on PATH&quot;</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+        <span class="k">return</span> <span class="n">uv_bin</span>
+    <span class="k">return</span> <span class="n">_find_uv_bin</span><span class="p">()</span></div>
+
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>

@@ -772,6 +772,26 @@ that upgrades all requirements simultaneously.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="edgetest.utils.find_uv_bin">
+<span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">find_uv_bin</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#find_uv_bin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.find_uv_bin" title="Link to this definition">¶</a></dt>
+<dd><p>Locate the <code class="docutils literal notranslate"><span class="pre">uv</span></code> executable.</p>
+<p>Uses the Python bindings shipped with the PyPI <code class="docutils literal notranslate"><span class="pre">uv</span></code> wheel when
+available and falls back to the <code class="docutils literal notranslate"><span class="pre">uv</span></code> binary on <code class="docutils literal notranslate"><span class="pre">PATH</span></code>. Conda-forge
+packages <code class="docutils literal notranslate"><span class="pre">uv</span></code> as a standalone binary without the Python module.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Path to the <code class="docutils literal notranslate"><span class="pre">uv</span></code> executable.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ModuleNotFoundError</strong> – If neither the <code class="docutils literal notranslate"><span class="pre">uv</span></code> module nor a <code class="docutils literal notranslate"><span class="pre">uv</span></code> binary on <code class="docutils literal notranslate"><span class="pre">PATH</span></code> exists.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="edgetest.utils.gen_requirements_config">
 <span class="sig-prename descclassname"><span class="pre">edgetest.utils.</span></span><span class="sig-name descname"><span class="pre">gen_requirements_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname_or_buf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/edgetest/utils.html#gen_requirements_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#edgetest.utils.gen_requirements_config" title="Link to this definition">¶</a></dt>
 <dd><p>Generate a configuration file from package requirements.</p>
@@ -1050,6 +1070,7 @@ or the string representing the requirements file.</p></li>
 </li>
 <li><a class="reference internal" href="#edgetest.utils.aggregate_upgrades"><code class="docutils literal notranslate"><span class="pre">aggregate_upgrades()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.convert_requirements"><code class="docutils literal notranslate"><span class="pre">convert_requirements()</span></code></a></li>
+<li><a class="reference internal" href="#edgetest.utils.find_uv_bin"><code class="docutils literal notranslate"><span class="pre">find_uv_bin()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.gen_requirements_config"><code class="docutils literal notranslate"><span class="pre">gen_requirements_config()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.get_lower_bounds"><code class="docutils literal notranslate"><span class="pre">get_lower_bounds()</span></code></a></li>
 <li><a class="reference internal" href="#edgetest.utils.parse_toml"><code class="docutils literal notranslate"><span class="pre">parse_toml()</span></code></a></li>
