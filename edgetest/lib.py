@@ -2,6 +2,7 @@
 
 import logging
 import platform
+import sys
 from pathlib import Path
 
 import click
@@ -46,8 +47,8 @@ def create_environment(basedir: str, envname: str, conf: dict):
     try:
         uv_ = find_uv_bin()
         callargs_ = [uv_, "venv", str(Path(basedir, envname))]
-        if (py_version := conf.get("python_version")) is not None:
-            callargs_.append(f"--python={py_version}")
+        py_version = conf.get("python_version") or sys.executable
+        callargs_.append(f"--python={py_version}")
         if Path(basedir, envname).is_dir():
             callargs_.append("--clear")
         _run_command(*callargs_)

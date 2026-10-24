@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
@@ -34,7 +35,9 @@ def test_path_to_python(mock_platform):
 def test_create_environment(mock_run):
     create_environment("test", "test", {})
     uv_ = find_uv_bin()
-    mock_run.assert_called_with(uv_, "venv", str(Path("test", "test")))
+    mock_run.assert_called_with(
+        uv_, "venv", str(Path("test", "test")), f"--python={sys.executable}"
+    )
 
     create_environment("test", "test", {"python_version": "3.10"})
 
