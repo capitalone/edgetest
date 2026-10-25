@@ -120,6 +120,18 @@ class TestPackage:
         RuntimeError
             This error will be raised if any part of the set up process fails.
         """
+        # Normalize extras: a single entry like "spark, qa" (comma-separated
+        # names inside one string) is a common configuration mistake. ``uv``
+        # splits ``--extra`` values on commas but does not trim whitespace,
+        # so "spark, qa" fails extra-name validation. Emit one clean name
+        # per ``--extra`` flag instead.
+        if extras:
+            extras = [
+                name.strip()
+                for entry in extras
+                for name in entry.split(",")
+                if name.strip()
+            ]
         if skip:
             self.setup_status = True
             return
