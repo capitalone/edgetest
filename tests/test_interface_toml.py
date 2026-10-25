@@ -1034,3 +1034,29 @@ def test_cli_notest_lower(mock_popen):
         result.output
         == f"""Skipping tests for myenv_lower\n{TABLE_OUTPUT_NOTEST_LOWER}"""
     )
+
+
+@pytest.mark.parametrize("toml_source", [SETUP_TOML, SETUP_TOML_TOOL])
+@patch("edgetest.core.Popen", autospec=True)
+@patch("edgetest.utils.Popen", autospec=True)
+def test_cli_all_setups_fail_exits_nonzero(mock_popen, mock_cpopen, toml_source):
+    """A run where no environment passes setup must not exit green.
+
+    Setup failures are caught per environment and only surface in the report
+    table, so a completely dead run still exited 0 and looked healthy in CI.
+    """
+    mock_popen.return_value.communicate.return_value = ("output", "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=1)
+    mock_cpopen.return_value.communicate.return_value = ("output", "error")
+    type(mock_cpopen.return_value).returncode = PropertyMock(return_value=0)
+
+    runner = CliRunner()
+
+    with runner.isolated_filesystem():
+        with open("pyproject.toml", "w") as outfile:
+            outfile.write(toml_source)
+
+        result = runner.invoke(cli, ["--config=pyproject.toml", "--export"])
+
+    assert result.exit_code == 1
+    assert "No environment passed setup" in result.output

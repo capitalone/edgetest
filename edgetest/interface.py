@@ -1,5 +1,6 @@
 """Command-line interface."""
 
+import sys
 from pathlib import Path
 
 import click
@@ -171,6 +172,13 @@ def cli(
 
     report = gen_report(testers)
     click.echo(f"\n\n{report}")
+
+    if testers and not any(tester.setup_status for tester in testers):
+        # Every environment died during setup, so nothing was tested. Exiting 0
+        # here makes a completely dead run look green in CI; fail loudly so the
+        # scheduled job surfaces the setup error instead of silently skipping.
+        click.echo("No environment passed setup; nothing was tested. Failing the run.")
+        sys.exit(1)
 
     upgraded_packages: list[dict[str, str]] = []
     if export and all(tester.status for tester in testers):

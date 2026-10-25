@@ -38,6 +38,12 @@ def gen_report(testers: list[TestPackage], output_type: str = "rst") -> Any:
     ]
     rows: list[list] = []
     for env in testers:
+        if not env.setup_status:
+            # A dead environment has no packages to report; querying it can
+            # raise (the env may not even exist) and crash the CLI before the
+            # report is printed. Show the failed row instead.
+            rows.append([env.envname, env.setup_status, env.status, "", "", ""])
+            continue
         upgraded = env.upgraded_packages()
         lowered = env.lowered_packages()
         for pkg in upgraded:
