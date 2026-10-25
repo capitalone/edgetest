@@ -40,9 +40,7 @@ def test_report(
     )
 
     gen_report(tester_list, output_type="github")
-    mock_tabulate.assert_called_with(
-        expected_rows, expected_headers, tablefmt="github"
-    )
+    mock_tabulate.assert_called_with(expected_rows, expected_headers, tablefmt="github")
 
     with pytest.raises(ValueError):
         gen_report(tester_list, output_type="bad")
