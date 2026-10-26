@@ -94,33 +94,33 @@ lint.select = [
     "RUF",    # Ruff errors
     "SIM",    # flake8-simplify
     "T20",    # flake8-print
-    "TID252", # flake8-tidy-imports ban relative imports
+    "relative-imports", # flake8-tidy-imports ban relative imports
     "UP",     # pyupgrade
     "W",      # pycodestyle warnings
 ]
 lint.ignore = [
-    "C901",   # Add back in later
-    "D206",   # Docstring indentation. Using formatter instead.
-    "D300",   # Use triple single quotes. Using formatter instead.
-    "E111",   # Check indentation level. Using formatter instead.
-    "E114",   # Check indentation level. Using formatter instead.
-    "E117",   # Check indentation level. Using formatter instead.
-    "E203",   # Check whitespace. Using formatter instead.
-    "E501",   # Line too long. Using formatter instead.
-    "RUF067", # non-empty-init-module
-    "SIM105", # Use ``contextlib.suppress(FileNotFoundError)`` insetad of try - execpt - pass.
-    "SIM108", # Use ternary operator instead of if-else blocks.
-    "UP006",  # ``typing.x`` is deprecated, use ``x`` instead
-    "UP035",  # ``typing.x`` is deprecated, use ``x`` instead
+    "complex-structure",   # Add back in later
+    "docstring-tab-indentation",   # Docstring indentation. Using formatter instead.
+    "triple-single-quotes",   # Use triple single quotes. Using formatter instead.
+    "indentation-with-invalid-multiple",   # Check indentation level. Using formatter instead.
+    "indentation-with-invalid-multiple-comment",   # Check indentation level. Using formatter instead.
+    "over-indented",   # Check indentation level. Using formatter instead.
+    "whitespace-before-punctuation",   # Check whitespace. Using formatter instead.
+    "line-too-long",   # Line too long. Using formatter instead.
+    "non-empty-init-module", # non-empty-init-module
+    "suppressible-exception", # Use ``contextlib.suppress(FileNotFoundError)`` insetad of try - execpt - pass.
+    "if-else-block-instead-of-if-exp", # Use ternary operator instead of if-else blocks.
+    "non-pep585-annotation",  # ``typing.x`` is deprecated, use ``x`` instead
+    "deprecated-import",  # ``typing.x`` is deprecated, use ``x`` instead
 ]
 lint.per-file-ignores."**/{tests,docs}/*" = [
     "ARG",
     "D",
-    "E402",
-    "F841",
+    "module-import-not-at-top-of-file",
+    "unused-variable",
 ]
 lint.per-file-ignores."__init__.py" = [
-    "E402",
+    "module-import-not-at-top-of-file",
 ]
 lint.flake8-tidy-imports.ban-relative-imports = "all"
 lint.pydocstyle.convention = "numpy"

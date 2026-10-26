@@ -81,7 +81,7 @@ class TestPackage:
 
     @property
     def python_path(self) -> str:
-        """Get the path to the python executable.
+        """Path to the python executable.
 
         Returns
         -------
