@@ -19,6 +19,9 @@ def test_report(
         TestPackage(hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade2"]),
         TestPackage(hook=plugin_manager.hook, envname="myenv_lower", lower=["mylower"]),
     ]
+    # The first two environments passed setup; the third died during setup.
+    tester_list[0].setup_status = True
+    tester_list[1].setup_status = True
 
     expected_headers = [
         "Environment",
@@ -28,11 +31,16 @@ def test_report(
         "Lowered packages",
         "Package version",
     ]
+    # Environments that failed setup are reported as failed rows instead of
+    # being silently dropped (and without querying their possibly-missing env).
+    expected_rows = [["myenv_lower", False, False, "", "", ""]]
     gen_report(tester_list)
-    mock_tabulate.assert_called_with([], headers=expected_headers, tablefmt="rst")
+    mock_tabulate.assert_called_with(
+        expected_rows, headers=expected_headers, tablefmt="rst"
+    )
 
     gen_report(tester_list, output_type="github")
-    mock_tabulate.assert_called_with([], expected_headers, tablefmt="github")
+    mock_tabulate.assert_called_with(expected_rows, expected_headers, tablefmt="github")
 
     with pytest.raises(ValueError):
         gen_report(tester_list, output_type="bad")

@@ -198,6 +198,57 @@ def test_setup_extras(mock_popen, mock_path, tmpdir, plugin_manager):
 
 @patch.object(Path, "cwd")
 @patch("edgetest.utils.Popen", autospec=True)
+def test_setup_extras_normalizes_comma_separated_entry(
+    mock_popen, mock_path, tmpdir, plugin_manager
+):
+    """A single entry with comma-separated names splits into clean flags.
+
+    ``uv`` splits ``--extra`` values on commas but does not trim whitespace,
+    so passing "spark, qa" through verbatim fails extra-name validation.
+    Each name must arrive as its own ``--extra`` flag.
+    """
+    location = tmpdir.mkdir("mydir")
+    mock_path.return_value = Path(str(location))
+    mock_popen.return_value.communicate.return_value = ("output", "error")
+    type(mock_popen.return_value).returncode = PropertyMock(return_value=0)
+
+    tester = TestPackage(
+        hook=plugin_manager.hook, envname="myenv", upgrade=["myupgrade"]
+    )
+
+    tester.setup(extras=["spark, qa, tests, tests-spark"])
+
+    env_loc = str(Path(str(location)) / ".edgetest" / "myenv")
+    if platform.system() == "Windows":
+        py_loc = Path(env_loc) / "Scripts" / "python"
+    else:
+        py_loc = Path(env_loc) / "bin" / "python"
+
+    uv_ = find_uv_bin()
+    assert mock_popen.call_args_list == [
+        call(
+            (
+                uv_,
+                "sync",
+                "--inexact",
+                f"--python={py_loc!s}",
+                "--extra=spark",
+                "--extra=qa",
+                "--extra=tests",
+                "--extra=tests-spark",
+            ),
+            stdout=-1,
+            stderr=-1,
+            env={**os.environ, "UV_PROJECT_ENVIRONMENT": str(env_loc)},
+            universal_newlines=True,
+        ),
+    ]
+
+    assert tester.setup_status
+
+
+@patch.object(Path, "cwd")
+@patch("edgetest.utils.Popen", autospec=True)
 def test_setup_pip_deps(mock_popen, mock_path, tmpdir, plugin_manager):
     """Test creating an environment with pip dependencies."""
     location = tmpdir.mkdir("mydir")
