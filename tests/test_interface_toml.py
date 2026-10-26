@@ -2,6 +2,7 @@
 
 import os
 import platform
+import sys
 from pathlib import Path
 from unittest.mock import PropertyMock, call, patch
 
@@ -253,7 +254,7 @@ def test_cli_basic(mock_popen, mock_cpopen, toml_source):
     uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc), f"--python={sys.executable}"),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -351,7 +352,7 @@ def test_cli_basic_cooldown(mock_popen, mock_cpopen, ignore_cooldown):
 
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc), f"--python={sys.executable}"),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -425,7 +426,7 @@ def test_cli_basic_lower(mock_popen, mock_cpopen, toml_source):
     uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc), f"--python={sys.executable}"),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -502,7 +503,12 @@ def test_cli_reqs(mock_popen, mock_cpopen):
     uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(Path(loc) / ".edgetest" / "myupgrade")),
+            (
+                uv_,
+                "venv",
+                str(Path(loc) / ".edgetest" / "myupgrade"),
+                f"--python={sys.executable}",
+            ),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -533,7 +539,12 @@ def test_cli_reqs(mock_popen, mock_cpopen):
             universal_newlines=True,
         ),
         call(
-            (uv_, "venv", str(Path(loc) / ".edgetest" / "all-requirements")),
+            (
+                uv_,
+                "venv",
+                str(Path(loc) / ".edgetest" / "all-requirements"),
+                f"--python={sys.executable}",
+            ),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -927,7 +938,7 @@ def test_cli_notest(mock_popen):
     uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc), f"--python={sys.executable}"),
             stdout=-1,
             stderr=-1,
             env=None,
@@ -991,7 +1002,7 @@ def test_cli_notest_lower(mock_popen):
     uv_ = find_uv_bin()
     assert mock_popen.call_args_list == [
         call(
-            (uv_, "venv", str(env_loc)),
+            (uv_, "venv", str(env_loc), f"--python={sys.executable}"),
             stdout=-1,
             stderr=-1,
             env=None,
