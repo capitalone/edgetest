@@ -239,7 +239,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for edgetest.utils</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Utility functions.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Utility functions."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
@@ -263,7 +263,7 @@
 <div class="viewcode-block" id="find_uv_bin">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.find_uv_bin">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">find_uv_bin</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Locate the ``uv`` executable.</span>
+<span class="w">    </span><span class="sd">"""Locate the ``uv`` executable.</span>
 
 <span class="sd">    Uses the Python bindings shipped with the PyPI ``uv`` wheel when</span>
 <span class="sd">    available and falls back to the ``uv`` binary on ``PATH``. Conda-forge</span>
@@ -278,14 +278,14 @@
 <span class="sd">    ------</span>
 <span class="sd">    ModuleNotFoundError</span>
 <span class="sd">        If neither the ``uv`` module nor a ``uv`` binary on ``PATH`` exists.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">uv</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_uv_bin</span> <span class="k">as</span> <span class="n">_find_uv_bin</span>
     <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
-        <span class="n">uv_bin</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">&quot;uv&quot;</span><span class="p">)</span>
+        <span class="n">uv_bin</span> <span class="o">=</span> <span class="n">shutil</span><span class="o">.</span><span class="n">which</span><span class="p">(</span><span class="s2">"uv"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">uv_bin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span>
-                <span class="s2">&quot;uv is not available: install the &#39;uv&#39; Python package or place the uv binary on PATH&quot;</span>
+                <span class="s2">"uv is not available: install the 'uv' Python package or place the uv binary on PATH"</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
         <span class="k">return</span> <span class="n">uv_bin</span>
     <span class="k">return</span> <span class="n">_find_uv_bin</span><span class="p">()</span></div>
@@ -293,7 +293,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_run_command</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">env</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run a command using ``subprocess.Popen``.</span>
+<span class="w">    </span><span class="sd">"""Run a command using ``subprocess.Popen``.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -316,17 +316,17 @@
 <span class="sd">    ------</span>
 <span class="sd">    RuntimeError</span>
 <span class="sd">        Error raised when the command is not successfully executed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">LOG</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Running the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">env</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">env</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">,</span> <span class="o">**</span><span class="n">env</span><span class="p">}</span>
     <span class="n">popen</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="n">env</span><span class="p">,</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">out</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">popen</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">popen</span><span class="o">.</span><span class="n">returncode</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Unable to run the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Returned the following stdout: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;Returned the following stderr: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Unable to run the following command: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="s1">' '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="p">)</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"Returned the following stdout: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">out</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"Returned the following stderr: </span><span class="se">\n\n</span><span class="s2"> </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2"> </span><span class="se">\n\n</span><span class="s2">"</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">popen</span><span class="o">.</span><span class="n">returncode</span>
@@ -336,13 +336,13 @@
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.pushd">[docs]</a>
 <span class="nd">@contextmanager</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">pushd</span><span class="p">(</span><span class="n">new_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a context manager for running commands in sub-directories.</span>
+<span class="w">    </span><span class="sd">"""Create a context manager for running commands in sub-directories.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    new_dir : str</span>
 <span class="sd">        The relative directory to run the command in.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">curr_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span>
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">curr_dir</span> <span class="o">/</span> <span class="n">new_dir</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
@@ -355,7 +355,7 @@
 <div class="viewcode-block" id="convert_requirements">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.convert_requirements">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">conf</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate environments for a newline-separate list of package requirements.</span>
+<span class="w">    </span><span class="sd">"""Generate environments for a newline-separate list of package requirements.</span>
 
 <span class="sd">    This function will generate one environment per entry with an additional environment</span>
 <span class="sd">    that upgrades all requirements simultaneously.</span>
@@ -371,21 +371,21 @@
 <span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        A configuration dictionary.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">conf</span>
+<span class="sd">    """</span>
+    <span class="n">conf</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span> <span class="k">if</span> <span class="n">conf</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">conf</span>
     <span class="n">pkgs</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">Requirement</span><span class="p">(</span><span class="n">val</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
         <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">requirements</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">)</span>
     <span class="p">]</span>
     <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">:</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
-        <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;upgrade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
+        <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"upgrade"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pkg</span>
     <span class="c1"># Create an environment with all requirements upgraded</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;all-requirements&quot;</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;upgrade&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkgs</span><span class="p">)</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({})</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"all-requirements"</span>
+    <span class="n">conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"upgrade"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkgs</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">conf</span></div>
 
@@ -394,7 +394,7 @@
 <div class="viewcode-block" id="gen_requirements_config">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.gen_requirements_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration file from package requirements.</span>
+<span class="w">    </span><span class="sd">"""Generate a configuration file from package requirements.</span>
 
 <span class="sd">    This function will convert the package installation requirements to a configuration</span>
 <span class="sd">    file with one environment per requirement.</span>
@@ -411,7 +411,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        The configuration file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># First, get the requirements</span>
     <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
@@ -419,8 +419,8 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">fname_or_buf</span>
     <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span><span class="n">requirements</span><span class="o">=</span><span class="n">cfg</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])):</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
 
@@ -429,9 +429,9 @@
 <div class="viewcode-block" id="parse_toml">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.parse_toml">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">parse_toml</span><span class="p">(</span>
-    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"pyproject.toml"</span><span class="p">,</span> <span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.toml`` style file.</span>
+<span class="w">    </span><span class="sd">"""Generate a configuration from a ``.toml`` style file.</span>
 
 <span class="sd">    This function will look for a table that starts with either ``edgetest``</span>
 <span class="sd">    or ``tool.edgetest``:</span>
@@ -443,20 +443,20 @@
 <span class="sd">            .. code-block:: toml</span>
 
 <span class="sd">                [edgetest.envs.pandas]</span>
-<span class="sd">                upgrade = [ &quot;pandas&quot; ]</span>
+<span class="sd">                upgrade = [ "pandas" ]</span>
 
 <span class="sd">        .. tab:: ``tool``-style</span>
 
 <span class="sd">            .. code-block:: toml</span>
 
 <span class="sd">                [[tool.edgetest.env]]</span>
-<span class="sd">                name = &quot;pandas&quot;</span>
-<span class="sd">                upgrade = [ &quot;pandas&quot; ]</span>
+<span class="sd">                name = "pandas"</span>
+<span class="sd">                upgrade = [ "pandas" ]</span>
 
 <span class="sd">    This will result in a configuration that has one testing environment, named</span>
 <span class="sd">    ``pandas``, that upgrades the ``pandas`` package.</span>
 
-<span class="sd">    If you don&#39;t have any tables that start with ``edgetest.envs`` or entries under the</span>
+<span class="sd">    If you don't have any tables that start with ``edgetest.envs`` or entries under the</span>
 <span class="sd">    name ``tool.edgetest.env``, we will look for the installation requirements (the ``dependencies``</span>
 <span class="sd">    key within the ``project`` section). To set the global defaults for your environments, use</span>
 <span class="sd">    the ``edgetest`` or ``tool.edgetest`` table:</span>
@@ -468,23 +468,23 @@
 <span class="sd">            .. code-block:: toml</span>
 
 <span class="sd">                [edgetest]</span>
-<span class="sd">                extras = [ &quot;tests&quot; ]</span>
-<span class="sd">                command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="sd">                extras = [ "tests" ]</span>
+<span class="sd">                command = "pytest tests -m 'not integration'"</span>
 
 <span class="sd">                [edgetest.envs.pandas]</span>
-<span class="sd">                upgrade = [ &quot;pandas&quot; ]</span>
+<span class="sd">                upgrade = [ "pandas" ]</span>
 
 <span class="sd">        .. tab:: ``tool``-style</span>
 
 <span class="sd">            .. code-block:: toml</span>
 
 <span class="sd">                [tool.edgetest]</span>
-<span class="sd">                extras = [ &quot;tests&quot; ]</span>
-<span class="sd">                command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="sd">                extras = [ "tests" ]</span>
+<span class="sd">                command = "pytest tests -m 'not integration'"</span>
 
 <span class="sd">                [[tool.edgetest.env]]</span>
-<span class="sd">                name = &quot;pandas&quot;</span>
-<span class="sd">                upgrade = [ &quot;pandas&quot; ]</span>
+<span class="sd">                name = "pandas"</span>
+<span class="sd">                upgrade = [ "pandas" ]</span>
 
 <span class="sd">    For this single environment file, the above configuration is equivalent to</span>
 
@@ -496,24 +496,24 @@
 
 <span class="sd">                [edgetest.envs.pandas]</span>
 <span class="sd">                extras = [</span>
-<span class="sd">                    &quot;tests&quot;</span>
+<span class="sd">                    "tests"</span>
 <span class="sd">                ]</span>
-<span class="sd">                command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
+<span class="sd">                command = "pytest tests -m 'not integration'"</span>
 <span class="sd">                upgrade = [</span>
-<span class="sd">                    &quot;pandas&quot;</span>
+<span class="sd">                    "pandas"</span>
 <span class="sd">                ]</span>
 
 <span class="sd">        .. tab:: ``tool``-style</span>
 
 <span class="sd">                [[tool.edgetest.env]]</span>
-<span class="sd">                name = &quot;pandas&quot;</span>
-<span class="sd">                extras = [ &quot;tests&quot; ]</span>
-<span class="sd">                command = &quot;pytest tests -m &#39;not integration&#39;&quot;</span>
-<span class="sd">                upgrade = [ &quot;pandas&quot; ]</span>
+<span class="sd">                name = "pandas"</span>
+<span class="sd">                extras = [ "tests" ]</span>
+<span class="sd">                command = "pytest tests -m 'not integration'"</span>
+<span class="sd">                upgrade = [ "pandas" ]</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    filename : str, optional (default &quot;pyproject.toml&quot;)</span>
+<span class="sd">    filename : str, optional (default "pyproject.toml")</span>
 <span class="sd">        The name of the toml file to read. Defaults to ``pyproject.toml``.</span>
 <span class="sd">    requirements : str, optional (default None)</span>
 <span class="sd">        An optional path to the requirements text file. If there are no TOML</span>
@@ -524,59 +524,59 @@
 <span class="sd">    -------</span>
 <span class="sd">    dict</span>
 <span class="sd">        A configuration dictionary for ``edgetest``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">options</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="c1"># Read in the configuration file</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">buf</span><span class="p">:</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">TOMLDocument</span> <span class="o">=</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
     <span class="c1"># Check for ``[tool.edgetest]`` or ``[edgetest]``</span>
     <span class="n">config_</span><span class="p">:</span> <span class="n">Table</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">config_</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">config_</span> <span class="o">:=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"tool"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">))</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">output</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">_parse_toml_tool</span><span class="p">(</span><span class="n">config_</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="s2">&quot;edgetest&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="s2">"edgetest"</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
             <span class="p">(</span>
-                <span class="s2">&quot;The [edgetest] configuration format has been deprecated. Please &quot;</span>
-                <span class="s2">&quot;use [tool.edgetest] and [[tool.edgetest.env]] in the future.&quot;</span>
+                <span class="s2">"The [edgetest] configuration format has been deprecated. Please "</span>
+                <span class="s2">"use [tool.edgetest] and [[tool.edgetest.env]] in the future."</span>
             <span class="p">),</span>
             <span class="ne">DeprecationWarning</span><span class="p">,</span>
             <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">config_</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;edgetest&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span>
+        <span class="n">config_</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"edgetest"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span>
         <span class="n">output</span><span class="p">,</span> <span class="n">options</span> <span class="o">=</span> <span class="n">_parse_toml_classic</span><span class="p">(</span><span class="n">config_</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span>
         <span class="n">options</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">env</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">env</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]):</span>
         <span class="k">if</span> <span class="p">(</span>
-            <span class="s2">&quot;lower&quot;</span> <span class="ow">in</span> <span class="n">env</span>
-            <span class="ow">and</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">config</span>
-            <span class="ow">and</span> <span class="s2">&quot;dependencies&quot;</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">array</span><span class="p">())</span>
+            <span class="s2">"lower"</span> <span class="ow">in</span> <span class="n">env</span>
+            <span class="ow">and</span> <span class="s2">"project"</span> <span class="ow">in</span> <span class="n">config</span>
+            <span class="ow">and</span> <span class="s2">"dependencies"</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">array</span><span class="p">())</span>
         <span class="p">):</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lower_bounds</span><span class="p">(</span>
-                <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span>
-                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">array</span><span class="p">())</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="s2">"lower"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_lower_bounds</span><span class="p">(</span>
+                <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span>
+                <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dependencies"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">array</span><span class="p">())</span>
                 <span class="o">.</span><span class="n">unwrap</span><span class="p">(),</span>
-                <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="s2">&quot;lower&quot;</span><span class="p">],</span>
+                <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">][</span><span class="s2">"lower"</span><span class="p">],</span>
             <span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dependencies"</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
             <span class="n">output</span> <span class="o">=</span> <span class="n">convert_requirements</span><span class="p">(</span>
-                <span class="n">requirements</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
+                <span class="n">requirements</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s2">"project"</span><span class="p">][</span><span class="s2">"dependencies"</span><span class="p">]),</span>  <span class="c1"># type: ignore</span>
                 <span class="n">conf</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">requirements</span><span class="p">:</span>
             <span class="n">req_conf</span> <span class="o">=</span> <span class="n">gen_requirements_config</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="o">=</span><span class="n">requirements</span><span class="p">)</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_conf</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">req_conf</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please supply a valid list of environments to create.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Please supply a valid list of environments to create."</span><span class="p">)</span>
 
     <span class="c1"># Apply global environment options (without overwriting)</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">])):</span>
-        <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
-            <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">])):</span>
+        <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">items</span><span class="p">())</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>  <span class="c1"># type: ignore</span>
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output</span></div>
@@ -584,7 +584,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_toml_classic</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Table</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.toml`` style file.</span>
+<span class="w">    </span><span class="sd">"""Generate a configuration from a ``.toml`` style file.</span>
 
 <span class="sd">    This function is used to parse the classic ``edgetest`` table format.</span>
 
@@ -599,18 +599,18 @@
 <span class="sd">        A configuration dictionary for ``edgetest``.</span>
 <span class="sd">    dict</span>
 <span class="sd">        Global configuration options for ``edgetest``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="n">output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="n">output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span>
     <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s2">&quot;envs&quot;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;envs&quot;</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="o">**</span><span class="n">env</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s2">"envs"</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">env</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"envs"</span><span class="p">,</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">table</span><span class="p">())</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="o">**</span><span class="n">env</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">],</span> <span class="n">Table</span><span class="p">):</span>
             <span class="n">output</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
 
@@ -618,7 +618,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_toml_tool</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Table</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate a configuration from a ``.toml`` style configuration.</span>
+<span class="w">    </span><span class="sd">"""Generate a configuration from a ``.toml`` style configuration.</span>
 
 <span class="sd">    This function is used to parse the newer ``tool.edgetest`` table format.</span>
 
@@ -633,18 +633,18 @@
 <span class="sd">        A basic configuration dictionary for ``edgetest``.</span>
 <span class="sd">    Dict</span>
 <span class="sd">        Global configuration options for ``edgetest``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Get any global options, if provided. First scan through and pop out any Tables</span>
     <span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">key</span><span class="p">:</span> <span class="n">value</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">&quot;env&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s2">"env"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Table</span><span class="p">)</span>
     <span class="p">}</span>
 
-    <span class="n">output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">[]}</span>
+    <span class="n">output</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"envs"</span><span class="p">:</span> <span class="p">[]}</span>
     <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s2">&quot;env&quot;</span><span class="p">:</span>
-            <span class="n">output</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;env&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">section</span> <span class="o">==</span> <span class="s2">"env"</span><span class="p">:</span>
+            <span class="n">output</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"env"</span><span class="p">]</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">],</span> <span class="n">Table</span><span class="p">):</span>
             <span class="n">output</span><span class="p">[</span><span class="n">section</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="n">section</span><span class="p">]</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
 
@@ -654,7 +654,7 @@
 <div class="viewcode-block" id="aggregate_upgrades">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.aggregate_upgrades">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">aggregate_upgrades</span><span class="p">(</span><span class="n">testers</span><span class="p">:</span> <span class="nb">list</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregate upgraded packages across every passing environment.</span>
+<span class="w">    </span><span class="sd">"""Aggregate upgraded packages across every passing environment.</span>
 
 <span class="sd">    Reading only the last tester drops upgrades whenever a ``lower`` env runs</span>
 <span class="sd">    after the upgrade env, since a lower-bound env reports no upgrades of its</span>
@@ -671,16 +671,16 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    list of dict</span>
-<span class="sd">        ``[{&quot;name&quot;: ..., &quot;version&quot;: ...}, ...]`` for every package upgraded</span>
+<span class="sd">        ``[{"name": ..., "version": ...}, ...]`` for every package upgraded</span>
 <span class="sd">        in a passing environment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">upgrades</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">tester</span> <span class="ow">in</span> <span class="n">testers</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">tester</span><span class="o">.</span><span class="n">status</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">tester</span><span class="o">.</span><span class="n">upgraded_packages</span><span class="p">():</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
-            <span class="n">version</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+            <span class="n">version</span> <span class="o">=</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span>
             <span class="n">existing</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
                 <span class="p">(</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">upgrades</span> <span class="k">if</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[</span><span class="n">name</span><span class="p">])),</span>
                 <span class="kc">None</span><span class="p">,</span>
@@ -696,17 +696,17 @@
             <span class="k">if</span> <span class="n">current</span> <span class="o">==</span> <span class="n">candidate</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: environments disagree on the tested version &quot;</span>
-                <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">candidate</span><span class="si">}</span><span class="s2">); pinning the lower.&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: environments disagree on the tested version "</span>
+                <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">current</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">candidate</span><span class="si">}</span><span class="s2">); pinning the lower."</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">candidate</span> <span class="o">&lt;</span> <span class="n">current</span><span class="p">:</span>
                 <span class="n">upgrades</span><span class="p">[</span><span class="n">existing</span><span class="p">]</span> <span class="o">=</span> <span class="n">version</span>
-    <span class="k">return</span> <span class="p">[{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">upgrades</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
+    <span class="k">return</span> <span class="p">[{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">n</span><span class="p">,</span> <span class="s2">"version"</span><span class="p">:</span> <span class="n">v</span><span class="p">}</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">upgrades</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_split_inline_comment</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split a line into its code part and its trailing comment.</span>
+<span class="w">    </span><span class="sd">"""Split a line into its code part and its trailing comment.</span>
 
 <span class="sd">    Quote-aware: a ``#`` inside a quoted string is not a comment. The whitespace</span>
 <span class="sd">    preceding the ``#`` stays with the code part, so</span>
@@ -720,21 +720,21 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple[str, str]</span>
-<span class="sd">        ``(code, comment)``; ``comment`` is ``&quot;&quot;`` when there is no comment.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        ``(code, comment)``; ``comment`` is ``""`` when there is no comment.</span>
+<span class="sd">    """</span>
     <span class="n">in_single</span> <span class="o">=</span> <span class="n">in_double</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">'"'</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span><span class="p">:</span>
             <span class="n">in_double</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_double</span>
-        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"'"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
             <span class="n">in_single</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_single</span>
-        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;#&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"#"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">line</span><span class="p">[:</span><span class="n">index</span><span class="p">],</span> <span class="n">line</span><span class="p">[</span><span class="n">index</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">line</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">line</span><span class="p">,</span> <span class="s2">""</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_split_marker</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split requirement text into specifiers and environment marker.</span>
+<span class="w">    </span><span class="sd">"""Split requirement text into specifiers and environment marker.</span>
 
 <span class="sd">    Quote-aware: a ``;`` inside a quoted string is not a marker separator.</span>
 
@@ -746,24 +746,24 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    tuple[str, str]</span>
-<span class="sd">        ``(specs, marker)`` where ``marker`` starts with ``;`` or is ``&quot;&quot;``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        ``(specs, marker)`` where ``marker`` starts with ``;`` or is ``""``.</span>
+<span class="sd">    """</span>
     <span class="n">in_single</span> <span class="o">=</span> <span class="n">in_double</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;&quot;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">'"'</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span><span class="p">:</span>
             <span class="n">in_double</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_double</span>
-        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"'"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
             <span class="n">in_single</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">in_single</span>
-        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">&quot;;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">";"</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_single</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">in_double</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">text</span><span class="p">[:</span><span class="n">index</span><span class="p">],</span> <span class="n">text</span><span class="p">[</span><span class="n">index</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">text</span><span class="p">,</span> <span class="s2">""</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_widen_specifier</span><span class="p">(</span><span class="n">spec</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tested</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Widen a single specifier so it admits ``tested``, never tighten it.</span>
+<span class="w">    </span><span class="sd">"""Widen a single specifier so it admits ``tested``, never tighten it.</span>
 
 <span class="sd">    A specifier already satisfied by ``tested`` is returned unchanged. Only</span>
-<span class="sd">    violated bounds are widened, preserving the operator&#39;s intent:</span>
+<span class="sd">    violated bounds are widened, preserving the operator's intent:</span>
 
 <span class="sd">    - ``&lt;X`` / ``&lt;=X`` violated -&gt; ``&lt;=tested`` (no synthesized ``!=``)</span>
 <span class="sd">    - ``==X`` / ``===X`` / ``~=X`` violated -&gt; ``&gt;=X,&lt;=tested``</span>
@@ -773,7 +773,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    spec : str</span>
-<span class="sd">        A single specifier, e.g. ``&quot;&lt;2.6&quot;``.</span>
+<span class="sd">        A single specifier, e.g. ``"&lt;2.6"``.</span>
 <span class="sd">    tested : str</span>
 <span class="sd">        The version that was tested and passed.</span>
 
@@ -781,24 +781,24 @@
 <span class="sd">    -------</span>
 <span class="sd">    list[str]</span>
 <span class="sd">        One or more specifiers replacing ``spec``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">specifier</span> <span class="o">=</span> <span class="n">Specifier</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">specifier</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">tested</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">spec</span><span class="p">]</span>
     <span class="n">operator</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="n">specifier</span><span class="o">.</span><span class="n">operator</span><span class="p">,</span> <span class="n">specifier</span><span class="o">.</span><span class="n">version</span>
-    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;=&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&lt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;==&quot;</span><span class="p">,</span> <span class="s2">&quot;===&quot;</span><span class="p">,</span> <span class="s2">&quot;~=&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&gt;=</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;&lt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;&gt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"&lt;"</span><span class="p">,</span> <span class="s2">"&lt;="</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"&lt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"=="</span><span class="p">,</span> <span class="s2">"==="</span><span class="p">,</span> <span class="s2">"~="</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"&gt;=</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"&lt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"&gt;"</span><span class="p">,</span> <span class="s2">"&gt;="</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"&gt;=</span><span class="si">{</span><span class="n">tested</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">spec</span><span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_upgrade_requirement_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">new_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Rewrite one requirement line, touching only the violated specifier span.</span>
+<span class="w">    </span><span class="sd">"""Rewrite one requirement line, touching only the violated specifier span.</span>
 
-<span class="sd">    Preserves the line&#39;s leading indentation, the original order and spacing of</span>
+<span class="sd">    Preserves the line's leading indentation, the original order and spacing of</span>
 <span class="sd">    specifiers, extras, the environment marker, and any trailing inline comment.</span>
 <span class="sd">    If no specifier needs widening the original line is returned byte-identical.</span>
 
@@ -813,7 +813,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        The rewritten line, or the original line when nothing needs to change.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">code</span><span class="p">,</span> <span class="n">comment</span> <span class="o">=</span> <span class="n">_split_inline_comment</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
     <span class="n">leading</span> <span class="o">=</span> <span class="n">code</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())]</span>
     <span class="n">trailing_ws</span> <span class="o">=</span> <span class="n">code</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">code</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span> <span class="p">:]</span>
@@ -825,9 +825,9 @@
         <span class="c1"># Direct references (pkg @ url) have no specifier span to widen.</span>
         <span class="k">return</span> <span class="n">line</span>
     <span class="n">head_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span>
-        <span class="sa">r</span><span class="s2">&quot;^(?P&lt;name&gt;[A-Za-z0-9][A-Za-z0-9._-]*)&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;(?P&lt;ws&gt;\s*)&quot;</span>
-        <span class="sa">r</span><span class="s2">&quot;(?P&lt;extras&gt;\[[^\]]*\])?&quot;</span><span class="p">,</span>
+        <span class="sa">r</span><span class="s2">"^(?P&lt;name&gt;[A-Za-z0-9][A-Za-z0-9._-]*)"</span>
+        <span class="sa">r</span><span class="s2">"(?P&lt;ws&gt;\s*)"</span>
+        <span class="sa">r</span><span class="s2">"(?P&lt;extras&gt;\[[^\]]*\])?"</span><span class="p">,</span>
         <span class="n">stripped</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">head_match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover - Requirement already validated</span>
@@ -839,7 +839,7 @@
 
     <span class="n">out_parts</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">changed</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">specs_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">specs_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">):</span>
         <span class="n">lead_ws</span> <span class="o">=</span> <span class="n">element</span><span class="p">[:</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">lstrip</span><span class="p">())]</span>
         <span class="n">trail_ws</span> <span class="o">=</span> <span class="n">element</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span> <span class="p">:]</span>
         <span class="n">spec</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -849,10 +849,10 @@
         <span class="n">new_specs</span> <span class="o">=</span> <span class="n">_widen_specifier</span><span class="p">(</span><span class="n">spec</span><span class="p">,</span> <span class="n">new_version</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_specs</span> <span class="o">!=</span> <span class="p">[</span><span class="n">spec</span><span class="p">]:</span>
             <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">out_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lead_ws</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_specs</span><span class="p">)</span> <span class="o">+</span> <span class="n">trail_ws</span><span class="p">)</span>
+        <span class="n">out_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">lead_ws</span> <span class="o">+</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_specs</span><span class="p">)</span> <span class="o">+</span> <span class="n">trail_ws</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">changed</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">line</span>
-    <span class="k">return</span> <span class="n">leading</span> <span class="o">+</span> <span class="n">head</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_parts</span><span class="p">)</span> <span class="o">+</span> <span class="n">marker</span> <span class="o">+</span> <span class="n">trailing_ws</span> <span class="o">+</span> <span class="n">comment</span>
+    <span class="k">return</span> <span class="n">leading</span> <span class="o">+</span> <span class="n">head</span> <span class="o">+</span> <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_parts</span><span class="p">)</span> <span class="o">+</span> <span class="n">marker</span> <span class="o">+</span> <span class="n">trailing_ws</span> <span class="o">+</span> <span class="n">comment</span>
 
 
 <div class="viewcode-block" id="upgrade_requirements">
@@ -860,7 +860,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">upgrade_requirements</span><span class="p">(</span>
     <span class="n">fname_or_buf</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">upgraded_packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create an upgraded requirements file.</span>
+<span class="w">    </span><span class="sd">"""Create an upgraded requirements file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -874,7 +874,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
 <span class="sd">        The string file representing the new requirements file.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Get the existing file</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">fname_or_buf</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -885,15 +885,15 @@
     <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
         <span class="c1"># Filename too long for the is_file() function</span>
         <span class="n">cfg</span> <span class="o">=</span> <span class="n">fname_or_buf</span>
-    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
+    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
 
     <span class="n">out_lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">raw_line</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="n">keepends</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="n">eol</span> <span class="o">=</span> <span class="n">raw_line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">))</span> <span class="p">:]</span>
-        <span class="n">line</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">eol</span> <span class="o">=</span> <span class="n">raw_line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">))</span> <span class="p">:]</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">"</span><span class="se">\r\n</span><span class="s2">"</span><span class="p">)</span>
         <span class="n">code</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_split_inline_comment</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
         <span class="n">stripped</span> <span class="o">=</span> <span class="n">code</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">stripped</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stripped</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">stripped</span> <span class="o">==</span> <span class="s2">""</span><span class="p">:</span>
             <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">raw_line</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="k">try</span><span class="p">:</span>
@@ -912,12 +912,12 @@
             <span class="k">continue</span>
         <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_upgrade_requirement_line</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">[</span><span class="n">match</span><span class="p">])</span> <span class="o">+</span> <span class="n">eol</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span></div>
 
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_upgrade_toml_array</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">Array</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upgrade requirement strings inside a tomlkit array, in place.</span>
+<span class="w">    </span><span class="sd">"""Upgrade requirement strings inside a tomlkit array, in place.</span>
 
 <span class="sd">    Each element is rewritten only if its bound needs widening; untouched</span>
 <span class="sd">    elements keep their tomlkit trivia (layout, comments, trailing commas).</span>
@@ -930,7 +930,7 @@
 <span class="sd">        The array of requirement strings to upgrade in place.</span>
 <span class="sd">    upgrades : dict[str, str]</span>
 <span class="sd">        Mapping of package name to the tested version.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
         <span class="n">text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
@@ -951,31 +951,31 @@
 <div class="viewcode-block" id="upgrade_pyproject_toml">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.upgrade_pyproject_toml">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">upgrade_pyproject_toml</span><span class="p">(</span>
-    <span class="n">upgraded_packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;pyproject.toml&quot;</span>
+    <span class="n">upgraded_packages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"pyproject.toml"</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">TOMLDocument</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Upgrade the ``pyproject.toml`` file.</span>
+<span class="w">    </span><span class="sd">"""Upgrade the ``pyproject.toml`` file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    upgraded_packages : list[dict[str, str]]</span>
 <span class="sd">        A list of packages upgraded in the testing procedure.</span>
-<span class="sd">    filename : str, optional (default &quot;pyproject.toml&quot;)</span>
+<span class="sd">    filename : str, optional (default "pyproject.toml")</span>
 <span class="sd">        The name of the toml file to read. Defaults to ``pyproject.toml``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    TOMLDocument</span>
 <span class="sd">        The updated TOMLDocument.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">buf</span><span class="p">:</span>
         <span class="n">parser</span><span class="p">:</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">TOMLDocument</span> <span class="o">=</span> <span class="n">tomlkit</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
-    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
-    <span class="k">if</span> <span class="s2">&quot;project&quot;</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Updating the requirements in </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="n">_upgrade_toml_array</span><span class="p">(</span><span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;dependencies&quot;</span><span class="p">],</span> <span class="n">upgrades</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+    <span class="n">upgrades</span> <span class="o">=</span> <span class="p">{</span><span class="n">pkg</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]:</span> <span class="n">pkg</span><span class="p">[</span><span class="s2">"version"</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">upgraded_packages</span><span class="p">}</span>
+    <span class="k">if</span> <span class="s2">"project"</span> <span class="ow">in</span> <span class="n">parser</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dependencies"</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Updating the requirements in </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="n">_upgrade_toml_array</span><span class="p">(</span><span class="n">parser</span><span class="p">[</span><span class="s2">"project"</span><span class="p">][</span><span class="s2">"dependencies"</span><span class="p">],</span> <span class="n">upgrades</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="c1"># Update the extras, if necessary</span>
-    <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;optional-dependencies&quot;</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
-        <span class="k">for</span> <span class="n">_extra</span><span class="p">,</span> <span class="n">dependencies</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">[</span><span class="s2">&quot;project&quot;</span><span class="p">][</span><span class="s2">&quot;optional-dependencies&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># type: ignore</span>
+    <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"project"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"optional-dependencies"</span><span class="p">):</span>  <span class="c1"># type: ignore</span>
+        <span class="k">for</span> <span class="n">_extra</span><span class="p">,</span> <span class="n">dependencies</span> <span class="ow">in</span> <span class="n">parser</span><span class="p">[</span><span class="s2">"project"</span><span class="p">][</span><span class="s2">"optional-dependencies"</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>  <span class="c1"># type: ignore</span>
             <span class="n">_upgrade_toml_array</span><span class="p">(</span><span class="n">dependencies</span><span class="p">,</span> <span class="n">upgrades</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">parser</span></div>
@@ -983,7 +983,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vals</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run isin check that is case and dash/hyphen insensitive.</span>
+<span class="w">    </span><span class="sd">"""Run isin check that is case and dash/hyphen insensitive.</span>
 
 <span class="sd">    Paramaters</span>
 <span class="sd">    ----------</span>
@@ -996,14 +996,14 @@
 <span class="sd">    -------</span>
 <span class="sd">    bool</span>
 <span class="sd">        Return ``True`` if ``a`` in vals, otherwise ``False``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">b</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"_"</span><span class="p">,</span> <span class="s2">"-"</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="get_lower_bounds">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.utils.get_lower_bounds">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_lower_bounds</span><span class="p">(</span><span class="n">requirements</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">lower</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get lower bounds of requested packages from installation requirements.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""Get lower bounds of requested packages from installation requirements.</span>
 
 <span class="sd">    Parses through the project ``requirements`` and the newline-delimited</span>
 <span class="sd">    packages requested in ``lower`` to find the lower bounds.</span>
@@ -1012,43 +1012,43 @@
 <span class="sd">    ----------</span>
 <span class="sd">    requirements : str or list</span>
 <span class="sd">        Project setup requirements,</span>
-<span class="sd">        e.g. ``&quot;pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4&quot;``</span>
+<span class="sd">        e.g. ``"pandas&gt;=1.5.1,&lt;=1.4.2\nnumpy&gt;=1.22.1,&lt;=1.25.4"``</span>
 <span class="sd">    lower : str | list[str]</span>
 <span class="sd">        Newline-delimited packages requested,</span>
-<span class="sd">         e.g. ``&quot;pandas\nnumpy&quot;``.</span>
+<span class="sd">         e.g. ``"pandas\nnumpy"``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
-<span class="sd">        The packages along with the lower bound, e.g. ``&quot;pandas==1.5.1\nnumpy==1.22.1&quot;``.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">        The packages along with the lower bound, e.g. ``"pandas==1.5.1\nnumpy==1.22.1"``.</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">pkgs</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">Requirement</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">requirements</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">""</span><span class="p">)</span>
         <span class="p">]</span>
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">requirements</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="n">pkgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">Requirement</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">requirements</span><span class="p">]</span>
     <span class="n">all_lower_bounds</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">pkgs</span><span class="p">:</span>
-        <span class="n">full_name</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[</span><span class="si">{</span><span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">extras</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">full_name</span> <span class="o">=</span> <span class="n">pkg</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"[</span><span class="si">{</span><span class="s1">','</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">extras</span><span class="p">)</span><span class="si">}</span><span class="s2">]"</span> <span class="k">if</span> <span class="n">pkg</span><span class="o">.</span><span class="n">extras</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">spec</span> <span class="ow">in</span> <span class="n">pkg</span><span class="o">.</span><span class="n">specifier</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">operator</span> <span class="o">==</span> <span class="s2">"&gt;="</span><span class="p">:</span>
                 <span class="n">all_lower_bounds</span><span class="p">[</span><span class="n">full_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">version</span>
                 <span class="k">break</span>
 
-    <span class="n">lower_with_bounds</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">lower_</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">lower</span>
+    <span class="n">lower_with_bounds</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="n">lower_</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">lower</span>
     <span class="k">for</span> <span class="n">pkg_name</span><span class="p">,</span> <span class="n">lower_bound</span> <span class="ow">in</span> <span class="n">all_lower_bounds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># TODO: Parse through extra requirements as well to get lower bounds</span>
         <span class="k">if</span> <span class="n">lower_bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                <span class="s2">&quot;Requested </span><span class="si">%s</span><span class="s2"> lower bound, but did not find in install requirements.&quot;</span><span class="p">,</span>
+                <span class="s2">"Requested </span><span class="si">%s</span><span class="s2"> lower bound, but did not find in install requirements."</span><span class="p">,</span>
                 <span class="n">pkg_name</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">elif</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">pkg_name</span><span class="p">,</span> <span class="n">lower_</span><span class="p">):</span>
-            <span class="n">lower_with_bounds</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pkg_name</span><span class="si">}</span><span class="s2">==</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">lower_with_bounds</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pkg_name</span><span class="si">}</span><span class="s2">==</span><span class="si">{</span><span class="n">lower_bound</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
 
     <span class="k">return</span> <span class="n">lower_with_bounds</span></div>
 

@@ -239,7 +239,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for edgetest.core</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Core module.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Core module."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shlex</span>
@@ -257,7 +257,7 @@
 <div class="viewcode-block" id="TestPackage">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.core.TestPackage">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TestPackage</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run test commands with bleeding edge dependencies.</span>
+<span class="w">    </span><span class="sd">"""Run test commands with bleeding edge dependencies.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -269,7 +269,7 @@
 <span class="sd">        The list of packages to upgrade</span>
 <span class="sd">    lower : list</span>
 <span class="sd">        The list of packages to install lower bounds alongside the lower bound value.</span>
-<span class="sd">        E.g. ``[&quot;pandas==1.5.2&quot;]``.</span>
+<span class="sd">        E.g. ``["pandas==1.5.2"]``.</span>
 <span class="sd">    package_dir : str, optional (default None)</span>
 <span class="sd">        The location of the local package to install and test.</span>
 
@@ -280,9 +280,9 @@
 <span class="sd">    status : bool</span>
 <span class="sd">        A boolean status indicator for whether or not the tests passed. Only populated</span>
 <span class="sd">        after ``run_tests`` has been executed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
-    <span class="c1"># Tell pytest this isn&#39;t for tests</span>
+    <span class="c1"># Tell pytest this isn't for tests</span>
     <span class="n">__test__</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -293,44 +293,44 @@
         <span class="n">lower</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">package_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Init method.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Init method."""</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hook</span> <span class="o">=</span> <span class="n">hook</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">envname</span> <span class="o">=</span> <span class="n">envname</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">upgrade</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lower</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
             <span class="n">upgrade</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">lower</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Exactly one of upgrade and lower must be provided.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Exactly one of upgrade and lower must be provided."</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span> <span class="o">=</span> <span class="n">upgrade</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="o">=</span> <span class="n">lower</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">package_dir</span> <span class="o">=</span> <span class="n">package_dir</span> <span class="ow">or</span> <span class="s2">&quot;.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package_dir</span> <span class="o">=</span> <span class="n">package_dir</span> <span class="ow">or</span> <span class="s2">"."</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">basedir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Base directory.</span>
+<span class="w">        </span><span class="sd">"""Base directory.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Path</span>
 <span class="sd">            Base directory for execution.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">basedir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">&quot;.edgetest&quot;</span>
+<span class="sd">        """</span>
+        <span class="n">basedir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">".edgetest"</span>
         <span class="n">basedir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">basedir</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">python_path</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the path to the python executable.</span>
+<span class="w">        </span><span class="sd">"""Path to the python executable.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The path to the python executable.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">path_to_python</span><span class="p">(</span><span class="n">basedir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
 <div class="viewcode-block" id="TestPackage.setup">
@@ -342,7 +342,7 @@
         <span class="n">skip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">options</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the testing environment.</span>
+<span class="w">        </span><span class="sd">"""Set up the testing environment.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -364,20 +364,32 @@
 <span class="sd">        ------</span>
 <span class="sd">        RuntimeError</span>
 <span class="sd">            This error will be raised if any part of the set up process fails.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
+        <span class="c1"># Normalize extras: a single entry like "spark, qa" (comma-separated</span>
+        <span class="c1"># names inside one string) is a common configuration mistake. ``uv``</span>
+        <span class="c1"># splits ``--extra`` values on commas but does not trim whitespace,</span>
+        <span class="c1"># so "spark, qa" fails extra-name validation. Emit one clean name</span>
+        <span class="c1"># per ``--extra`` flag instead.</span>
+        <span class="k">if</span> <span class="n">extras</span><span class="p">:</span>
+            <span class="n">extras</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">extras</span>
+                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="p">]</span>
         <span class="k">if</span> <span class="n">skip</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">return</span>
         <span class="c1"># Create the conda environment</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Creating the following environment: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Creating the following environment: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">create_environment</span><span class="p">(</span>
                 <span class="n">basedir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span> <span class="n">envname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">,</span> <span class="n">conf</span><span class="o">=</span><span class="n">options</span>
             <span class="p">)</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully created </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Successfully created </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                <span class="s2">&quot;Could not create the following environment: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
+                <span class="s2">"Could not create the following environment: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="k">return</span>
@@ -387,52 +399,52 @@
             <span class="n">uv_</span> <span class="o">=</span> <span class="n">find_uv_bin</span><span class="p">()</span>
             <span class="n">base_cmd_</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">uv_</span><span class="p">,</span>
-                <span class="s2">&quot;sync&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;--inexact&quot;</span><span class="p">,</span>
-                <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"sync"</span><span class="p">,</span>
+                <span class="s2">"--inexact"</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">]</span>
             <span class="k">if</span> <span class="n">extras</span><span class="p">:</span>
-                <span class="n">base_cmd_</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;--extra=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">extras</span><span class="p">]</span>
+                <span class="n">base_cmd_</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"--extra=</span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">extras</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">deps</span><span class="p">:</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="s2">&quot;Installing specified additional dependencies into </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="s2">"Installing specified additional dependencies into </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">,</span>
-                    <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">deps</span><span class="p">),</span>
+                    <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">deps</span><span class="p">),</span>
                 <span class="p">)</span>
                 <span class="n">split</span> <span class="o">=</span> <span class="p">[</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">dep</span><span class="p">)</span> <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">deps</span><span class="p">]</span>
                 <span class="k">try</span><span class="p">:</span>
                     <span class="n">_run_command</span><span class="p">(</span>
                         <span class="n">uv_</span><span class="p">,</span>
-                        <span class="s2">&quot;pip&quot;</span><span class="p">,</span>
-                        <span class="s2">&quot;install&quot;</span><span class="p">,</span>
-                        <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">"pip"</span><span class="p">,</span>
+                        <span class="s2">"install"</span><span class="p">,</span>
+                        <span class="sa">f</span><span class="s2">"--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                         <span class="o">*</span><span class="p">[</span><span class="n">itm</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">split</span> <span class="k">for</span> <span class="n">itm</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">],</span>
                     <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                     <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                        <span class="s2">&quot;Unable to install specified additional dependencies in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="s2">"Unable to install specified additional dependencies in </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">,</span>
                     <span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">False</span>
                     <span class="k">return</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Successfully installed specified additional dependencies into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Successfully installed specified additional dependencies into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">"</span>
                 <span class="p">)</span>
 
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Installing the local package into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">...&quot;</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Installing the local package into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">_run_command</span><span class="p">(</span>
                     <span class="o">*</span><span class="n">base_cmd_</span><span class="p">,</span>
                     <span class="n">env</span><span class="o">=</span><span class="p">{</span>
-                        <span class="s2">&quot;UV_PROJECT_ENVIRONMENT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">))</span>
+                        <span class="s2">"UV_PROJECT_ENVIRONMENT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">basedir</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">))</span>
                     <span class="p">},</span>
                 <span class="p">)</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Successfully installed the local package into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">...&quot;</span>
+                    <span class="sa">f</span><span class="s2">"Successfully installed the local package into </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">..."</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Unable to install the local package into </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
+                    <span class="s2">"Unable to install the local package into </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
                 <span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="k">return</span>
@@ -440,7 +452,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">:</span>
             <span class="c1"># Upgrade package(s)</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Upgrading the following packages in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Upgrading the following packages in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">run_update</span><span class="p">(</span>
@@ -452,15 +464,15 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">&quot;Unable to upgrade packages in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
+                <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"Unable to upgrade packages in </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
                 <span class="k">return</span>
-            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Successfully upgraded packages in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
+            <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Successfully upgraded packages in </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Install lower bounds of package(s)</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="s2">&quot;Installing lower bounds of packages in </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="s2">"Installing lower bounds of packages in </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
                 <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="p">},</span>
-                <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>  <span class="c1"># type:ignore</span>
+                <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">),</span>  <span class="c1"># type:ignore</span>
             <span class="p">)</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">hook</span><span class="o">.</span><span class="n">run_install_lower</span><span class="p">(</span>
@@ -473,18 +485,18 @@
             <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">LOG</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span>
-                    <span class="s2">&quot;Unable to install lower bounds of packages in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
+                    <span class="s2">"Unable to install lower bounds of packages in </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">envname</span>
                 <span class="p">)</span>
                 <span class="k">return</span>
             <span class="n">LOG</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Successfully installed lower bounds of packages in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">"Successfully installed lower bounds of packages in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">envname</span><span class="si">}</span><span class="s2">"</span>
             <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="TestPackage.upgraded_packages">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.core.TestPackage.upgraded_packages">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">upgraded_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the list of upgraded packages for the test environment.</span>
+<span class="w">        </span><span class="sd">"""Get the list of upgraded packages for the test environment.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -495,46 +507,46 @@
 <span class="sd">        List</span>
 <span class="sd">            The output of ``pip list --format json``, filtered to the packages upgraded</span>
 <span class="sd">            for this environment.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
         <span class="c1"># Get the version for the upgraded package(s)</span>
         <span class="n">uv_</span> <span class="o">=</span> <span class="n">find_uv_bin</span><span class="p">()</span>
         <span class="n">out</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_run_command</span><span class="p">(</span>
-            <span class="n">uv_</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;--format&quot;</span><span class="p">,</span> <span class="s2">&quot;json&quot;</span>
+            <span class="n">uv_</span><span class="p">,</span> <span class="s2">"pip"</span><span class="p">,</span> <span class="s2">"list"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"--python=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"--format"</span><span class="p">,</span> <span class="s2">"json"</span>
         <span class="p">)</span>
         <span class="n">outjson</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
 
-        <span class="n">upgrade_wo_extras</span> <span class="o">=</span> <span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">]</span>
+        <span class="n">upgrade_wo_extras</span> <span class="o">=</span> <span class="p">[</span><span class="n">pkg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"["</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">pkg</span>
             <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="n">outjson</span>
-            <span class="k">if</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">upgrade_wo_extras</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">_isin_case_dashhyphen_ins</span><span class="p">(</span><span class="n">pkg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span> <span class="n">upgrade_wo_extras</span><span class="p">)</span>
         <span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="TestPackage.lowered_packages">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.core.TestPackage.lowered_packages">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">lowered_packages</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get list of lowered packages for the test environment.</span>
+<span class="w">        </span><span class="sd">"""Get list of lowered packages for the test environment.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        List[Dict[str, str]]</span>
 <span class="sd">            List of lowered packages and their versions</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[]</span>
-        <span class="n">packages_split</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;==&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">pkg_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
+        <span class="n">packages_split</span> <span class="o">=</span> <span class="p">(</span><span class="n">pkg_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"=="</span><span class="p">)</span> <span class="k">for</span> <span class="n">pkg_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">pkg_info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">pkg_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">pkg_info</span> <span class="ow">in</span> <span class="n">packages_split</span>
+            <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="n">pkg_info</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">"version"</span><span class="p">:</span> <span class="n">pkg_info</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span> <span class="k">for</span> <span class="n">pkg_info</span> <span class="ow">in</span> <span class="n">packages_split</span>
         <span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="TestPackage.run_tests">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.core.TestPackage.run_tests">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run_tests</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run the tests in the package directory.</span>
+<span class="w">        </span><span class="sd">"""Run the tests in the package directory.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -545,12 +557,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        int</span>
 <span class="sd">            The exit code</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">setup_status</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Environment setup failed. Cannot run tests.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"Environment setup failed. Cannot run tests."</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">pushd</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">package_dir</span><span class="p">):</span>
             <span class="n">popen</span> <span class="o">=</span> <span class="n">Popen</span><span class="p">(</span>
-                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)),</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">python_path</span><span class="p">,</span> <span class="s2">"-m"</span><span class="p">,</span> <span class="o">*</span><span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">command</span><span class="p">)),</span> <span class="n">universal_newlines</span><span class="o">=</span><span class="kc">True</span>
             <span class="p">)</span>
             <span class="n">popen</span><span class="o">.</span><span class="n">communicate</span><span class="p">()</span>
 

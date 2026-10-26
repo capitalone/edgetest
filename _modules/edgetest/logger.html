@@ -239,19 +239,19 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for edgetest.logger</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Logging Module.</span>
+<span></span><span class="sd">"""Logging Module.</span>
 
 <span class="sd">Module which setsup the basic logging infrustrcuture for the application.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 
 <span class="c1"># logger formating</span>
-<span class="n">BRIEF_FORMAT</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+<span class="n">BRIEF_FORMAT</span> <span class="o">=</span> <span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(asctime)s</span><span class="s2"> - </span><span class="si">%(name)s</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">"</span>
 <span class="n">VERBOSE_FORMAT</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="s2">&quot;</span><span class="si">%(levelname)s</span><span class="s2">|</span><span class="si">%(asctime)s</span><span class="s2">|</span><span class="si">%(name)s</span><span class="s2">|</span><span class="si">%(filename)s</span><span class="s2">|&quot;</span>
-    <span class="s2">&quot;</span><span class="si">%(funcName)s</span><span class="s2">|</span><span class="si">%(lineno)d</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">&quot;</span>
+    <span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2">|</span><span class="si">%(asctime)s</span><span class="s2">|</span><span class="si">%(name)s</span><span class="s2">|</span><span class="si">%(filename)s</span><span class="s2">|"</span>
+    <span class="s2">"</span><span class="si">%(funcName)s</span><span class="s2">|</span><span class="si">%(lineno)d</span><span class="s2">: </span><span class="si">%(message)s</span><span class="s2">"</span>
 <span class="p">)</span>
 <span class="n">FORMAT_TO_USE</span> <span class="o">=</span> <span class="n">VERBOSE_FORMAT</span>
 
@@ -266,7 +266,7 @@
 <div class="viewcode-block" id="get_logger">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.logger.get_logger">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_logger</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">log_level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set the basic logging features for the application.</span>
+<span class="w">    </span><span class="sd">"""Set the basic logging features for the application.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -279,7 +279,7 @@
 <span class="sd">    -------</span>
 <span class="sd">    logging.Logger</span>
 <span class="sd">        Returns a Logger obejct which is set with the passed in paramters.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="nb">format</span><span class="o">=</span><span class="n">FORMAT_TO_USE</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">log_level</span><span class="p">)</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">logger</span></div>

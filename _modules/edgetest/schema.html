@@ -239,60 +239,60 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for edgetest.schema</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Define the Cerberus schema for the testing configuration.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Define the Cerberus schema for the testing configuration."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cerberus</span><span class="w"> </span><span class="kn">import</span> <span class="n">Validator</span>
 
 <span class="n">BASE_SCHEMA</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;envs&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-        <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;dict&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
-                <span class="s2">&quot;exclude_newer&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;strip&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">"envs"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+        <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"dict"</span><span class="p">,</span>
+            <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"strip"</span><span class="p">,</span> <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+                <span class="s2">"exclude_newer"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+                    <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"strip"</span><span class="p">,</span>
+                    <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"nullable"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;upgrade&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+                <span class="s2">"upgrade"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+                    <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
                     <span class="p">},</span>
-                    <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;listify&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                    <span class="s2">&quot;excludes&quot;</span><span class="p">:</span> <span class="s2">&quot;lower&quot;</span><span class="p">,</span>
+                    <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"listify"</span><span class="p">,</span>
+                    <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">"excludes"</span><span class="p">:</span> <span class="s2">"lower"</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;listify&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;required&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-                    <span class="s2">&quot;excludes&quot;</span><span class="p">:</span> <span class="s2">&quot;upgrade&quot;</span><span class="p">,</span>
+                <span class="s2">"lower"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+                    <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
+                    <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"listify"</span><span class="p">,</span>
+                    <span class="s2">"required"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="s2">"excludes"</span><span class="p">:</span> <span class="s2">"upgrade"</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;extras&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;listify&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"extras"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+                    <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
+                    <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"listify"</span><span class="p">,</span>
+                    <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"nullable"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;deps&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">},</span>
-                    <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;listify&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"deps"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"list"</span><span class="p">,</span>
+                    <span class="s2">"schema"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
+                    <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"listify"</span><span class="p">,</span>
+                    <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"nullable"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="p">},</span>
-                <span class="s2">&quot;command&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;pytest&quot;</span><span class="p">},</span>
-                <span class="s2">&quot;package_dir&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span> <span class="s2">&quot;coerce&quot;</span><span class="p">:</span> <span class="s2">&quot;strip&quot;</span><span class="p">,</span> <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="s2">&quot;.&quot;</span><span class="p">},</span>
-                <span class="s2">&quot;python_version&quot;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;default&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                    <span class="s2">&quot;nullable&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                <span class="s2">"command"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"strip"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">:</span> <span class="s2">"pytest"</span><span class="p">},</span>
+                <span class="s2">"package_dir"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span> <span class="s2">"coerce"</span><span class="p">:</span> <span class="s2">"strip"</span><span class="p">,</span> <span class="s2">"default"</span><span class="p">:</span> <span class="s2">"."</span><span class="p">},</span>
+                <span class="s2">"python_version"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">,</span>
+                    <span class="s2">"default"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="s2">"nullable"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">},</span>
         <span class="p">},</span>
@@ -303,14 +303,14 @@
 <div class="viewcode-block" id="Schema">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Schema</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An editable schema.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""An editable schema."""</span>
 
     <span class="n">schema</span> <span class="o">=</span> <span class="n">BASE_SCHEMA</span>
 
 <div class="viewcode-block" id="Schema.add_envoption">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_envoption">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_envoption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an environment-level option.</span>
+<span class="w">        </span><span class="sd">"""Add an environment-level option.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -321,15 +321,15 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; Schema().add_envoption(&quot;command&quot;, {&quot;type&quot;: &quot;string&quot;, &quot;default&quot;: &quot;pytest&quot;})</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s2">&quot;envs&quot;</span><span class="p">][</span><span class="s2">&quot;schema&quot;</span><span class="p">][</span><span class="s2">&quot;schema&quot;</span><span class="p">][</span><span class="n">option</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>  <span class="c1"># type: ignore</span></div>
+<span class="sd">        &gt;&gt;&gt; Schema().add_envoption("command", {"type": "string", "default": "pytest"})</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="s2">"envs"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">][</span><span class="n">option</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span>  <span class="c1"># type: ignore</span></div>
 
 
 <div class="viewcode-block" id="Schema.add_globaloption">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.Schema.add_globaloption">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_globaloption</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">option</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a global option.</span>
+<span class="w">        </span><span class="sd">"""Add a global option.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -340,8 +340,8 @@
 
 <span class="sd">        Examples</span>
 <span class="sd">        --------</span>
-<span class="sd">        &gt;&gt;&gt; Schema().add_globaloption(&quot;print_message&quot;, {&quot;type&quot;: &quot;string&quot;})</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; Schema().add_globaloption("print_message", {"type": "string"})</span>
+<span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">[</span><span class="n">option</span><span class="p">]</span> <span class="o">=</span> <span class="n">schema</span></div>
 </div>
 
@@ -350,10 +350,10 @@
 <div class="viewcode-block" id="EdgetestValidator">
 <a class="viewcode-back" href="../../api/edgetest.html#edgetest.schema.EdgetestValidator">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EdgetestValidator</span><span class="p">(</span><span class="n">Validator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom validator for coercing lists from ``.ini`` style files.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Custom validator for coercing lists from ``.ini`` style files."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_coerce_listify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Coerce a value into a list.</span>
+<span class="w">        </span><span class="sd">"""Coerce a value into a list.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -364,14 +364,14 @@
 <span class="sd">        -------</span>
 <span class="sd">        list</span>
 <span class="sd">            The newline-separated list.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">value</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_coerce_strip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Remove leading and trailing spaces.</span>
+<span class="w">        </span><span class="sd">"""Remove leading and trailing spaces.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -382,7 +382,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The stripped string.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 </pre></div>
