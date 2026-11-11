@@ -38,7 +38,7 @@ dependencies = [
     "pyproject-fmt<=2.30.2,>=2.0.0",
     "tabulate<=0.10.0,>=0.8.9",
     "tomlkit<=0.15.2,>=0.11.4",
-    "uv<=0.13.5,>=0.13.4",
+    "uv<=0.13.6,>=0.13.4",
 ]
 optional-dependencies.build = [ "build", "bumpver", "twine", "wheel" ]
 optional-dependencies.dev = [
@@ -72,11 +72,11 @@ scripts.edgetest = "edgetest.interface:cli"
 
 [tool.setuptools]
 include-package-data = true
-zip-safe = false
-dynamic.version = { attr = "edgetest.__version__" }
 dynamic.readme = { file = [
     "README.md",
 ], content-type = "text/markdown" }
+dynamic.version = { attr = "edgetest.__version__" }
+zip-safe = false
 
 [tool.ruff]
 target-version = "py312"
@@ -84,34 +84,34 @@ extend-include = [
     "*.ipynb",
 ]
 lint.select = [
-    "B",      # flake8-bugbear
-    "C",      # flake8-comprehensions
-    "D",      # pydocstyle
-    "E",      # pycodestyle errors
-    "F",      # pyflakes
-    "I",      # isort
-    "LOG",    # flake8-logging
-    "RUF",    # Ruff errors
-    "SIM",    # flake8-simplify
-    "T20",    # flake8-print
+    "B",                # flake8-bugbear
+    "C",                # flake8-comprehensions
+    "D",                # pydocstyle
+    "E",                # pycodestyle errors
+    "F",                # pyflakes
+    "I",                # isort
+    "LOG",              # flake8-logging
     "relative-imports", # flake8-tidy-imports ban relative imports
-    "UP",     # pyupgrade
-    "W",      # pycodestyle warnings
+    "RUF",              # Ruff errors
+    "SIM",              # flake8-simplify
+    "T20",              # flake8-print
+    "UP",               # pyupgrade
+    "W",                # pycodestyle warnings
 ]
 lint.ignore = [
-    "complex-structure",   # Add back in later
-    "docstring-tab-indentation",   # Docstring indentation. Using formatter instead.
-    "triple-single-quotes",   # Use triple single quotes. Using formatter instead.
-    "indentation-with-invalid-multiple",   # Check indentation level. Using formatter instead.
-    "indentation-with-invalid-multiple-comment",   # Check indentation level. Using formatter instead.
-    "over-indented",   # Check indentation level. Using formatter instead.
-    "whitespace-before-punctuation",   # Check whitespace. Using formatter instead.
-    "line-too-long",   # Line too long. Using formatter instead.
-    "non-empty-init-module", # non-empty-init-module
-    "suppressible-exception", # Use ``contextlib.suppress(FileNotFoundError)`` insetad of try - execpt - pass.
-    "if-else-block-instead-of-if-exp", # Use ternary operator instead of if-else blocks.
-    "non-pep585-annotation",  # ``typing.x`` is deprecated, use ``x`` instead
-    "deprecated-import",  # ``typing.x`` is deprecated, use ``x`` instead
+    "complex-structure",                         # Add back in later
+    "deprecated-import",                         # ``typing.x`` is deprecated, use ``x`` instead
+    "docstring-tab-indentation",                 # Docstring indentation. Using formatter instead.
+    "if-else-block-instead-of-if-exp",           # Use ternary operator instead of if-else blocks.
+    "indentation-with-invalid-multiple",         # Check indentation level. Using formatter instead.
+    "indentation-with-invalid-multiple-comment", # Check indentation level. Using formatter instead.
+    "line-too-long",                             # Line too long. Using formatter instead.
+    "non-empty-init-module",                     # non-empty-init-module
+    "non-pep585-annotation",                     # ``typing.x`` is deprecated, use ``x`` instead
+    "over-indented",                             # Check indentation level. Using formatter instead.
+    "suppressible-exception",                    # Use ``contextlib.suppress(FileNotFoundError)`` insetad of try - execpt - pass.
+    "triple-single-quotes",                      # Use triple single quotes. Using formatter instead.
+    "whitespace-before-punctuation",             # Check whitespace. Using formatter instead.
 ]
 lint.per-file-ignores."**/{tests,docs}/*" = [
     "ARG",
@@ -133,19 +133,19 @@ keep_full_version = true
 max_supported_python = "3.14"
 
 [tool.mypy]
+ignore_missing_imports = true
 python_version = "3.12"
 warn_return_any = true
-warn_unused_configs = true
-ignore_missing_imports = true
 allow_redefinition = true
 disable_error_code = "empty-body"
+warn_unused_configs = true
 
 [tool.pytest]
-ini_options.markers = [
-    "unit: mark unit tests that do not require external interfaces and use mocking",
-    "integration: mark test that interact with an external system",
-]
 ini_options.addopts = "--verbose"
+ini_options.markers = [
+    "integration: mark test that interact with an external system",
+    "unit: mark unit tests that do not require external interfaces and use mocking",
+]
 
 [tool.edgetest]
 exclude_newer = "3 days"
